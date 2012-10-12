@@ -23,8 +23,9 @@ public class OrderDAOImpl implements OrderDAO{
     @Override
     public void create(Order order) {
         if (order == null) {
-            throw new IllegalArgumentException("order");
+            throw new IllegalArgumentException("order is null");
         }
+        
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(order);
@@ -35,7 +36,7 @@ public class OrderDAOImpl implements OrderDAO{
     @Override
     public Order get(Long id) {
         if (id == null) {
-            throw new IllegalArgumentException("id");
+            throw new IllegalArgumentException("id is null");
         }
         
         EntityManager em = emf.createEntityManager();
@@ -45,7 +46,7 @@ public class OrderDAOImpl implements OrderDAO{
     @Override
     public void update(Order order) {
         if (order == null) {
-            throw new IllegalArgumentException("order");
+            throw new IllegalArgumentException("order is null");
         }
         
         EntityManager em = emf.createEntityManager();
@@ -59,11 +60,15 @@ public class OrderDAOImpl implements OrderDAO{
     @Override
     public void remove(Order order) {
         if (order == null) {
-            throw new IllegalArgumentException("order");
+            throw new IllegalArgumentException("order is null");
         }
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.remove(order);
+        Order toRemove = em.find(Order.class, order.getId());
+        if (toRemove == null) {
+            throw new IllegalArgumentException("given extraService doesn't exist");
+        }
+        em.remove(toRemove);
         em.getTransaction().commit();
         em.close();
     }
@@ -78,11 +83,12 @@ public class OrderDAOImpl implements OrderDAO{
 
     @Override
     public List<Order> findByCustomer(Customer customer) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Order findByOrderNumber(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (customer == null) {
+            throw new IllegalArgumentException("customer is null");
+        }
+        EntityManager em = emf.createEntityManager();
+        Query query = em.createQuery("SELECT o FROM Order o WHERE o.customer.id = :id").setParameter("id", customer.getId());
+        em.close();
+        return (List<Order>) query.getResultList();
     }
 }
