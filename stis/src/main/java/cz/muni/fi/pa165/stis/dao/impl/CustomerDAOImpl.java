@@ -8,21 +8,26 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 /**
- *  Class implements CustomerDAO interface functionality.
- * 
- * @author michalxo
+ * Class implements CustomerDAO interface functionality.
+ *
+ * @author Michal Toth
  */
 public class CustomerDAOImpl implements CustomerDAO {
+
     private EntityManagerFactory emf;
-    
+
     public void setEntityManager(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
+
     @Override
     public void create(Customer customer) {
-        if ((customer == null) || !(customer instanceof Customer)) {
-            throw new IllegalArgumentException("customer");
+        if (customer == null) {
+            throw new IllegalArgumentException("customer is null");
+        }
+
+        if (customer.getId() != null) {
+            throw new IllegalArgumentException("customer.id is null");
         }
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -33,38 +38,44 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public Customer get(Long id) {
-        if ((id == null) || !(id instanceof Long)) {// (|| id. NOT IN DB!?
-            throw new IllegalArgumentException("id");
+        if (id == null) {
+            throw new IllegalArgumentException("null id");
         }
-        
         EntityManager em = emf.createEntityManager();
-        return em.find(Customer.class, id); 
-        
+        Customer customer = em.find(Customer.class, id);
+        em.close();
+        return customer;
+
     }
 
     @Override
     public void update(Customer customer) {
         // OR CUSTOMER is NOT in DB!!? -- WHEN HE HAS NO ID?
-        if ((customer == null) || !(customer instanceof Customer)) {
-            throw new IllegalArgumentException("customer");
+        if (customer == null) {
+            throw new IllegalArgumentException("customer is null");
         }
-        
+        if (customer.getId() == null) {
+            throw new IllegalArgumentException("customer.id is null");
+        }
+
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.persist(customer);
-        em.refresh(customer);
+        em.merge(em.find(Customer.class, customer));
         em.getTransaction().commit();
         em.close();
     }
 
     @Override
     public void remove(Customer customer) {
-        if ((customer == null) || !(customer instanceof Customer)) {
-            throw new IllegalArgumentException("customer");
+        if (customer == null) {
+            throw new IllegalArgumentException("customer is null");
+        }
+        if (customer.getId() == null) {
+            throw new IllegalArgumentException("customer.id is null");
         }
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.remove(customer);
+        em.remove(em.find(Customer.class, customer));
         em.getTransaction().commit();
         em.close();
     }
@@ -73,34 +84,37 @@ public class CustomerDAOImpl implements CustomerDAO {
     public List<Customer> findAll() {
         EntityManager em = emf.createEntityManager();
         Query query = em.createQuery("SELECT c FROM Customer c");
+        List<Customer> results = query.getResultList();
         em.close();
-        return (List<Customer>) query.getResultList();
+        return results;
     }
 
     @Override
-    public List<Customer> findByName(String lastName) {
-        if (lastName == null || lastName.equals("")) {
-            throw new IllegalArgumentException("lastName");
-        }
-        EntityManager em = emf.createEntityManager();
-        Query query = em.createQuery("SELECT c FROM Customer c WHERE c.lastName like :lastName ");
-        em.close();
-        return (List<Customer>) query.getResultList();
-    }
-    
-     @Override
     public List<Customer> findByName(String lastName, String firstName) {
-        if (lastName == null || lastName.equals("")) {
-            throw new IllegalArgumentException("lastName");
+        boolean fn;
+        boolean ln;
+        if ((ln = (lastName == null)) || (fn = (firstName == null))) {
+//        if ((ln = (lastName == null || lastName.equals(""))) || (fn = (firstName == null || firstName.equals("")))) {
+            throw new IllegalArgumentException("null lastName and firstName");
         }
-        
-        if (firstName == null || firstName.equals("")) {
-            throw new IllegalArgumentException("firstName");
-        }
+
+        Query query;
         EntityManager em = emf.createEntityManager();
-        Query query = em.createQuery("SELECT c FROM Customer c WHERE c.lastname like :lastName AND c.firstName like :firstName");
+        if (fn) {
+            // firstName is null, query for lastName only
+            query = em.createQuery("SELECT c FROM Customer c WHERE c.lastName like :lastName");
+            query.setParameter("lastName", lastName);
+        } else if (ln) {
+            query = em.createQuery("SELECT c FROM Customer c WHERE c.firstName like :firstName");
+            query.setParameter("firstName", firstName);
+        } else {
+            query = em.createQuery("SELECT c FROM Customer c WHERE c.firstName like :firstName AND c.lastName like :lastName");
+            query.setParameter("lastName", lastName);
+            query.setParameter("firstName", firstName);
+        }
+
+        List<Customer> results = query.getResultList();
         em.close();
-        return (List<Customer>) query.getResultList();
+        return results;
     }
-    
 }
