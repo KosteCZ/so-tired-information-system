@@ -13,7 +13,7 @@ import javax.persistence.Id;
  * name of customer, his address and phone 
  * as strings.
  *
- * @author michalxo
+ * @author Michal Toth
  */
 @Entity(name = "Customers")
 public class Customer implements Serializable {
