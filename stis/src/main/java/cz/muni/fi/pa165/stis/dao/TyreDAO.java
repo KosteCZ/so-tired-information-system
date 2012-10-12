@@ -21,7 +21,7 @@ public interface TyreDAO {
     
     /**
      * Method finds customer in database using 
-     * custoemr id 
+     * customer id 
      * 
      * @param id
      * @return tyre
