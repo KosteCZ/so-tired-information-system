@@ -56,13 +56,4 @@ public interface OrderDAO {
      * @return Collection of orders with given customer
      */
     List<Order> findByCustomer(Customer customer);
-    
-    /**
-     * Method looks for given id his order in database
-     * and returns whole order.
-     * 
-     * @param name
-     * @return Order with number of order
-     */
-    Order findByOrderNumber(Long id);
 }
