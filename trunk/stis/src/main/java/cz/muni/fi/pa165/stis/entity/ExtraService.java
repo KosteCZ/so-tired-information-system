@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
+ * ExtraService entity holds information about extra services 
+ * offered by tyre service.
  *
  * @author Dusan Svancara
  */
