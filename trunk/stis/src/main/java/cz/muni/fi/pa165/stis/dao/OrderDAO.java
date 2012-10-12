@@ -2,7 +2,7 @@ package cz.muni.fi.pa165.stis.dao;
 
 import cz.muni.fi.pa165.stis.entity.Customer;
 import cz.muni.fi.pa165.stis.entity.Order;
-import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -46,7 +46,7 @@ public interface OrderDAO {
      * 
      * @return Collection of all orders
      */
-    Collection<Order> findAll();
+    List<Order> findAll();
     
     /**
      * Method looks for given customer his orders in database
@@ -55,7 +55,7 @@ public interface OrderDAO {
      * @param name
      * @return Collection of orders with given customer
      */
-    Collection<Order> findByCustomer(Customer customer);
+    List<Order> findByCustomer(Customer customer);
     
     /**
      * Method looks for given id his order in database
