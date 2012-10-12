@@ -3,7 +3,11 @@ package cz.muni.fi.pa165.stis.entity;
 import java.util.Date;
 
 /**
- *
+ * type = 255/40ZR19
+ * vendor = Michelin
+ * size = 27"
+ * car = BMW M5
+ * 
  * @author xmravec1
  */
 public class Order {

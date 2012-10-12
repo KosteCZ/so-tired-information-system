@@ -7,31 +7,35 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
 /**
- * Customer class 
- * 
+ * Customer class implementation.
+ * Contains uniquely generated id,
+ * name of customer, his address and phone 
+ * as strings.
+ *
  * @author michalxo
  */
-
-@Entity
+@Entity(name = "Customers")
 public class Customer implements Serializable {
-    
+
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    private String name;
+    private String firstName;
+    private String lastName;
     private String address;
     private String phone;
-    
-    
+
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+    
+    public String getLastName() {
+        return lastName;
     }
 
     public String getAddress() {
@@ -46,10 +50,13 @@ public class Customer implements Serializable {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
     public void setAddress(String address) {
         this.address = address;
     }
@@ -87,7 +94,6 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "Customer{" + "id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + '}';
+        return "Customer{" + "id=" + id + ", name=" + firstName + " " + lastName + ", address=" + address + ", phone=" + phone + "}";
     }
-    
 }

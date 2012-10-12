@@ -50,12 +50,21 @@ public interface CustomerDAO {
     List<Customer> findAll();
     
     /**
-     * Method looks for given name of customer in database.
+     * Method looks for given last name of customer in database
+     * and returns collection of found customers with given name.
      * 
-     * @param name
-     * @return customer with given name
+     * @param lastName
+     * @return List of customers with given last name.
      */
-    Customer findByName(String name);
+    List<Customer> findByName(String lastName);
     
+    /**
+     * Method looks for given last and first name of customer in database
+     * and returns collection of found customers with given name.
+     * 
+     * @param firstName, lastName
+     * @return List of customers with given first and last name.
+     */
+    List<Customer> findByName(String lastName, String firstName);
     
 }
