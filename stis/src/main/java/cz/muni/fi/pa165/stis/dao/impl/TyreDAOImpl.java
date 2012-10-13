@@ -15,7 +15,7 @@ public class TyreDAOImpl implements TyreDAO {
 
     private EntityManagerFactory emf;
 
-    public void setEntityManager(EntityManagerFactory emf) {
+    public void setEntityManagerFactory(EntityManagerFactory emf) {
         this.emf = emf;
     }
 
