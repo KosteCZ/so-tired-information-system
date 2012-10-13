@@ -13,13 +13,17 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -41,13 +45,11 @@ public class OrderDAOTest {
     private ExtraServiceDAO extraServiceDAO;
     //
     private Customer customer;
-    private List<ExtraService> extraServices;
+    private Set<ExtraService> extraServices;
     private Map<TyrePosition, Tyre> tyres;
 
     @Before
     public void setUp() {
-        System.out.println("--- BEFORE ---");
-        //
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestPU");
         dao = new OrderDAOImpl();
         ((OrderDAOImpl) dao).setEntityManager(emf);
@@ -65,7 +67,7 @@ public class OrderDAOTest {
         extraServiceDAO.create(es1);
         ExtraService es2 = newExtraService("Vysavanie", "Vysavanie auta", BigDecimal.valueOf(122.5));
         extraServiceDAO.create(es2);
-        extraServices = Arrays.asList(new ExtraService[]{es1, es2});
+        extraServices = new HashSet<ExtraService>(Arrays.asList(new ExtraService[]{es1, es2}));
         //
         Tyre t1 = newTyre(17D, "MM22", "EZ256", "Michellin", BigDecimal.valueOf(222));
         tyreDAO.create(t1);
@@ -82,7 +84,6 @@ public class OrderDAOTest {
     @After
     public void tearDown() {
         removeAll();
-        System.err.println("--- AFTER ---");
     }
     
     /**
@@ -90,8 +91,6 @@ public class OrderDAOTest {
      */
     @Test
     public void testCreate() {
-        System.out.println("create");
-        // order null test
         Order order = null;
         try {
             dao.create(order);
@@ -121,8 +120,6 @@ public class OrderDAOTest {
      */
     @Test
     public void testGet() {
-        System.out.println("get");
-        //
         Order o = newOrder(customer, null, null, null, extraServices, tyres);
         dao.create(o);
         //
@@ -151,8 +148,6 @@ public class OrderDAOTest {
      */
     @Test
     public void testUpdate() {
-        System.out.println("update");
-        //
         Long oId;
         Order o = newOrder(customer, null, null, null, extraServices, tyres);
         dao.create(o);
@@ -191,8 +186,6 @@ public class OrderDAOTest {
      */
     @Test
     public void testRemove() {
-        System.out.println("remove");
-        //
         Order o = newOrder(customer, null, null, null, extraServices, tyres);
         dao.create(o);
         //
@@ -236,15 +229,13 @@ public class OrderDAOTest {
      */
     @Test
     public void testFindAll() {
-        System.out.println("findAll");
-        //
         List<Order> orders = dao.findAll();
         assertTrue("Orders should be empty", orders.isEmpty());
         //
         orders = Arrays.asList(new Order[] {
-            newOrder(customer, null, null, null, extraServices, null),
-            newOrder(customer, null, null, null, null, null),
-            newOrder(customer, null, null, null, null, tyres)
+            newOrder(customer, null, null, null, extraServices, new EnumMap<TyrePosition, Tyre>(TyrePosition.class)),
+            newOrder(customer, null, null, null, new HashSet<ExtraService>(), new EnumMap<TyrePosition, Tyre>(TyrePosition.class)),
+            newOrder(customer, null, null, null, new HashSet<ExtraService>(), tyres)
         });
         for (Order o : orders) {
             dao.create(o);
@@ -265,10 +256,8 @@ public class OrderDAOTest {
      */
     @Test
     public void testFindByCustomer() {
-        System.out.println("findByCustomer");
-        //
         Order o1 = newOrder(customer, null, null, null, extraServices, tyres);
-        Order o2 = newOrder(customer, null, null, null, null, tyres);
+        Order o2 = newOrder(customer, null, null, null, new HashSet<ExtraService>(), tyres);
         List<Order> os = Arrays.asList(new Order[]{o1, o2});
         for (Order o : os) {
             dao.create(o);
@@ -332,7 +321,7 @@ public class OrderDAOTest {
     }
     
     private static Order newOrder(Customer c, Date orderNewDate, Date orderServicedDate, 
-            Date orderPaidDate, List<ExtraService> extraServices, Map<TyrePosition, Tyre> tyres) {
+            Date orderPaidDate, Set<ExtraService> extraServices, Map<TyrePosition, Tyre> tyres) {
         Order o = new Order();
         o.setCustomer(c);
         o.setOrderNewDate(orderNewDate);
@@ -346,6 +335,7 @@ public class OrderDAOTest {
     
     private static Date newDate(String value) {
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("GMT+1"));
         try {
             return df.parse(value);
         } catch (ParseException ex) {
@@ -354,14 +344,28 @@ public class OrderDAOTest {
         return null;
     }
     
+    private static boolean equalDates(Date d1, Date d2) {
+        if (d1 == null || d2 == null) {
+            return d1 == null && d2 == null;
+        }
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("GMT+1"));
+        
+        return df.format(d1).equals(df.format(d2));
+    }
+    
     private static void assertDeepEquals(Order o1, Order o2) {
         assertEquals(o1.getId(), o2.getId());
         assertEquals(o1.getCustomer(), o2.getCustomer());
-//        assertEquals(o1.getOrderNewDate(), o2.getOrderNewDate());
-//        assertEquals(o1.getOrderServicedDate(), o2.getOrderServicedDate());
-//        assertEquals(o1.getOrderPaidDate(), o2.getOrderPaidDate());
+        assertTrue(equalDates(o1.getOrderNewDate(), o2.getOrderNewDate()));
+        assertTrue(equalDates(o1.getOrderServicedDate(), o2.getOrderServicedDate()));
+        assertTrue(equalDates(o1.getOrderPaidDate(), o2.getOrderPaidDate()));
         assertDeepEquals(o1.getTyres(), o2.getTyres());
-        assertDeepEquals(o1.getExtraServices(), o2.getExtraServices());
+        List<ExtraService> es1 = new ArrayList<ExtraService>(o1.getExtraServices());
+        List<ExtraService> es2 = new ArrayList<ExtraService>(o2.getExtraServices());
+        Collections.sort(es1, esComparator);
+        Collections.sort(es2, esComparator);
+        assertDeepEquals(es1, es2);
     }
     
     private static void assertDeepEquals(List<ExtraService> es1, List<ExtraService> es2) {
@@ -406,6 +410,14 @@ public class OrderDAOTest {
 
         @Override
         public int compare(Order t, Order t1) {
+            return t.getId().compareTo(t1.getId());
+        }
+    };
+    
+    private static Comparator<ExtraService> esComparator = new Comparator<ExtraService>() {
+
+        @Override
+        public int compare(ExtraService t, ExtraService t1) {
             return t.getId().compareTo(t1.getId());
         }
     };

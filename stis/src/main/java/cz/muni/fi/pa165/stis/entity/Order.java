@@ -2,8 +2,8 @@ package cz.muni.fi.pa165.stis.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,10 +29,10 @@ public class Order implements Serializable {
     @ManyToOne
     private Customer customer;
     private String carType;
-    @ManyToMany(fetch= FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Map<TyrePosition, Tyre> tyres;
-    @ManyToMany(fetch= FetchType.EAGER)
-    private List<ExtraService> extraServices;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<ExtraService> extraServices;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date orderNewDate;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -72,11 +72,11 @@ public class Order implements Serializable {
         this.tyres = tyres;
     }
 
-    public List<ExtraService> getExtraServices() {
+    public Set<ExtraService> getExtraServices() {
         return extraServices;
     }
 
-    public void setExtraServices(List<ExtraService> extraServices) {
+    public void setExtraServices(Set<ExtraService> extraServices) {
         this.extraServices = extraServices;
     }
 
@@ -113,7 +113,6 @@ public class Order implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Order)) {
             return false;
         }
@@ -122,6 +121,11 @@ public class Order implements Serializable {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" + "id=" + id + ", customer=" + customer + ", carType=" + carType + ", tyres=" + tyres + ", extraServices=" + extraServices + ", orderNewDate=" + orderNewDate + ", orderServicedDate=" + orderServicedDate + ", orderPaidDate=" + orderPaidDate + '}';
     }
 
 }
