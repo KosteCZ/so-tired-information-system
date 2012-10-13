@@ -52,11 +52,11 @@ public class OrderDAOTest {
     public void setUp() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestPU");
         dao = new OrderDAOImpl();
-        ((OrderDAOImpl) dao).setEntityManager(emf);
+        ((OrderDAOImpl) dao).setEntityManagerFactory(emf);
         customerDAO = new CustomerDAOImpl();
-        ((CustomerDAOImpl) customerDAO).setEntityManager(emf);
+        ((CustomerDAOImpl) customerDAO).setEntityManagerFactory(emf);
         tyreDAO = new TyreDAOImpl();
-        ((TyreDAOImpl) tyreDAO).setEntityManager(emf);
+        ((TyreDAOImpl) tyreDAO).setEntityManagerFactory(emf);
         extraServiceDAO = new ExtraServiceDAOImpl();
         ((ExtraServiceDAOImpl) extraServiceDAO).setEntityManagerFactory(emf);
         
