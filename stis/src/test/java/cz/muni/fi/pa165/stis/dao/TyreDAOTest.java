@@ -2,7 +2,6 @@ package cz.muni.fi.pa165.stis.dao;
 
 import cz.muni.fi.pa165.stis.dao.impl.TyreDAOImpl;
 import cz.muni.fi.pa165.stis.entity.Tyre;
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,7 +9,6 @@ import java.util.Comparator;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import oracle.jrockit.jfr.tools.ConCatRepository;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
