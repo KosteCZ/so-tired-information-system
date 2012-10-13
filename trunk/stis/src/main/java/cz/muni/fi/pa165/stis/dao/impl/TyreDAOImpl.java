@@ -22,7 +22,10 @@ public class TyreDAOImpl implements TyreDAO {
     @Override
     public void create(Tyre tyre) {
         if (tyre == null) {
-            throw new IllegalArgumentException("tyre");
+            throw new IllegalArgumentException("tyre is null");
+        }        
+        if (tyre.getId() != null) {
+            throw new IllegalArgumentException("tyre.id is not null");
         }
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -53,8 +56,7 @@ public class TyreDAOImpl implements TyreDAO {
         }
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.persist(tyre);
-        em.refresh(tyre);
+        em.merge(tyre);
         em.getTransaction().commit();
         em.close();
     }
@@ -62,10 +64,10 @@ public class TyreDAOImpl implements TyreDAO {
     @Override
     public void remove(Tyre tyre) {
         if (tyre == null) {
-            throw new IllegalArgumentException("order is null");
+            throw new IllegalArgumentException("tyre is null");
         }
         if (tyre.getId() == null) {
-            throw new IllegalArgumentException("tyre id is null");
+            throw new IllegalArgumentException("tyre.id is null");
         }
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
