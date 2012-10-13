@@ -1,6 +1,17 @@
 package cz.muni.fi.pa165.stis.entity;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 
 /**
  * type = 255/40ZR19
@@ -10,12 +21,26 @@ import java.util.Date;
  * 
  * @author xmravec1
  */
-public class Order {
+@Entity
+public class Order implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    //
+    @ManyToOne
     private Customer customer;
-    private String car;
-    private Tyre tyre;
-    private Date orderDate;
+    private String carType;
+    @ManyToMany
+    private List<ExtraService> extraServices;
+    @ManyToMany
+    private Map<TyrePosition, Tyre> tyres;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date orderNewDate;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date orderServicedDate;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date orderPaidDate;
 
     public Long getId() {
         return id;
@@ -33,27 +58,79 @@ public class Order {
         this.customer = customer;
     }
 
-    public String getCar() {
-        return car;
+    public String getCarType() {
+        return carType;
     }
 
-    public void setCar(String car) {
-        this.car = car;
+    public void setCarType(String carType) {
+        this.carType = carType;
     }
 
-    public Tyre getTyre() {
-        return tyre;
+    public List<ExtraService> getExtraServices() {
+        return extraServices;
     }
 
-    public void setTyre(Tyre tyre) {
-        this.tyre = tyre;
+    public void setExtraServices(List<ExtraService> extraServices) {
+        this.extraServices = extraServices;
     }
 
-    public Date getOrderDate() {
-        return orderDate;
+    public Map<TyrePosition, Tyre> getTyres() {
+        return tyres;
     }
 
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
+    public void setTyres(Map<TyrePosition, Tyre> tyres) {
+        this.tyres = tyres;
     }
+
+    public Date getOrderNewDate() {
+        return orderNewDate;
+    }
+
+    public void setOrderNewDate(Date orderNewDate) {
+        this.orderNewDate = orderNewDate;
+    }
+
+    public Date getOrderServicedDate() {
+        return orderServicedDate;
+    }
+
+    public void setOrderServicedDate(Date orderServicedDate) {
+        this.orderServicedDate = orderServicedDate;
+    }
+
+    public Date getOrderPaidDate() {
+        return orderPaidDate;
+    }
+
+    public void setOrderPaidDate(Date orderPaidDate) {
+        this.orderPaidDate = orderPaidDate;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 11 * hash + (this.id != null ? this.id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Order other = (Order) obj;
+        if ((this.id == null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" + "id=" + id + ", customer=" + customer + ", carType=" + carType + ", extraServices=" + extraServices + ", tyres=" + tyres + ", orderNewDate=" + orderNewDate + ", orderServicedDate=" + orderServicedDate + ", orderPaidDate=" + orderPaidDate + '}';
+    }
+
 }
