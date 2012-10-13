@@ -43,9 +43,11 @@ public class OrderDAOTest {
     private Customer customer;
     private List<ExtraService> extraServices;
     private Map<TyrePosition, Tyre> tyres;
-    
+
     @Before
     public void setUp() {
+        System.out.println("--- BEFORE ---");
+        //
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestPU");
         dao = new OrderDAOImpl();
         ((OrderDAOImpl) dao).setEntityManager(emf);
@@ -55,7 +57,7 @@ public class OrderDAOTest {
         ((TyreDAOImpl) tyreDAO).setEntityManager(emf);
         extraServiceDAO = new ExtraServiceDAOImpl();
         ((ExtraServiceDAOImpl) extraServiceDAO).setEntityManagerFactory(emf);
-        //
+        
         customer = newCustomer("Jozin", "Zbazin", "Baziny 22", "005544");
         customerDAO.create(customer);
         //
@@ -79,6 +81,8 @@ public class OrderDAOTest {
     
     @After
     public void tearDown() {
+        removeAll();
+        System.err.println("--- AFTER ---");
     }
     
     /**
@@ -94,6 +98,8 @@ public class OrderDAOTest {
             fail("Order null and didn't throw exception");
         } catch (IllegalArgumentException ex) {
             //ok
+        } catch (Exception ex) {
+            fail("Order null and didn't throw appropriate exception");
         }
         order = newOrder(customer, newDate("22.9.2012 12:13:15"), null, null, extraServices, tyres);
         order.setId(22L);
@@ -102,13 +108,12 @@ public class OrderDAOTest {
             fail("ID not null and didn't throw exception");
         } catch (IllegalArgumentException ex) {
             //ok
+        } catch (Exception ex) {
+            fail("ID not null and didn't throw appropriate exception");
         }
         order.setId(null);
         dao.create(order);
         assertNotNull("ID is null", order.getId());
-        //
-        //
-        removeAll();
     }
 
     /**
@@ -127,12 +132,16 @@ public class OrderDAOTest {
             fail("Id null and didn't throw exception");
         } catch (IllegalArgumentException ex) {
             //ok
+        } catch (Exception ex) {
+            fail("Id null and didn't throw appropriate exception");
         }
         Order o2 = dao.get(o.getId());
         assertNotNull("Order is null", o2);
         assertEquals("Orders are not the same", o2, o);
         assertDeepEquals(o2, o);
         //
+        Order o3 = dao.get(o.getId() + 1); // shouldn't exist
+        assertNull("Order is not null", o3);
         //
         removeAll();
     }
@@ -155,12 +164,16 @@ public class OrderDAOTest {
             fail("Order null and didn't throw exception");
         } catch (IllegalArgumentException ex) {
             //ok
+        } catch (Exception ex) {
+            fail("Order null and didn't throw appropriate exception");
         }
         try {
             dao.update(o);
             fail("Order ID null and didn't throw exception");
         } catch (IllegalArgumentException ex) {
             //ok
+        } catch (Exception ex) {
+            fail("Order ID null and didn't throw appropriate exception");
         }
         //
         o.setId(oId);
@@ -171,9 +184,6 @@ public class OrderDAOTest {
         Order o2 = dao.get(o.getId());
         assertEquals("Orders are not the same", o2, o);
         assertDeepEquals(o2, o);
-        //
-        //
-        removeAll();
     }
 
     /**
@@ -191,13 +201,28 @@ public class OrderDAOTest {
             fail("Order null and didn't throw exception");
         } catch (IllegalArgumentException ex) {
             //ok
+        } catch (Exception ex) {
+            fail("Order null and didn't throw appropriate exception");
         }
         try {
             dao.remove(new Order());
-            fail("Order id null and didn't throw exception");
+            fail("Order ID null and didn't throw exception");
         } catch (IllegalArgumentException ex) {
             // ok
+        } catch (Exception ex) {
+            fail("Order ID null and didn't throw appropriate exception");
         }
+        try {
+            Order ord = new Order();
+            ord.setId(-1L);
+            dao.remove(ord);
+            fail("Shouldn't remove non-existent entity");
+        } catch (IllegalArgumentException ex) {
+            //ok
+        } catch (Exception ex) {
+            fail("Non existent order - should throw appropriate exception");
+        }
+        //
         dao.remove(o);
         Order o2 = dao.get(o.getId());
         assertNull("Found order that shouldn't be there", o2);
@@ -233,9 +258,6 @@ public class OrderDAOTest {
         for (int i = 0; i < all.size(); i++) {
             assertDeepEquals(all.get(i), orders.get(i));
         }
-        //
-        //
-        removeAll();
     }
 
     /**
@@ -257,6 +279,8 @@ public class OrderDAOTest {
             fail("Customer is null and didn't throw exception");
         } catch (IllegalArgumentException ex) {
             //ok
+        } catch (Exception ex) {
+            fail("Customer is null and didn't throw appropriate exception");
         }
         //
         try {
@@ -264,6 +288,8 @@ public class OrderDAOTest {
             fail("Customer id is null and didn't throw exception");
         } catch (IllegalArgumentException ex) {
             //ok
+        } catch (Exception ex) {
+            fail("Customer ID is null and didn't throw appropriate exception");
         }
         //
         List<Order> orders = dao.findByCustomer(customer);
@@ -273,9 +299,6 @@ public class OrderDAOTest {
         for (int i = 0; i < os.size(); i++) {
             assertDeepEquals(os.get(i), orders.get(i));
         }
-        //
-        //
-        removeAll();
     }
     
     private static Tyre newTyre(Double diameter, String name, String type, String vendor, BigDecimal price) {
@@ -334,23 +357,29 @@ public class OrderDAOTest {
     private static void assertDeepEquals(Order o1, Order o2) {
         assertEquals(o1.getId(), o2.getId());
         assertEquals(o1.getCustomer(), o2.getCustomer());
-        assertEquals(o1.getOrderNewDate(), o2.getOrderNewDate());
-        assertEquals(o1.getOrderServicedDate(), o2.getOrderServicedDate());
-        assertEquals(o1.getOrderPaidDate(), o2.getOrderPaidDate());
+//        assertEquals(o1.getOrderNewDate(), o2.getOrderNewDate());
+//        assertEquals(o1.getOrderServicedDate(), o2.getOrderServicedDate());
+//        assertEquals(o1.getOrderPaidDate(), o2.getOrderPaidDate());
         assertDeepEquals(o1.getTyres(), o2.getTyres());
         assertDeepEquals(o1.getExtraServices(), o2.getExtraServices());
     }
     
     private static void assertDeepEquals(List<ExtraService> es1, List<ExtraService> es2) {
-        assertTrue(es1.size() == es2.size());
-        for (int i = 0; i < es1.size(); i++) {
-            assertEquals(es1.get(i), es2.get(i));
+        assertEquals(es1 == null, es2 == null);
+        if (es1 != null) {
+            assertTrue(es1.size() == es2.size());
+            for (int i = 0; i < es1.size(); i++) {
+                assertEquals(es1.get(i), es2.get(i));
+            }
         }
     }
     
     private static void assertDeepEquals(Map<TyrePosition, Tyre> t1, Map<TyrePosition, Tyre> t2) {
-        for (TyrePosition tp : TyrePosition.values()) {
-            assertEquals(t1.get(tp), t2.get(tp));
+        assertEquals(t1 == null, t2 == null);
+        if (t1 != null) {
+            for (TyrePosition tp : TyrePosition.values()) {
+                assertEquals(t1.get(tp), t2.get(tp));
+            }
         }
     }
     
@@ -358,6 +387,18 @@ public class OrderDAOTest {
         List<Order> orders = dao.findAll();
         for (Order o : orders) {
             dao.remove(o);
+        }
+        List<Customer> customers = customerDAO.findAll();
+        for (Customer c : customers) {
+            customerDAO.remove(c);
+        }
+        List<Tyre> ts = tyreDAO.findAll();
+        for (Tyre t : ts) {
+            tyreDAO.remove(t);
+        }
+        List<ExtraService> ess = extraServiceDAO.findAll();
+        for (ExtraService es : ess) {
+            extraServiceDAO.remove(es);
         }
     }
     

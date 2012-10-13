@@ -25,10 +25,10 @@ public class CustomerDAOImpl implements CustomerDAO {
         if (customer == null) {
             throw new IllegalArgumentException("customer is null");
         }
-
         if (customer.getId() != null) {
-            throw new IllegalArgumentException("customer.id is null");
+            throw new IllegalArgumentException("customer.id is not null");
         }
+        
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(customer);
@@ -50,7 +50,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public void update(Customer customer) {
-        // OR CUSTOMER is NOT in DB!!? -- WHEN HE HAS NO ID?
         if (customer == null) {
             throw new IllegalArgumentException("customer is null");
         }
@@ -75,7 +74,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.remove(em.find(Customer.class, customer));
+        em.remove(em.find(Customer.class, customer.getId()));
         em.getTransaction().commit();
         em.close();
     }

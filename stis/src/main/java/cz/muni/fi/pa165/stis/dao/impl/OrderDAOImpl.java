@@ -3,6 +3,7 @@ package cz.muni.fi.pa165.stis.dao.impl;
 import cz.muni.fi.pa165.stis.dao.OrderDAO;
 import cz.muni.fi.pa165.stis.entity.Customer;
 import cz.muni.fi.pa165.stis.entity.Order;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -25,6 +26,9 @@ public class OrderDAOImpl implements OrderDAO{
         if (order == null) {
             throw new IllegalArgumentException("order is null");
         }
+        if (order.getId() != null) {
+            throw new IllegalArgumentException("order.id is not null");
+        }
         
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -39,8 +43,13 @@ public class OrderDAOImpl implements OrderDAO{
             throw new IllegalArgumentException("id is null");
         }
         
+        Order result = null;
+        
         EntityManager em = emf.createEntityManager();
-        return em.find(Order.class, id);
+        result = em.find(Order.class, id);
+        em.close();
+        
+        return result;
     }
 
     @Override
@@ -48,11 +57,13 @@ public class OrderDAOImpl implements OrderDAO{
         if (order == null) {
             throw new IllegalArgumentException("order is null");
         }
+        if (order.getId() == null) {
+            throw new IllegalArgumentException("order.id is null");
+        }
         
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.persist(order);
-        em.refresh(order);
+        em.merge(order);
         em.getTransaction().commit();
         em.close();
     }
@@ -62,6 +73,10 @@ public class OrderDAOImpl implements OrderDAO{
         if (order == null) {
             throw new IllegalArgumentException("order is null");
         }
+        if (order.getId() == null) {
+            throw new IllegalArgumentException("order.id is null");
+        }
+        
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         Order toRemove = em.find(Order.class, order.getId());
@@ -75,10 +90,15 @@ public class OrderDAOImpl implements OrderDAO{
 
     @Override
     public List<Order> findAll() {
+        List<Order> result = new ArrayList<Order>();
+        //
         EntityManager em = emf.createEntityManager();
         Query query = em.createQuery("SELECT o FROM Order o");
+        result = (List<Order>) query.getResultList();
+        
         em.close();
-        return (List<Order>) query.getResultList();
+        
+        return result;
     }
 
     @Override
@@ -89,9 +109,13 @@ public class OrderDAOImpl implements OrderDAO{
         if (customer.getId() == null) {
             throw new IllegalArgumentException("customer's id is null");
         }
+        List<Order> result = new ArrayList<Order>();
+        //
         EntityManager em = emf.createEntityManager();
         Query query = em.createQuery("SELECT o FROM Order o WHERE o.customer.id = :id").setParameter("id", customer.getId());
+        result = (List<Order>) query.getResultList();
         em.close();
-        return (List<Order>) query.getResultList();
+        
+        return result;
     }
 }

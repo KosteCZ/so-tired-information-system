@@ -37,7 +37,10 @@ public class TyreDAOImpl implements TyreDAO {
             throw new IllegalArgumentException("id is null");
         }
         EntityManager em = emf.createEntityManager();
-        return em.find(Tyre.class, id);
+        Tyre result = em.find(Tyre.class, id);
+        em.close();
+        
+        return result;
     }
 
     @Override
@@ -79,8 +82,10 @@ public class TyreDAOImpl implements TyreDAO {
     public List<Tyre> findAll() {
         EntityManager em = emf.createEntityManager();
         TypedQuery<Tyre> tq = em.createQuery("FROM Tyre", Tyre.class);
+        List<Tyre> result = tq.getResultList();
         em.close();
-        return tq.getResultList();
+        
+        return result;
     }
 
     @Override
@@ -91,7 +96,9 @@ public class TyreDAOImpl implements TyreDAO {
         EntityManager em = emf.createEntityManager();
         TypedQuery<Tyre> tq = em.createQuery("SELECT t FROM Tyre t WHERE t.name LIKE :name", Tyre.class);
         tq.setParameter("name", name);
+        List<Tyre> result = tq.getResultList();
+        
         em.close();
-        return tq.getResultList();
+        return result;
     }
 }
