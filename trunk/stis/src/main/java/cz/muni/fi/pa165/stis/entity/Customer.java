@@ -15,7 +15,7 @@ import javax.persistence.Id;
  *
  * @author Michal Toth
  */
-@Entity(name = "Customers")
+@Entity
 public class Customer implements Serializable {
 
     @Id
