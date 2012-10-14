@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.stis.dao;
 
 import cz.muni.fi.pa165.stis.dao.impl.CustomerDAOImpl;
@@ -10,15 +6,13 @@ import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
  *
- * @author xsvanca2
+ * @author xmravec1
  */
 public class CustomerDAOTest {
     
@@ -239,7 +233,7 @@ public class CustomerDAOTest {
             assertEquals(cust1.getId(), cust2.getId());
             assertEquals(cust1.getFirstName(), cust2.getFirstName());
             assertEquals(cust1.getLastName(), cust2.getLastName());
-            //assertTrue(cust1.getAddress().compareTo(cust2.getAddress()));
+            assertEquals(cust1.getAddress(), cust2.getAddress());
         }
     }
 }
