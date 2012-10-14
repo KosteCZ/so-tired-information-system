@@ -63,6 +63,6 @@ public interface CustomerDAO {
      * @throws IllegalArgumentException when firstName and lastName are both null
      * @return List of customers with given first and last name.
      */
-    List<Customer> findByName(String lastName, String firstName);
+    List<Customer> findByName(String firstName, String lastName);
     
 }
