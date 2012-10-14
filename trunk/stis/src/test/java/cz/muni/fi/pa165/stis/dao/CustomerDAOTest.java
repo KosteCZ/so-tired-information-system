@@ -2,6 +2,9 @@ package cz.muni.fi.pa165.stis.dao;
 
 import cz.muni.fi.pa165.stis.dao.impl.CustomerDAOImpl;
 import cz.muni.fi.pa165.stis.entity.Customer;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -170,20 +173,78 @@ public class CustomerDAOTest {
      */
     @Test
     public void testFindAll() {
-//        System.out.println("findAll");
-//        CustomerDAO instance = new CustomerDAOImpl();
-//        List expResult = null;
-//        List result = instance.findAll();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
+        List<Customer> customers = customerDAO.findAll();
+        assertTrue("Customers should be empty", customers.isEmpty());
+        customers = Arrays.asList(new Customer[] {
+            newCustomer("Bruce", "Willis", null, null),
+            newCustomer("Jan", "Hrach", null, null),
+            newCustomer("Peter", "Mravec", null, null)
+        });
+        for (Customer cust : customers) {
+            customerDAO.create(cust);
+        }
+        List<Customer> all = customerDAO.findAll();
+        assertTrue("Size is not the same", all.size() == customers.size());
+        Collections.sort(all, customerComparator);
+        Collections.sort(customers, customerComparator);
+        for (int i = 0; i < all.size(); i++) {
+            assertDeepEquals(all.get(i), customers.get(i));
+        }
     }
 
     /**
      * Test of findByName method, of class CustomerDAO.
      */
     @Test
-    public void testFindByName_String() {
+    public void testFindByName() {
+        Customer cust1 = newCustomer("Laco", "Springel", "Ulica1 22, Dolny Kubin", "+421912345678");
+        customerDAO.create(cust1);
+        Customer cust2 = newCustomer("Peter", "Janosciak", "Ulica2 33, Brezno", "+421911222333");
+        customerDAO.create(cust2);
+        
+        String firstName;
+        String lastName;
+
+        try {
+            customerDAO.findByName(null, null);
+            fail("String firstName and lastNameis null");
+        } catch (IllegalArgumentException e) {
+            // ok
+        } catch (Exception e) {
+            fail("String name is null - should have been thrown another exception");
+        }
+
+        firstName = "Laco";
+        lastName = "Springel";
+        List<Customer> customers = customerDAO.findByName(firstName, lastName);
+        assertTrue("ExtraService is not in DB", customers.isEmpty());
+
+        firstName = "Laco";
+        lastName = "Springel";
+        customers = customerDAO.findByName(firstName, lastName);
+        assertEquals(cust1.getId(), customers.get(0).getId());
+        assertDeepEquals(cust1, customers.get(0));
+
+        Customer cust3 = newCustomer("Jakub", "Kmet", "Ulica3 44, Zilina", "+421911111111");
+        customerDAO.create(cust3);
+        Customer cust4 = newCustomer("Dusan", "Gorcak", "Ulica4 55, Lokca", "+421977777777");
+        customerDAO.create(cust4);
+
+        List<Customer> customerList = Arrays.asList(new Customer[]{cust1, cust2, cust3, cust4});
+
+        customers = customerDAO.findByName(firstName, lastName);
+        System.out.println(customers.size() + " == " + (customerList.size() - 1));
+        assertTrue("ExtraService lists are not the same size.", customers.size() == customerList.size() - 1);
+        Collections.sort(customers, customerComparator);
+        Collections.sort(customerList, customerComparator);
+
+        int i;
+        for (Customer cust : customers) {
+            if (customerList.contains(cust)) {
+                i = customerList.indexOf(cust);
+                assertDeepEquals(cust, customerList.get(i));
+            }
+        }
 //        System.out.println("findByName");
 //        String lastName = "";
 //        CustomerDAO instance = new CustomerDAOImpl();
@@ -197,18 +258,18 @@ public class CustomerDAOTest {
     /**
      * Test of findByName method, of class CustomerDAO.
      */
-    @Test
-    public void testFindByName_String_String() {
-//        System.out.println("findByName");
-//        String lastName = "";
-//        String firstName = "";
-//        CustomerDAO instance = new CustomerDAOImpl();
-//        List expResult = null;
-//        List result = instance.findByName(lastName, firstName);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-    }
+//    @Test
+//    public void testFindByName_String_String() {
+////        System.out.println("findByName");
+////        String lastName = "";
+////        String firstName = "";
+////        CustomerDAO instance = new CustomerDAOImpl();
+////        List expResult = null;
+////        List result = instance.findByName(lastName, firstName);
+////        assertEquals(expResult, result);
+////        // TODO review the generated test code and remove the default call to fail.
+////        fail("The test case is a prototype.");
+//    }
     
     private void removeAll() {
         List<Customer> ts = customerDAO.findAll();
@@ -236,4 +297,11 @@ public class CustomerDAOTest {
             assertEquals(cust1.getAddress(), cust2.getAddress());
         }
     }
+    
+    private static Comparator<Customer> customerComparator = new Comparator<Customer>() {
+        @Override
+        public int compare(Customer t, Customer t1) {
+            return t.getId().compareTo(t1.getId());
+        }
+    };
 }
