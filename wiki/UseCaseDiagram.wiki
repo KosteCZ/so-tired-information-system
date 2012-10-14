@@ -1,4 +1,4 @@
-#summary STIS use case diagram
+#summary STIS Use Case Diagram
 
 Use Case Diagram
 Link to image here:
