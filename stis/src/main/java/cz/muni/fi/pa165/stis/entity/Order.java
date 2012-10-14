@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.stis.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -16,7 +17,7 @@ import javax.persistence.Temporal;
 
 /**
  *
- * @author Dusan Svancara
+ * @author xmravec1
  */
 @Entity
 @Table(name = "CUSTOMER_ORDER")
@@ -39,6 +40,7 @@ public class Order implements Serializable {
     private Date orderServicedDate;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date orderPaidDate;
+    private BigDecimal totalPrice;
 
     public Long getId() {
         return id;
@@ -104,6 +106,14 @@ public class Order implements Serializable {
         this.orderPaidDate = orderPaidDate;
     }
 
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -125,7 +135,7 @@ public class Order implements Serializable {
 
     @Override
     public String toString() {
-        return "Order{" + "id=" + id + ", customer=" + customer + ", carType=" + carType + ", tyres=" + tyres + ", extraServices=" + extraServices + ", orderNewDate=" + orderNewDate + ", orderServicedDate=" + orderServicedDate + ", orderPaidDate=" + orderPaidDate + '}';
+        return "Order{" + "id=" + id + ", customer=" + customer + ", carType=" + carType + ", tyres=" + tyres + ", extraServices=" + extraServices + ", orderNewDate=" + orderNewDate + ", orderServicedDate=" + orderServicedDate + ", orderPaidDate=" + orderPaidDate + ", totalPrice=" + totalPrice + '}';
     }
 
 }
