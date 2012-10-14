@@ -1,1 +1,9 @@
-#summary STIS class diagram
+STIS class diagram files
+
+=== Class Diagram with interfaces ===
+http://so-tired-information-system.googlecode.com/files/STIS%20Class%20Diagram.png
+
+----
+=== Class Diagram without interfaces:===
+
+http://so-tired-information-system.googlecode.com/files/STIS%20Class%20Diagram%202.png
