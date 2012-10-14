@@ -214,7 +214,7 @@ public class CustomerDAOTest {
             fail("String name is null - should have been thrown another exception");
         }
 
-        firstName = "Laco";
+        firstName = "Lacy";
         lastName = "Springel";
         List<Customer> customers = customerDAO.findByName(firstName, lastName);
         assertTrue("ExtraService is not in DB", customers.isEmpty());
@@ -233,8 +233,14 @@ public class CustomerDAOTest {
         List<Customer> customerList = Arrays.asList(new Customer[]{cust1, cust2, cust3, cust4});
 
         customers = customerDAO.findByName(firstName, lastName);
-        System.out.println(customers.size() + " == " + (customerList.size() - 1));
-        assertTrue("ExtraService lists are not the same size.", customers.size() == customerList.size() - 1);
+        System.out.println(customers.size() + " == " + (customerList.size() - 3));
+        assertTrue("Customer lists are not the same size.", customers.size() == customerList.size() - 3);
+        customers = customerDAO.findByName(null, lastName);
+        System.out.println(customers.size() + " == " + (customerList.size() - 3));
+        assertTrue("Customer lists are not the same size.", customers.size() == customerList.size() - 3);
+        customers = customerDAO.findByName(firstName, null);
+        System.out.println(customers.size() + " == " + (customerList.size() - 3));
+        assertTrue("Customer lists are not the same size.", customers.size() == customerList.size() - 3);
         Collections.sort(customers, customerComparator);
         Collections.sort(customerList, customerComparator);
 
@@ -245,31 +251,7 @@ public class CustomerDAOTest {
                 assertDeepEquals(cust, customerList.get(i));
             }
         }
-//        System.out.println("findByName");
-//        String lastName = "";
-//        CustomerDAO instance = new CustomerDAOImpl();
-//        List expResult = null;
-//        List result = instance.findByName(lastName);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
     }
-
-    /**
-     * Test of findByName method, of class CustomerDAO.
-     */
-//    @Test
-//    public void testFindByName_String_String() {
-////        System.out.println("findByName");
-////        String lastName = "";
-////        String firstName = "";
-////        CustomerDAO instance = new CustomerDAOImpl();
-////        List expResult = null;
-////        List result = instance.findByName(lastName, firstName);
-////        assertEquals(expResult, result);
-////        // TODO review the generated test code and remove the default call to fail.
-////        fail("The test case is a prototype.");
-//    }
     
     private void removeAll() {
         List<Customer> ts = customerDAO.findAll();
