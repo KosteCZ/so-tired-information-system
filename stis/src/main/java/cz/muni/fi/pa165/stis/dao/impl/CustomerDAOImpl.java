@@ -59,7 +59,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.merge(em.find(Customer.class, customer));
+        //em.merge(em.find(Customer.class, customer));
+        em.merge(customer);
         em.getTransaction().commit();
         em.close();
     }
