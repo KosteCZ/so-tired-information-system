@@ -90,10 +90,10 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public List<Customer> findByName(String lastName, String firstName) {
-        boolean fn;
-        boolean ln;
-        if ((ln = (lastName == null)) || (fn = (firstName == null))) {
+    public List<Customer> findByName(String firstName, String lastName) {
+        boolean fn = (firstName == null);
+        boolean ln = (lastName == null);
+        if (ln && fn) {
 //        if ((ln = (lastName == null || lastName.equals(""))) || (fn = (firstName == null || firstName.equals("")))) {
             throw new IllegalArgumentException("null lastName and firstName");
         }
