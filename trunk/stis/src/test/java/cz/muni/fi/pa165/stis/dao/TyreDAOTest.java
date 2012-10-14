@@ -28,7 +28,6 @@ public class TyreDAOTest {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestPU");
         tyreDAO = new TyreDAOImpl();
         ((TyreDAOImpl) tyreDAO).setEntityManagerFactory(emf);
-
 //        Tyre t1 = createTyre(19D, "P Zero", "235/40ZR19", "Pirelli", BigDecimal.valueOf(410));
 //        tyreDAO.create(t1);
 //        Tyre t2 = createTyre(17D, "MM22", "EZ256", "Michellin", BigDecimal.valueOf(222));
@@ -37,7 +36,6 @@ public class TyreDAOTest {
 //        tyreDAO.create(t3);        
 //        Tyre t4 = createTyre(19D, "Potenza RE050A", " 235/40R19", "Bridgestone", BigDecimal.valueOf(324));
 //        tyreDAO.create(t4);        
-
     }
 
     @After
@@ -45,6 +43,33 @@ public class TyreDAOTest {
         removeAll();
     }
 
+      /**
+     * Test of get method, of class TyreDAO.
+     */
+    @Test
+    public void testGet() {
+        Tyre t1 = createTyre(17D, "MM22", "EZ256", "Michellin", BigDecimal.valueOf(222));
+        tyreDAO.create(t1);
+        Long id = null;
+
+        try {
+            tyreDAO.get(id);
+            fail("Getting tyre with null id");
+        } catch (IllegalArgumentException e) {
+            // ok
+        } catch (Exception e) {
+            fail("Incorrect exception has been thrown while getting tyre by null id.");
+        }
+
+        Tyre t2 = tyreDAO.get(t1.getId());
+        assertNotNull("Tyre is null", t2);
+        assertEquals("Tyres are not equal", t1, t2);
+        assertDeepEquals(t1, t2);
+
+        Tyre t3 = tyreDAO.get(t2.getId() + 1);
+        assertNull("Tyre should not exists", t3);
+    }
+    
     /**
      * Test of create method, of class TyreDAO.
      */
@@ -76,34 +101,7 @@ public class TyreDAOTest {
         tyreDAO.create(tyre);
         assertNotNull("ID is null", tyre.getId());
     }
-
-    /**
-     * Test of get method, of class TyreDAO.
-     */
-    @Test
-    public void testGet() {
-        Tyre t1 = createTyre(17D, "MM22", "EZ256", "Michellin", BigDecimal.valueOf(222));
-        tyreDAO.create(t1);
-        Long id = null;
-
-        try {
-            tyreDAO.get(id);
-            fail("Getting tyre with null id");
-        } catch (IllegalArgumentException e) {
-            // ok
-        } catch (Exception e) {
-            fail("Incorrect exception has been thrown while getting tyre by null id.");
-        }
-
-        Tyre t2 = tyreDAO.get(t1.getId());
-        assertNotNull("Tyre is null", t2);
-        assertEquals("Tyres are not equal", t1, t2);
-        assertDeepEquals(t1, t2);
-
-        // got created 6 tyres at start, +1 = 7th
-        Tyre t3 = tyreDAO.get(t2.getId() + 1);
-        assertNull("Tyre should not exists", t3);
-    }
+  
 
     /**
      * Test of update method, of class TyreDAO.
@@ -111,7 +109,6 @@ public class TyreDAOTest {
     @Test
     public void testUpdate() {
         tyre = createTyre(19D, "P Zero", "235/40ZR19", "Pirelli", BigDecimal.valueOf(420));
-        //t1 = createTyre(19D, "P Zero", "235/40ZR19", "Pirelli", BigDecimal.valueOf(410));
         tyreDAO.create(tyre);
         Long tyreOldId = tyre.getId();
 
@@ -217,7 +214,6 @@ public class TyreDAOTest {
             assertDeepEquals(tyres.get(i), tyresList.get(i));
             i++;
         }
-
     }
 
     /**
@@ -296,7 +292,6 @@ public class TyreDAOTest {
         for (Tyre t : ts) {
             tyreDAO.remove(t);
         }
-
     }
 
     private void assertDeepEquals(Tyre t1, Tyre t2) {
@@ -310,6 +305,7 @@ public class TyreDAOTest {
             assertEquals(t1.getVendor(), t2.getVendor());
         }
     }
+    
     private static Comparator<Tyre> tyreComparator = new Comparator<Tyre>() {
         @Override
         public int compare(Tyre t1, Tyre t2) {
