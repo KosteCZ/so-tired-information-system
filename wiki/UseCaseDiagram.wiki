@@ -1,1 +1,5 @@
 #summary STIS use case diagram
+
+Use Case Diagram
+Link to image here:
+[http://so-tired-information-system.googlecode.com/files/STIS%20Class%20Diagram%202.png]
