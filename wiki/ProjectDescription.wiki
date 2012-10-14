@@ -8,9 +8,13 @@ Welcome to the STIS project page. Project focuses on developing simple applicati
 = Team =
 
 *Jan Koščák* (324721)
+
 *Peter Mravec* (256444)
+
 *Dušan Švancara* (324763)
+
 *Michal Tóth* (255986)
+
 
 = Description =
 
