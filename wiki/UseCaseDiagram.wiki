@@ -2,4 +2,4 @@
 
 Use Case Diagram
 Link to image here:
-[http://so-tired-information-system.googlecode.com/files/STIS%20Use%20Case.png]
+[http://so-tired-information-system.googlecode.com/files/STIS-Use%20Case.png]
