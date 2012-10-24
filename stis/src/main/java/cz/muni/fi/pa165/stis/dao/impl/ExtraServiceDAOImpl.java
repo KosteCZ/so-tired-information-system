@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 public class ExtraServiceDAOImpl implements ExtraServiceDAO {
     
     @PersistenceContext
-    private EntityManager em;
+    private EntityManager entityManager;
 
     @Override
     public void create(ExtraService extraService) {
@@ -26,8 +26,8 @@ public class ExtraServiceDAOImpl implements ExtraServiceDAO {
         if (extraService.getId() != null) {
             throw new IllegalArgumentException("extraService has non-null id");
         }
-        em.persist(extraService);
-        em.flush();
+        entityManager.persist(extraService);
+        entityManager.flush();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ExtraServiceDAOImpl implements ExtraServiceDAO {
         if (id == null) {
             throw new IllegalArgumentException("id is null");
         }
-        return em.find(ExtraService.class, id);
+        return entityManager.find(ExtraService.class, id);
     }
 
     @Override
@@ -47,8 +47,8 @@ public class ExtraServiceDAOImpl implements ExtraServiceDAO {
             throw new IllegalArgumentException("extraService.id is null");
         }
         
-        em.merge(extraService);
-        em.flush();
+        entityManager.merge(extraService);
+        entityManager.flush();
     }
 
     @Override
@@ -59,17 +59,17 @@ public class ExtraServiceDAOImpl implements ExtraServiceDAO {
         if (extraService.getId() == null) {
             throw new IllegalArgumentException("extraService.id is null");
         }
-        ExtraService toRemove = em.find(ExtraService.class, extraService.getId());
+        ExtraService toRemove = entityManager.find(ExtraService.class, extraService.getId());
         if (toRemove == null) {
             throw new IllegalArgumentException("given extraService doesn't exist");
         }
-        em.remove(toRemove);
-        em.flush();
+        entityManager.remove(toRemove);
+        entityManager.flush();
     }
 
     @Override
     public List<ExtraService> findAll() {
-        TypedQuery<ExtraService> tq = em.createQuery("FROM ExtraService", ExtraService.class);
+        TypedQuery<ExtraService> tq = entityManager.createQuery("FROM ExtraService", ExtraService.class);
         return tq.getResultList();
     }
 
@@ -78,7 +78,7 @@ public class ExtraServiceDAOImpl implements ExtraServiceDAO {
         if (name == null) {
             throw new IllegalArgumentException("name is null");
         }
-        TypedQuery<ExtraService> tq = em.createQuery("SELECT s FROM ExtraService s WHERE s.name LIKE :name", ExtraService.class);
+        TypedQuery<ExtraService> tq = entityManager.createQuery("SELECT s FROM ExtraService s WHERE s.name LIKE :name", ExtraService.class);
         tq.setParameter("name", name);
 
         return tq.getResultList();
