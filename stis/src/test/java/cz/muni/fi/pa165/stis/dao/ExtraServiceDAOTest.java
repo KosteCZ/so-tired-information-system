@@ -4,34 +4,40 @@
  */
 package cz.muni.fi.pa165.stis.dao;
 
-import cz.muni.fi.pa165.stis.dao.impl.ExtraServiceDAOImpl;
 import cz.muni.fi.pa165.stis.entity.ExtraService;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Jan Koščák (xkoscak@gmail.com)
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:testContext.xml"})
+@Transactional
 public class ExtraServiceDAOTest {
 
     private ExtraService extraService;
+    @Autowired
     private ExtraServiceDAO extraServiceDAO;
 
     @Before
     public void setUp() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestPU");
-        extraServiceDAO = new ExtraServiceDAOImpl();
-        ((ExtraServiceDAOImpl) extraServiceDAO).setEntityManagerFactory(emf);
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestPU");
+//        extraServiceDAO = new ExtraServiceDAOImpl();
+//        ((ExtraServiceDAOImpl) extraServiceDAO).setEntityManagerFactory(emf);
 
     }
 
