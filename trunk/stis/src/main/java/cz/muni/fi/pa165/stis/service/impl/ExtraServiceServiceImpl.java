@@ -16,36 +16,36 @@ import org.springframework.transaction.annotation.Transactional;
 public class ExtraServiceServiceImpl implements ExtraServiceService {
     
     @Autowired
-    private ExtraServiceDAO dao;
+    private ExtraServiceDAO extraServiceDAO;
 
     @Transactional
     public void create(ExtraService extraService) {
-        dao.create(extraService);
+        extraServiceDAO.create(extraService);
     }
 
     @Transactional(readOnly = true)
     public ExtraService get(Long id) {
-        return dao.get(id);
+        return extraServiceDAO.get(id);
     }
 
     @Transactional
     public void update(ExtraService extraService) {
-        dao.update(extraService);
+        extraServiceDAO.update(extraService);
     }
 
     @Transactional
     public void remove(ExtraService extraService) {
-        dao.remove(extraService);
+        extraServiceDAO.remove(extraService);
     }
 
     @Transactional(readOnly = true)
     public List<ExtraService> findAll() {
-        return dao.findAll();
+        return extraServiceDAO.findAll();
     }
 
     @Transactional(readOnly = true)
     public List<ExtraService> findByName(String name) {
-        return dao.findByName(name);
+        return extraServiceDAO.findByName(name);
     }
     
 }
