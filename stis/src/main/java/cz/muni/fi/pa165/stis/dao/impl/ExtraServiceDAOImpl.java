@@ -27,7 +27,6 @@ public class ExtraServiceDAOImpl implements ExtraServiceDAO {
             throw new IllegalArgumentException("extraService has non-null id");
         }
         entityManager.persist(extraService);
-        entityManager.flush();
     }
 
     @Override
@@ -48,7 +47,6 @@ public class ExtraServiceDAOImpl implements ExtraServiceDAO {
         }
         
         entityManager.merge(extraService);
-        entityManager.flush();
     }
 
     @Override
@@ -64,7 +62,6 @@ public class ExtraServiceDAOImpl implements ExtraServiceDAO {
             throw new IllegalArgumentException("given extraService doesn't exist");
         }
         entityManager.remove(toRemove);
-        entityManager.flush();
     }
 
     @Override

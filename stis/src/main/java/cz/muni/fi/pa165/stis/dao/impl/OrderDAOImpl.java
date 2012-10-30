@@ -34,7 +34,7 @@ public class OrderDAOImpl implements OrderDAO{
         }
         
         entityManager.persist(order);
-        entityManager.flush();
+//        entityManager.flush();
 //        EntityManager em = emf.createEntityManager();
 //        em.getTransaction().begin();
 //        em.persist(order);
@@ -73,7 +73,7 @@ public class OrderDAOImpl implements OrderDAO{
 //        em.getTransaction().commit();
 //        em.close();
         entityManager.merge(order);
-        entityManager.flush();
+//        entityManager.flush();
     }
 
     @Override
@@ -90,7 +90,7 @@ public class OrderDAOImpl implements OrderDAO{
             throw new IllegalArgumentException("given extraService doesn't exist");
         }
         entityManager.remove(toRemove);
-        entityManager.flush();
+//        entityManager.flush();
 //        EntityManager em = emf.createEntityManager();
 //        em.getTransaction().begin();
 //        Order toRemove = em.find(Order.class, order.getId());

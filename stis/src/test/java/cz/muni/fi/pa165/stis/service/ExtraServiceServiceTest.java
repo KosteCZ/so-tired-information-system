@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.After;
-import org.junit.Test;
+import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -39,6 +39,7 @@ public class ExtraServiceServiceTest {
     
     @After
     public void tearDown() {
+        service = null;
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -67,6 +68,11 @@ public class ExtraServiceServiceTest {
 
     @Test
     public void testUpdate() {
+        ExtraService es = newService("Window cleaning", "Thorough window and mirror cleaning", BigDecimal.valueOf(22.2));
+        es.setId(2L);
+        //
+        service.update(es);
+        verify(dao).create(es);
     }
 
     @Test
@@ -84,9 +90,7 @@ public class ExtraServiceServiceTest {
         when(dao.findAll()).thenReturn(extraServices);
         List<ExtraService> ess = service.findAll();
         //
-        assertTrue(ess.size() == extraServices.size());
-        ess.removeAll(extraServices);
-        assertTrue(ess.isEmpty());
+        assertTrue(ess.containsAll(extraServices) && extraServices.containsAll(ess));
     }
 
     @Test
