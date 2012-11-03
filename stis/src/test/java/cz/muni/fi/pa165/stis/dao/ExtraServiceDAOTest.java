@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.stis.dao;
 
 import cz.muni.fi.pa165.stis.entity.ExtraService;
@@ -16,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Jan Koščák (xkoscak@gmail.com)
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:testContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ActiveProfiles("test")
 @Transactional
 public class ExtraServiceDAOTest {
 
@@ -35,10 +33,6 @@ public class ExtraServiceDAOTest {
 
     @Before
     public void setUp() {
-//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestPU");
-//        extraServiceDAO = new ExtraServiceDAOImpl();
-//        ((ExtraServiceDAOImpl) extraServiceDAO).setEntityManagerFactory(emf);
-
     }
 
     @After
