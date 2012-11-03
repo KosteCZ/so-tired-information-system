@@ -6,7 +6,4 @@
    <persistence-unit name="StisPU"  transaction-type="RESOURCE_LOCAL">
    	  <provider>org.hibernate.ejb.HibernatePersistence</provider>
    </persistence-unit>
-   <persistence-unit name="TestPU"  transaction-type="RESOURCE_LOCAL">
-   	  <provider>org.hibernate.ejb.HibernatePersistence</provider>
-   </persistence-unit>
 </persistence>

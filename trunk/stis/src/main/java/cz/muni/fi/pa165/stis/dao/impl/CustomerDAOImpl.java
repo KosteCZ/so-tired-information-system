@@ -4,21 +4,20 @@ import cz.muni.fi.pa165.stis.dao.CustomerDAO;
 import cz.muni.fi.pa165.stis.entity.Customer;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.springframework.stereotype.Repository;
 
 /**
  * Class implements CustomerDAO interface functionality.
  *
  * @author Michal Toth
  */
+@Repository
 public class CustomerDAOImpl implements CustomerDAO {
 
-    private EntityManagerFactory emf;
-
-    public void setEntityManagerFactory(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public void create(Customer customer) {
@@ -29,11 +28,7 @@ public class CustomerDAOImpl implements CustomerDAO {
             throw new IllegalArgumentException("customer.id is not null");
         }
         
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
         em.persist(customer);
-        em.getTransaction().commit();
-        em.close();
     }
 
     @Override
@@ -41,11 +36,8 @@ public class CustomerDAOImpl implements CustomerDAO {
         if (id == null) {
             throw new IllegalArgumentException("null id");
         }
-        EntityManager em = emf.createEntityManager();
         Customer customer = em.find(Customer.class, id);
-        em.close();
         return customer;
-
     }
 
     @Override
@@ -57,12 +49,7 @@ public class CustomerDAOImpl implements CustomerDAO {
             throw new IllegalArgumentException("customer.id is null");
         }
 
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        //em.merge(em.find(Customer.class, customer));
         em.merge(customer);
-        em.getTransaction().commit();
-        em.close();
     }
 
     @Override
@@ -73,38 +60,32 @@ public class CustomerDAOImpl implements CustomerDAO {
         if (customer.getId() == null) {
             throw new IllegalArgumentException("customer.id is null");
         }
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.remove(em.find(Customer.class, customer.getId()));
-        em.getTransaction().commit();
-        em.close();
+        Customer c = em.find(Customer.class, customer.getId());
+        em.remove(c);
     }
 
     @Override
     public List<Customer> findAll() {
-        EntityManager em = emf.createEntityManager();
         Query query = em.createQuery("SELECT c FROM Customer c");
         List<Customer> results = query.getResultList();
-        em.close();
+
         return results;
     }
 
     @Override
     public List<Customer> findByName(String firstName, String lastName) {
-        boolean fn = (firstName == null);
-        boolean ln = (lastName == null);
-        if (ln && fn) {
-//        if ((ln = (lastName == null || lastName.equals(""))) || (fn = (firstName == null || firstName.equals("")))) {
+        boolean firstNameNull = (firstName == null);
+        boolean lastNameNull = (lastName == null);
+        if (lastNameNull && firstNameNull) {
             throw new IllegalArgumentException("null lastName and firstName");
         }
 
         Query query;
-        EntityManager em = emf.createEntityManager();
-        if (fn) {
+        if (firstNameNull) {
             // firstName is null, query for lastName only
             query = em.createQuery("SELECT c FROM Customer c WHERE c.lastName like :lastName");
             query.setParameter("lastName", lastName);
-        } else if (ln) {
+        } else if (lastNameNull) {
             query = em.createQuery("SELECT c FROM Customer c WHERE c.firstName like :firstName");
             query.setParameter("firstName", firstName);
         } else {
@@ -114,7 +95,6 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
 
         List<Customer> results = query.getResultList();
-        em.close();
         return results;
     }
 }

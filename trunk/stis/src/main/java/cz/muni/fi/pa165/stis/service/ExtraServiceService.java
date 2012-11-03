@@ -1,6 +1,6 @@
 package cz.muni.fi.pa165.stis.service;
 
-import cz.muni.fi.pa165.stis.entity.ExtraService;
+import cz.muni.fi.pa165.stis.dto.ExtraServiceTO;
 import java.util.List;
 
 /**
@@ -8,11 +8,11 @@ import java.util.List;
  * @author Dusan Svancara
  */
 public interface ExtraServiceService {
-    void create(ExtraService extraService);
-    ExtraService get(Long id);
-    void update(ExtraService extraService);
-    void remove(ExtraService extraService);
+    void create(ExtraServiceTO extraService);
+    ExtraServiceTO get(Long id);
+    void update(ExtraServiceTO extraService);
+    void remove(ExtraServiceTO extraService);
     
-    List<ExtraService> findAll();
-    List<ExtraService> findByName(String name);
+    List<ExtraServiceTO> findAll();
+    List<ExtraServiceTO> findByName(String name);
 }

@@ -8,11 +8,11 @@
        xmlns:jpa="http://www.springframework.org/schema/data/jpa" 
        xmlns:p="http://www.springframework.org/schema/p"
 
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
-          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
-          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
-          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
           http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd
 ">
     <!-- Properties loading for different subsystems -->
@@ -24,11 +24,9 @@
         </property>
         <property name="ignoreUnresolvablePlaceholders" value="true" />
     </bean>
-
-    <!-- JDBC data source and transaction management -->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-              destroy-method="close" p:driverClassName="${jdbc.driverClassName}"
-              p:url="${jdbc.databaseurl}" p:username="${jdbc.username}" p:password="${jdbc.password}" />
+    
+    <!-- bean mapper -->
+    <bean id="dozerBeanMapper" class="org.dozer.DozerBeanMapper"/>
 
     <!-- JPA 2.0 and transactions -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -52,4 +50,17 @@
     
     <context:component-scan base-package="cz.muni.fi.pa165.stis"/>
         
+    <!-- JDBC data source and transaction management -->
+    <beans profile="test">
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+              destroy-method="close" p:driverClassName="${jdbc.test.driverClassName}"
+              p:url="${jdbc.test.databaseurl}" p:username="${jdbc.username}" p:password="${jdbc.password}" />
+    </beans>
+    
+    <beans profile="production">
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+                  destroy-method="close" p:driverClassName="${jdbc.driverClassName}"
+                  p:url="${jdbc.databaseurl}" p:username="${jdbc.username}" p:password="${jdbc.password}" />
+    </beans>
+
 </beans>

@@ -1,12 +1,14 @@
 package cz.muni.fi.pa165.stis.service;
 
 import cz.muni.fi.pa165.stis.dao.ExtraServiceDAO;
+import cz.muni.fi.pa165.stis.dto.ExtraServiceTO;
 import cz.muni.fi.pa165.stis.entity.ExtraService;
 import cz.muni.fi.pa165.stis.service.impl.ExtraServiceServiceImpl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.dozer.DozerBeanMapper;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -27,14 +29,17 @@ public class ExtraServiceServiceTest {
     private ExtraServiceServiceImpl service;
     @Mock
     private ExtraServiceDAO dao;
+    private DozerBeanMapper mapper;
     
     public ExtraServiceServiceTest() {
     }
     
     @Before
     public void setUp() {
+        mapper = new DozerBeanMapper();
         service = new ExtraServiceServiceImpl();
         ReflectionTestUtils.setField(service, "extraServiceDAO", dao);
+        ReflectionTestUtils.setField(service, "mapper", mapper);
     }
     
     @After
@@ -42,27 +47,13 @@ public class ExtraServiceServiceTest {
         service = null;
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateExisting() {
-        ExtraService es = newService("Window cleaning", "Thorough window and mirror cleaning", BigDecimal.valueOf(22.2));
-        es.setId(1L);
-        //
-        doThrow(new IllegalArgumentException()).when(dao).create(es);
-        service.create(es);
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateNull() {
-        doThrow(new IllegalArgumentException()).when(dao).create(null);
-        service.create(null);
-    }
-
     @Test
-    public void testCreateOk() {
+    public void testCreate() {
         ExtraService es = newService("Window cleaning", "Thorough window and mirror cleaning", BigDecimal.valueOf(22.2));
         es.setId(2L);
+        ExtraServiceTO esto = mapper.map(es, ExtraServiceTO.class);
         //
-        service.create(es);
+        service.create(esto);
         verify(dao).create(es);
     }
 
@@ -70,13 +61,20 @@ public class ExtraServiceServiceTest {
     public void testUpdate() {
         ExtraService es = newService("Window cleaning", "Thorough window and mirror cleaning", BigDecimal.valueOf(22.2));
         es.setId(2L);
+        ExtraServiceTO esto = mapper.map(es, ExtraServiceTO.class);
         //
-        service.update(es);
-        verify(dao).create(es);
+        service.update(esto);
+        verify(dao).update(es);
     }
 
     @Test
     public void testRemove() {
+        ExtraService es = newService("Window cleaning", "Thorough window and mirror cleaning", BigDecimal.valueOf(22.2));
+        es.setId(2L);
+        ExtraServiceTO esto = mapper.map(es, ExtraServiceTO.class);
+        //
+        service.remove(esto);
+        verify(dao).remove(es);
     }
 
     @Test
@@ -86,15 +84,33 @@ public class ExtraServiceServiceTest {
         ExtraService es2 = newService("3", "5", BigDecimal.ONE);
         es2.setId(3L);
         List<ExtraService> extraServices = new ArrayList<ExtraService>(Arrays.asList(new ExtraService[]{es1, es2}));
+        List<ExtraServiceTO> esTOs = new ArrayList<ExtraServiceTO>(Arrays.asList(new ExtraServiceTO[]{
+            mapper.map(es1, ExtraServiceTO.class), 
+            mapper.map(es2, ExtraServiceTO.class)
+        }));
         //
         when(dao.findAll()).thenReturn(extraServices);
-        List<ExtraService> ess = service.findAll();
+        List<ExtraServiceTO> ess = service.findAll();
         //
-        assertTrue(ess.containsAll(extraServices) && extraServices.containsAll(ess));
+        assertTrue(ess.containsAll(esTOs) && esTOs.containsAll(ess));
     }
 
     @Test
     public void testFindByName() {
+        ExtraService es1 = newService("as1", "2", BigDecimal.ZERO);
+        es1.setId(2L);
+        ExtraService es2 = newService("as1", "5", BigDecimal.ONE);
+        es2.setId(3L);
+        List<ExtraService> extraServices = new ArrayList<ExtraService>(Arrays.asList(new ExtraService[]{es1, es2}));
+        List<ExtraServiceTO> esTOs = new ArrayList<ExtraServiceTO>(Arrays.asList(new ExtraServiceTO[]{
+            mapper.map(es1, ExtraServiceTO.class), 
+            mapper.map(es2, ExtraServiceTO.class)
+        }));
+        //
+        when(dao.findByName("as1")).thenReturn(extraServices);
+        List<ExtraServiceTO> ess = service.findByName("as1");
+        //
+        assertTrue(ess.containsAll(esTOs) && esTOs.containsAll(ess));
     }
     
     private static ExtraService newService(String name, String description, BigDecimal price) {

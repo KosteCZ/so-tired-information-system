@@ -4,20 +4,19 @@ import cz.muni.fi.pa165.stis.dao.TyreDAO;
 import cz.muni.fi.pa165.stis.entity.Tyre;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Jan Koščák (xkoscak@gmail.com)
  */
+@Repository
 public class TyreDAOImpl implements TyreDAO {
 
-    private EntityManagerFactory emf;
-
-    public void setEntityManagerFactory(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public void create(Tyre tyre) {
@@ -27,11 +26,7 @@ public class TyreDAOImpl implements TyreDAO {
         if (tyre.getId() != null) {
             throw new IllegalArgumentException("tyre.id is not null");
         }
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
         em.persist(tyre);
-        em.getTransaction().commit();
-        em.close();
     }
 
     @Override
@@ -39,10 +34,7 @@ public class TyreDAOImpl implements TyreDAO {
         if (id == null) {
             throw new IllegalArgumentException("id is null");
         }
-        EntityManager em = emf.createEntityManager();
         Tyre result = em.find(Tyre.class, id);
-        em.close();
-        
         return result;
     }
 
@@ -54,11 +46,7 @@ public class TyreDAOImpl implements TyreDAO {
         if (tyre.getId() == null) {
             throw new IllegalArgumentException("tyre id is null");
         }
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
         em.merge(tyre);
-        em.getTransaction().commit();
-        em.close();
     }
 
     @Override
@@ -69,23 +57,17 @@ public class TyreDAOImpl implements TyreDAO {
         if (tyre.getId() == null) {
             throw new IllegalArgumentException("tyre.id is null");
         }
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
         Tyre toRemove = em.find(Tyre.class, tyre.getId());
         if (toRemove == null) {
             throw new IllegalArgumentException("tyre does not exist");
         }
         em.remove(toRemove);
-        em.getTransaction().commit();
-        em.close();
     }
 
     @Override
     public List<Tyre> findAll() {
-        EntityManager em = emf.createEntityManager();
         TypedQuery<Tyre> tq = em.createQuery("FROM Tyre", Tyre.class);
         List<Tyre> result = tq.getResultList();
-        em.close();
         
         return result;
     }
@@ -95,12 +77,10 @@ public class TyreDAOImpl implements TyreDAO {
         if (name == null) {
             throw new IllegalArgumentException("name is null");
         }
-        EntityManager em = emf.createEntityManager();
         TypedQuery<Tyre> tq = em.createQuery("SELECT t FROM Tyre t WHERE t.name LIKE :name", Tyre.class);
         tq.setParameter("name", name);
         List<Tyre> result = tq.getResultList();
         
-        em.close();
         return result;
     }
 }
