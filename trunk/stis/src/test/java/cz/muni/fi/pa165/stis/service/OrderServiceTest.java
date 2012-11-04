@@ -10,12 +10,12 @@ import cz.muni.fi.pa165.stis.entity.Order;
 import cz.muni.fi.pa165.stis.entity.Tyre;
 import cz.muni.fi.pa165.stis.entity.TyrePosition;
 import cz.muni.fi.pa165.stis.service.impl.OrderServiceImpl;
+import cz.muni.fi.pa165.stis.util.TyreEnumMapBuilder;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -25,7 +25,11 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.dozer.CustomConverter;
 import org.dozer.DozerBeanMapper;
+import org.dozer.loader.api.BeanMappingBuilder;
+import org.dozer.loader.api.FieldsMappingOptions;
+import org.dozer.loader.api.TypeMappingOptions;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +38,6 @@ import static org.mockito.Mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.springframework.dao.DataAccessException;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
@@ -58,6 +61,8 @@ public class OrderServiceTest {
     @Before
     public void setUp() {
         mapper = new DozerBeanMapper();
+        mapper.addMapping(new TyreEnumMapBuilder());
+        //
         orderService = new OrderServiceImpl();
         ReflectionTestUtils.setField(orderService, "orderDAO", dao);
         ReflectionTestUtils.setField(orderService, "mapper", mapper);
@@ -263,5 +268,5 @@ public class OrderServiceTest {
             Logger.getLogger(OrderDAOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-    }
+    }    
 }
