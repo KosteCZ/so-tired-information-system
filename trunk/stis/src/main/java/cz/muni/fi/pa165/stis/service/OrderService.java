@@ -1,7 +1,7 @@
 package cz.muni.fi.pa165.stis.service;
 
+import cz.muni.fi.pa165.stis.dto.CustomerTO;
 import cz.muni.fi.pa165.stis.dto.OrderTO;
-import cz.muni.fi.pa165.stis.entity.Customer;
 import java.util.List;
 
 /**
@@ -15,5 +15,5 @@ public interface OrderService {
     void update(OrderTO order);
     void remove(OrderTO order);
     List<OrderTO> findAll();
-    List<OrderTO> findByCustomer(Customer customer);
+    List<OrderTO> findByCustomer(CustomerTO customer);
 }
