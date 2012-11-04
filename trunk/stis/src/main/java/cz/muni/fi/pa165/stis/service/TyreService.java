@@ -1,64 +1,58 @@
 package cz.muni.fi.pa165.stis.service;
 
-import cz.muni.fi.pa165.stis.entity.Tyre;
+import cz.muni.fi.pa165.stis.dto.TyreTO;
 import java.util.List;
 
 
 /**
- * Created with IntelliJ IDEA.
- * User: michalxo
- * Date: 10/31/12
- * Time: 1:26 PM
+  * Service layer interface for Tyre CRUD and find functionality 
+  * using transfer object.
+  * 
+  * @author Michal Toth
   */
 public interface TyreService {
 
         /*
-        * This constructor creates new persist tyre entity using parameter tyre of
-        * type Tyre. Also sets generated ID to the entity.
+        * Creates tyre service from tyre transfer object.
         *
-        * @param tyre Tyre entity to be persisted
-        * @throws IllegalArgumentException if tyre is null and/or if tyre has null
-        * ID
+        * @param tyre Tyre transfer object to create
         */
-        void create(Tyre tyre);
+        void create(TyreTO tyre);
 
         /**
-         * Finds tyre in database using tyre id.
+         * Returns tyre tranfer object using tyre id.
          *
-         * @param id id of entity
-         * @return Certain tyre or null if not found
-         * @throws IllegalArgumentException if id is null
+         * @param id Id of the tyre service
+         * @return Tyre transfer object with given id
          */
-        Tyre get(Long id);
+        TyreTO get(Long id);
 
         /**
-         * Updates extra tyre information. Its ID must be non-null.
+         * Updates tyre service information from transfer object.
          *
-         * @param tyre Tyre information to be updated
-         * @throws IllegalArgumentException if tyre is null and/or its id is null
+         * @param tyre Tyre transfer object to be updated
          */
-        void update(Tyre tyre);
+        void update(TyreTO tyre);
 
         /**
-         * Removes given tyre from our database.
+         * Removes given tyre transfer object from database.
          *
-         * @param tyre Certain tyre to be removed
+         * @param tyre Tyre transfer object to be removed
          */
-        void remove(Tyre tyre);
+        void remove(TyreTO tyre);
 
         /**
-         * This method finds all tyres in our database.
+         * Method returns list of all tyre transfer objects.
          *
-         * @return List of all tyres
+         * @return List of all tyre transfer objects.
          */
-        List<Tyre> findAll();
+        List<TyreTO> findAll();
 
         /**
-         * Finds all tyres with same name.
+         * Finds all tyre transfer objects with same name.
          *
          * @param name Name of tyre
-         * @return List of tyres with same name
-         * @throws IllegalArgumentException if name is null
+         * @return List of tyre transfer objects with same name
          */
-        List<Tyre> findByName(String name);
+        List<TyreTO> findByName(String name);
 }

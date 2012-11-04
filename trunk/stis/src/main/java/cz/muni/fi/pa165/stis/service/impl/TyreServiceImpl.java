@@ -1,52 +1,70 @@
 package cz.muni.fi.pa165.stis.service.impl;
 
 import cz.muni.fi.pa165.stis.dao.TyreDAO;
+import cz.muni.fi.pa165.stis.dto.TyreTO;
 import cz.muni.fi.pa165.stis.entity.Tyre;
 import cz.muni.fi.pa165.stis.service.TyreService;
+import java.util.ArrayList;
+import java.util.List;
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Author: Michal Toth
- * Date: 10/31/12
- * Time: 1:31 PM
+ * Author: Michal Toth Date: 10/31/12 Time: 1:31 PM
  */
-
 @Service
 public class TyreServiceImpl implements TyreService {
 
     @Autowired
     private TyreDAO tyreDAO;
+    @Autowired
+    private DozerBeanMapper mapper;
 
-    @Override
-    public void create(Tyre tyre) {
-          tyreDAO.create(tyre);
+    @Transactional
+    public void create(TyreTO tyre) {
+        Tyre tm = mapper.map(tyre, Tyre.class);
+        tyreDAO.create(tm);
     }
 
-    @Override
-    public Tyre get(Long id) {
-        return tyreDAO.get(id);
+    @Transactional(readOnly = true)
+    public TyreTO get(Long id) {
+        return mapper.map(tyreDAO.get(id), TyreTO.class);
     }
 
-    @Override
-    public void update(Tyre tyre) {
-        tyreDAO.update(tyre);
+    @Transactional
+    public void update(TyreTO tyre) {
+        Tyre tm = mapper.map(tyre, Tyre.class);
+        tyreDAO.update(tm);
     }
 
-    @Override
-    public void remove(Tyre tyre) {
-        tyreDAO.remove(tyre);
+    @Transactional
+    public void remove(TyreTO tyre) {
+        Tyre tm = mapper.map(tyre, Tyre.class);
+        tyreDAO.remove(tm);
     }
 
+    @Transactional(readOnly= true)
     @Override
-    public List<Tyre> findAll() {
-        return tyreDAO.findAll();
+    public List<TyreTO> findAll() {
+        List<Tyre> result = tyreDAO.findAll();
+        List<TyreTO> tyreTOList = new ArrayList<TyreTO>();
+        
+        for (Tyre t : result) {
+            tyreTOList.add(mapper.map(t, TyreTO.class));
+        }
+        return tyreTOList;
     }
 
-    @Override
-    public List<Tyre> findByName(String name) {
-        return tyreDAO.findByName(name);
+    @Transactional(readOnly= true)
+    public List<TyreTO> findByName(String name) {
+        List<Tyre> result = tyreDAO.findByName(name);
+        List<TyreTO> tyreTOList = new ArrayList<TyreTO>();
+        
+        for (Tyre t : result) {
+            tyreTOList.add(mapper.map(t, TyreTO.class));
+        }
+        return tyreTOList;
     }
 }
