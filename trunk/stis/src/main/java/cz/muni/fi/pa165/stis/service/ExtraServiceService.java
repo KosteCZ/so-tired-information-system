@@ -15,6 +15,7 @@ public interface ExtraServiceService {
      * Creates extra service from transfer object.
      * 
      * @param extraService Extra service transfer object to create
+     * @throws IllegalArgumentException when extraService is null or its id is not null
      */
     void create(ExtraServiceTO extraService);
     
@@ -23,6 +24,7 @@ public interface ExtraServiceService {
      * 
      * @param id Id of the extra service
      * @return Extra service with given id
+     * @throws IllegalArgumentException when id is null
      */
     ExtraServiceTO get(Long id);
     
@@ -30,6 +32,7 @@ public interface ExtraServiceService {
      * Updates extra service from transfer object.
      * 
      * @param extraService Transfer object of extra service to update
+     * @throws IllegalArgumentException when extraService is null or its id is null
      */
     void update(ExtraServiceTO extraService);
     
@@ -37,6 +40,7 @@ public interface ExtraServiceService {
      * Removes extra service represented by its transfer object.
      * 
      * @param extraService Transfer object of extra service to remove
+     * @throws IllegalArgumentException when extraService is null or its id is null
      */
     void remove(ExtraServiceTO extraService);
     
@@ -52,6 +56,7 @@ public interface ExtraServiceService {
      * 
      * @param name Name of the service(s) to be found.
      * @return List of extra service transfer objects with given name
+     * @throws IllegalArgumentException when name is null
      */
     List<ExtraServiceTO> findByName(String name);
 }

@@ -11,6 +11,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -49,7 +50,7 @@ public class CustomerDAOTest {
         try {
             customerDAO.create(customer);
             fail("Customer is null and didn't throw exception.");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             // ok
         } catch (Exception e) {
             fail("Customer is null and didn't throw appropriate exception.");
@@ -60,7 +61,7 @@ public class CustomerDAOTest {
         try {
             customerDAO.create(customer);
             fail("ID not null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("ID not null and didn't throw appropriate exception");
@@ -83,7 +84,7 @@ public class CustomerDAOTest {
         try {
             customerDAO.get(id);
             fail("Id null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Id null and didn't throw appropriate exception");
@@ -110,7 +111,7 @@ public class CustomerDAOTest {
         try {
             customerDAO.update(null);
             fail("Customer is null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Customer is null and didn't throw appropriate exception");
@@ -118,7 +119,7 @@ public class CustomerDAOTest {
         try {
             customerDAO.update(cust);
             fail("Customer is ID null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Customer is ID null and didn't throw appropriate exception");
@@ -143,7 +144,7 @@ public class CustomerDAOTest {
         try {
             customerDAO.remove(null);
             fail("Customer is null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Customer is null and didn't throw appropriate exception");
@@ -151,7 +152,7 @@ public class CustomerDAOTest {
         try {
             customerDAO.remove(new Customer());
             fail("Customer ID is null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             // ok
         } catch (Exception ex) {
             fail("Customer ID is null and didn't throw appropriate exception");
@@ -161,7 +162,7 @@ public class CustomerDAOTest {
             cust2.setId(-1L);
             customerDAO.remove(cust2);
             fail("Shouldn't remove non-existent entity");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Non existent es (extra service) - should throw appropriate exception");
@@ -213,7 +214,7 @@ public class CustomerDAOTest {
         try {
             customerDAO.findByName(null, null);
             fail("String firstName and lastNameis null");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             // ok
         } catch (Exception e) {
             fail("String name is null - should have been thrown another exception");

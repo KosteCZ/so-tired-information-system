@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -97,7 +98,7 @@ public class OrderDAOTest {
         try {
             dao.create(order);
             fail("Order null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Order null and didn't throw appropriate exception");
@@ -107,7 +108,7 @@ public class OrderDAOTest {
         try {
             dao.create(order);
             fail("ID not null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("ID not null and didn't throw appropriate exception");
@@ -129,7 +130,7 @@ public class OrderDAOTest {
         try {
             dao.get(id);
             fail("Id null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Id null and didn't throw appropriate exception");
@@ -157,7 +158,7 @@ public class OrderDAOTest {
         try {
             dao.update(null);
             fail("Order null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Order null and didn't throw appropriate exception");
@@ -165,7 +166,7 @@ public class OrderDAOTest {
         try {
             dao.update(o);
             fail("Order ID null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Order ID null and didn't throw appropriate exception");
@@ -214,7 +215,7 @@ public class OrderDAOTest {
         try {
             dao.remove(null);
             fail("Order null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Order null and didn't throw appropriate exception");
@@ -222,7 +223,7 @@ public class OrderDAOTest {
         try {
             dao.remove(new Order());
             fail("Order ID null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             // ok
         } catch (Exception ex) {
             fail("Order ID null and didn't throw appropriate exception");
@@ -232,7 +233,7 @@ public class OrderDAOTest {
             ord.setId(-1L);
             dao.remove(ord);
             fail("Shouldn't remove non-existent entity");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Non existent order - should throw appropriate exception");
@@ -285,7 +286,7 @@ public class OrderDAOTest {
         try {
             dao.findByCustomer(null);
             fail("Customer is null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Customer is null and didn't throw appropriate exception");
@@ -294,7 +295,7 @@ public class OrderDAOTest {
         try {
             dao.findByCustomer(new Customer());
             fail("Customer id is null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Customer ID is null and didn't throw appropriate exception");

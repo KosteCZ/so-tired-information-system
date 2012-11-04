@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import org.dozer.DozerBeanMapper;
 import org.junit.After;
 import static org.junit.Assert.*;
@@ -46,11 +47,66 @@ public class ExtraServiceServiceTest {
     public void tearDown() {
         service = null;
     }
+    
+    @Test
+    public void testExceptions() {
+        try {
+            service.create(null);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        try {
+            service.update(null);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        try {
+            service.get(null);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        try {
+            service.remove(null);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        try {
+            service.findByName(null);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        
+        ExtraService es = newService("Window cleaning", "Thorough window and mirror cleaning", BigDecimal.valueOf(22.2));
+        ExtraServiceTO esto = mapper.map(es, ExtraServiceTO.class);
+        try {
+            service.update(esto);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        try {
+            service.remove(esto);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        esto.setId(1L);
+        try {
+            service.create(esto);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
 
     @Test
     public void testCreate() {
         ExtraService es = newService("Window cleaning", "Thorough window and mirror cleaning", BigDecimal.valueOf(22.2));
-        es.setId(2L);
         ExtraServiceTO esto = mapper.map(es, ExtraServiceTO.class);
         //
         service.create(esto);
@@ -126,7 +182,42 @@ public class ExtraServiceServiceTest {
     }
     
     private static ExtraService newService(String name, String description, BigDecimal price) {
-        ExtraService es = new ExtraService();
+        ExtraService es = new ExtraService() {
+
+            @Override
+            public int hashCode() {
+                int hash = 3;
+                hash = 97 * hash + Objects.hashCode(this.getId());
+                hash = 97 * hash + Objects.hashCode(this.getName());
+                hash = 97 * hash + Objects.hashCode(this.getDescription());
+                return hash;
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                if (obj == null) {
+                    return false;
+                }
+                if (!(obj instanceof ExtraService)) {
+                    return false;
+                }
+                final ExtraService other = (ExtraService) obj;
+                if (!Objects.equals(this.getId(), other.getId())) {
+                    return false;
+                }
+                if (!Objects.equals(this.getName(), other.getName())) {
+                    return false;
+                }
+                if (!Objects.equals(this.getDescription(), other.getDescription())) {
+                    return false;
+                }
+                if (this.getPrice().compareTo(other.getPrice()) != 0) {
+                    return false;
+                }
+                return true;
+            }
+            
+        };
         es.setName(name);
         es.setDescription(description);
         es.setPrice(price);

@@ -25,6 +25,8 @@
         <property name="ignoreUnresolvablePlaceholders" value="true" />
     </bean>
     
+    <bean id="persistenceExceptionTranslator" class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+    
     <!-- bean mapper -->
     <bean id="dozerBeanMapper" class="org.dozer.DozerBeanMapper"/>
 

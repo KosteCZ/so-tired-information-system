@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -50,7 +51,7 @@ public class ExtraServiceDAOTest {
         try {
             extraServiceDAO.create(extraService);
             fail("ExtraService is null and didn't throw exception.");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             // ok
         } catch (Exception e) {
             fail("ExtraService is null and didn't throw appropriate exception.");
@@ -61,7 +62,7 @@ public class ExtraServiceDAOTest {
         try {
             extraServiceDAO.create(extraService);
             fail("ID not null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("ID not null and didn't throw appropriate exception");
@@ -82,7 +83,7 @@ public class ExtraServiceDAOTest {
         try {
             extraServiceDAO.get(id);
             fail("Id null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Id null and didn't throw appropriate exception");
@@ -109,7 +110,7 @@ public class ExtraServiceDAOTest {
         try {
             extraServiceDAO.update(null);
             fail("ExtraService is null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("ExtraService is null and didn't throw appropriate exception");
@@ -117,7 +118,7 @@ public class ExtraServiceDAOTest {
         try {
             extraServiceDAO.update(e);
             fail("ExtraService is ID null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("ExtraService is ID null and didn't throw appropriate exception");
@@ -142,7 +143,7 @@ public class ExtraServiceDAOTest {
         try {
             extraServiceDAO.remove(null);
             fail("ExtraService is null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("ExtraService is null and didn't throw appropriate exception");
@@ -150,7 +151,7 @@ public class ExtraServiceDAOTest {
         try {
             extraServiceDAO.remove(new ExtraService());
             fail("ExtraService ID is null and didn't throw exception");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             // ok
         } catch (Exception ex) {
             fail("ExtraService ID is null and didn't throw appropriate exception");
@@ -160,7 +161,7 @@ public class ExtraServiceDAOTest {
             es.setId(-1L);
             extraServiceDAO.remove(es);
             fail("Shouldn't remove non-existent entity");
-        } catch (IllegalArgumentException ex) {
+        } catch (DataAccessException ex) {
             //ok
         } catch (Exception ex) {
             fail("Non existent es (extra service) - should throw appropriate exception");
@@ -211,7 +212,7 @@ public class ExtraServiceDAOTest {
         try {
             extraServiceDAO.findByName(null);
             fail("String name is null");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             // ok
         } catch (Exception e) {
             fail("String name is null - should have been thrown another exception");

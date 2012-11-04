@@ -25,29 +25,59 @@ public class ExtraServiceServiceImpl implements ExtraServiceService {
     private DozerBeanMapper mapper;
 
     @Transactional
+    @Override
     public void create(ExtraServiceTO extraService) {
+        if (extraService == null) {
+            throw new IllegalArgumentException("extraService is null");
+        }
+        if (extraService.getId() != null) {
+            throw new IllegalArgumentException("extraService.id is not null");
+        }
+        
         ExtraService es = mapper.map(extraService, ExtraService.class);
         extraServiceDAO.create(es);
     }
 
     @Transactional(readOnly = true)
+    @Override
     public ExtraServiceTO get(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("id is null");
+        }
+        
         return mapper.map(extraServiceDAO.get(id), ExtraServiceTO.class);
     }
 
     @Transactional
+    @Override
     public void update(ExtraServiceTO extraService) {
+        if (extraService == null) {
+            throw new IllegalArgumentException("extraService is null");
+        }
+        if (extraService.getId() == null) {
+            throw new IllegalArgumentException("extraService.id is null");
+        }
+        
         ExtraService es = mapper.map(extraService, ExtraService.class);
         extraServiceDAO.update(es);
     }
 
     @Transactional
+    @Override
     public void remove(ExtraServiceTO extraService) {
+        if (extraService == null) {
+            throw new IllegalArgumentException("extraService is null");
+        }
+        if (extraService.getId() == null) {
+            throw new IllegalArgumentException("extraService.id is null");
+        }
+        
         ExtraService es = mapper.map(extraService, ExtraService.class);
         extraServiceDAO.remove(es);
     }
 
     @Transactional(readOnly = true)
+    @Override
     public List<ExtraServiceTO> findAll() {
         List<ExtraService> result = extraServiceDAO.findAll();
         List<ExtraServiceTO> ret = new ArrayList<ExtraServiceTO>();
@@ -59,7 +89,12 @@ public class ExtraServiceServiceImpl implements ExtraServiceService {
     }
 
     @Transactional(readOnly = true)
+    @Override
     public List<ExtraServiceTO> findByName(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("name is null");
+        }
+        
         List<ExtraService> result = extraServiceDAO.findByName(name);
         List<ExtraServiceTO> ret = new ArrayList<ExtraServiceTO>();
         for (ExtraService es : result) {

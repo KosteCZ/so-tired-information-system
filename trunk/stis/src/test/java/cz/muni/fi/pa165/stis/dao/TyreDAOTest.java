@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -53,7 +54,7 @@ public class TyreDAOTest {
         try {
             tyreDAO.get(id);
             fail("Getting tyre with null id");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             // ok
         } catch (Exception e) {
             fail("Incorrect exception has been thrown while getting tyre by null id.");
@@ -78,7 +79,7 @@ public class TyreDAOTest {
         try {
             tyreDAO.create(tyre);
             fail("Tyre is null and didn't throw exception.");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             // ok
         } catch (Exception e) {
             fail("Tyre is null and didn't throw appropriate exception.");
@@ -90,10 +91,10 @@ public class TyreDAOTest {
         try {
             tyreDAO.create(tyre);
             fail("Tyre has to have null ID before creation.");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             // ok
         } catch (Exception e) {
-            fail("Tyre has null id and hasn't been thrown appropriate exception. (IllegalArgumentException).");
+            fail("Tyre has null id and hasn't been thrown appropriate exception. (DataAccessException).");
         }
         tyre.setId(null);
         tyreDAO.create(tyre);
@@ -113,17 +114,17 @@ public class TyreDAOTest {
         try {
             tyreDAO.update(null);
             fail("Tyre is null");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             // ok
         } catch (Exception e) {
-            fail("Tyre is null, should throw IllegalArgumentException.");
+            fail("Tyre is null, should throw DataAccessException.");
         }
 
         tyre.setId(null);
         try {
             tyreDAO.update(tyre);
             fail("Tyre.id is null");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             // ok correct exception caught
         } catch (Exception e) {
             fail("Tyre.id is null, should be thrown another exception");
@@ -148,7 +149,7 @@ public class TyreDAOTest {
         try {
             tyreDAO.remove(null);
             fail("Tyre is null");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             // ok
         } catch (Exception e) {
             fail("Tyre remove - should have been thrown another exception.");
@@ -159,7 +160,7 @@ public class TyreDAOTest {
         try {
             tyreDAO.remove(tyre);
             fail("Tyre.id is null.");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             // ok 
         } catch (Exception e) {
             fail("Remove tyre - tyre.id is null - should have been thrown another exception.");
@@ -168,7 +169,7 @@ public class TyreDAOTest {
         try {
             tyreDAO.remove(tyre);
             fail("Tyre is not in database");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             // ok
         } catch (Exception e) {
             fail("Tyre is not in DB - Should have been thrown another exception.");
@@ -229,7 +230,7 @@ public class TyreDAOTest {
         try {
             tyreDAO.findByName(null);
             fail("String name is null");
-        } catch (IllegalArgumentException e) {
+        } catch (DataAccessException e) {
             // ok
         } catch (Exception e) {
             fail("String name is null - should have been thrown another exception");
@@ -265,13 +266,6 @@ public class TyreDAOTest {
                 assertDeepEquals(t, tyreList.get(i));
             }
         }
-    }
-
-    public static int safeLongToInt(long l) {
-        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
-            throw new IllegalArgumentException(l + " cannot be cast to int without changing its value.");
-        }
-        return (int) l;
     }
 
     private static Tyre createTyre(Double diameter, String name, String type, String vendor, BigDecimal price) {
