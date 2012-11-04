@@ -66,6 +66,18 @@ public class ExtraServiceServiceTest {
         service.update(esto);
         verify(dao).update(es);
     }
+    
+    @Test
+    public void testGet() {
+        ExtraService es = newService("Window cleaning", "Thorough window and mirror cleaning", BigDecimal.valueOf(22.2));
+        es.setId(2L);
+        ExtraServiceTO esto = mapper.map(es, ExtraServiceTO.class);
+        //
+        when(dao.get(2L)).thenReturn(es);
+        ExtraServiceTO estoNew = service.get(2L);
+        //
+        assertEquals(estoNew, esto);
+    }
 
     @Test
     public void testRemove() {
