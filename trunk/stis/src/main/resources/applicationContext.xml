@@ -28,7 +28,13 @@
     <bean id="persistenceExceptionTranslator" class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
     
     <!-- bean mapper -->
-    <bean id="dozerBeanMapper" class="org.dozer.DozerBeanMapper"/>
+    <bean id="dozerBeanMapper" class="org.dozer.DozerBeanMapper">
+        <property name="mappings">
+            <list>
+                <bean class="cz.muni.fi.pa165.stis.util.TyreEnumMapBuilder"/>
+            </list>
+        </property>
+    </bean>
 
     <!-- JPA 2.0 and transactions -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

@@ -51,8 +51,8 @@ public class OrderServiceImpl implements OrderService{
         if (order == null) {
             throw new IllegalArgumentException("order is null");
         }
-        if (order.getId() != null) {
-            throw new IllegalArgumentException("order.id is not null");
+        if (order.getId() == null) {
+            throw new IllegalArgumentException("order.id is null");
         }
         Order ord = mapper.map(order, Order.class);
         orderDAO.update(ord);
@@ -63,8 +63,8 @@ public class OrderServiceImpl implements OrderService{
         if (order == null) {
             throw new IllegalArgumentException("order is null");
         }
-        if (order.getId() != null) {
-            throw new IllegalArgumentException("order.id is not null");
+        if (order.getId() == null) {
+            throw new IllegalArgumentException("order.id is null");
         }
         Order ord = mapper.map(order, Order.class);
         orderDAO.remove(ord);
