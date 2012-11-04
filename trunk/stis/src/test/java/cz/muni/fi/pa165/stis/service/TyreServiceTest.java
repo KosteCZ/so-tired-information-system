@@ -6,28 +6,30 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 
 
 /**
- * Created with IntelliJ IDEA.
- * User: michalxo
- * Date: 10/31/12
- * Time: 2:05 PM
- * To change this template use File | Settings | File Templates.
+ *
+ * @author michalxo 
  */
 
 @RunWith(MockitoJUnitRunner.class)
 public class TyreServiceTest {
 
-    private TyreServiceImpl service;
-
+    private TyreServiceImpl service;    
+    
     @Mock
     private TyreDAO dao;
-
+    // ==TyreDAO dao = Mockito.mock(TyreDAO.class);
+     
+    
+    public TyreServiceTest() {
+    }
+    
     @Before
     public void setUp() throws Exception {
         service = new TyreServiceImpl();
@@ -44,6 +46,5 @@ public class TyreServiceTest {
     public void tearDown() throws Exception {
         service = null;
     }
-
 
 }
