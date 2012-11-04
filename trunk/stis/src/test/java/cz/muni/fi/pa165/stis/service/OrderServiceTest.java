@@ -131,7 +131,7 @@ public class OrderServiceTest {
         
         try {
             orderService.update(orderTO);
-            fail("exception should be thrown");
+            fail("exception should be thrown A");
         } catch (IllegalArgumentException ex) {
             // ok
         }
@@ -184,22 +184,22 @@ public class OrderServiceTest {
         verify(dao).remove(order);
     }
     
-//    @Test
-//    public void testFindAll() {
-//        Customer c = newCustomer("Istvan", "Lelkes", "Hajovna 12", "54544");
-//        c.setId(222L);
-//        Order o = newOrder(c, null, null, null, extraServices, tyres, BigDecimal.ZERO);
-//        order.setId(1L);
-//        orderTO.setId(1L);
-//        
-//        List<Order> orders = Arrays.asList(new Order[] {order});
-//        List<OrderTO> ctos = Arrays.asList(new OrderTO[] {orderTO, mapper.map(o, OrderTO.class)});
-//        when(dao.findAll()).thenReturn(orders);
-//        
-//        List<OrderTO> res = orderService.findAll();
-//        
-//        assertTrue(res.containsAll(ctos) && ctos.containsAll(res));
-//    }
+    @Test
+    public void testFindAll() {
+        Customer c = newCustomer("Istvan", "Lelkes", "Hajovna 12", "54544");
+        c.setId(22L);
+        Order o = newOrder(c, null, null, null, extraServices, tyres, BigDecimal.ZERO);
+        order.setId(1L);
+        orderTO.setId(1L);
+        
+        List<Order> orders = Arrays.asList(new Order[] {order, o});
+        List<OrderTO> ctos = Arrays.asList(new OrderTO[] {orderTO, mapper.map(o, OrderTO.class)});
+        when(dao.findAll()).thenReturn(orders);
+        
+        List<OrderTO> res = orderService.findAll();
+        
+        assertTrue(res.containsAll(ctos) && ctos.containsAll(res));
+    }
     
     @Test
     public void testFindByCustomer() {
