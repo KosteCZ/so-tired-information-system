@@ -1,7 +1,7 @@
 package cz.muni.fi.pa165.stis.service;
 
+import cz.muni.fi.pa165.stis.dto.OrderTO;
 import cz.muni.fi.pa165.stis.entity.Customer;
-import cz.muni.fi.pa165.stis.entity.Order;
 import java.util.List;
 
 /**
@@ -10,10 +10,10 @@ import java.util.List;
  */
 public interface OrderService {
     
-    void create(Order order);
-    Order get(Long id);
-    void update(Order order);
-    void remove(Order order);
-    List<Order> findAll();
-    List<Order> findByCustomer(Customer customer);
+    void create(OrderTO order);
+    OrderTO get(Long id);
+    void update(OrderTO order);
+    void remove(OrderTO order);
+    List<OrderTO> findAll();
+    List<OrderTO> findByCustomer(Customer customer);
 }
