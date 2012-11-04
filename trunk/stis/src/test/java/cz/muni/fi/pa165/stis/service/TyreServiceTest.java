@@ -5,7 +5,6 @@ import cz.muni.fi.pa165.stis.dto.TyreTO;
 import cz.muni.fi.pa165.stis.entity.Tyre;
 import cz.muni.fi.pa165.stis.service.impl.TyreServiceImpl;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.dozer.DozerBeanMapper;
@@ -33,13 +32,8 @@ public class TyreServiceTest {
     
     @Mock
     private TyreDAO dao;
-    // ==TyreDAO dao = Mockito.mock(TyreDAO.class);
     private DozerBeanMapper mapper;
      
-    
-    // Is this needed?
-    public TyreServiceTest() {
-    }
     
     @Before
     public void setUp() {
@@ -52,7 +46,7 @@ public class TyreServiceTest {
     @After
     public void tearDown() {
         service = null;
-   //     mapper = null;
+        mapper = null;
     }
     
     @Test
@@ -106,11 +100,11 @@ public class TyreServiceTest {
         Tyre tyre2 = createTyre(19D, "Potenza RE050A", " 235/40R19", "Bridgestone", BigDecimal.valueOf(324));
         tyre2.setId(3L);
         
-        List<Tyre> tyres = new ArrayList<Tyre>(Arrays.asList(new Tyre[]{tyre1, tyre2}));
-        List<TyreTO> tyreTOList = new ArrayList<TyreTO>(Arrays.asList(new TyreTO[]{
+        List<Tyre> tyres = Arrays.asList(new Tyre[]{tyre1, tyre2});
+        List<TyreTO> tyreTOList = Arrays.asList(new TyreTO[]{
             mapper.map(tyre1, TyreTO.class), 
             mapper.map(tyre2, TyreTO.class)
-        }));
+        });
         
         when(dao.findAll()).thenReturn(tyres);
         List<TyreTO> tyreTOServiceList = service.findAll();
@@ -125,11 +119,11 @@ public class TyreServiceTest {
         tyre1.setId(2L);
         tyre2.setId(3L);
         
-        List<Tyre> tyres = new ArrayList<Tyre>(Arrays.asList(new Tyre[]{tyre1, tyre2}));
-        List<TyreTO> tyreTOList = new ArrayList<TyreTO>(Arrays.asList(new TyreTO[]{
+        List<Tyre> tyres = Arrays.asList(new Tyre[]{tyre1, tyre2});
+        List<TyreTO> tyreTOList = Arrays.asList(new TyreTO[]{
             mapper.map(tyre1, TyreTO.class), 
             mapper.map(tyre2, TyreTO.class)
-        }));
+        });
         
         when(dao.findByName("P Zero")).thenReturn(tyres);
         List<TyreTO> tyreTOServiceList = service.findByName("P Zero");
