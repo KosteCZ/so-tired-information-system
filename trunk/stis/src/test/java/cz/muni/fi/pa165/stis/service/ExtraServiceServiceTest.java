@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.dozer.DozerBeanMapper;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -102,11 +104,38 @@ public class ExtraServiceServiceTest {
 
     @Test
     public void testCreate() {
-        ExtraService es = newService("Window cleaning", "Thorough window and mirror cleaning", BigDecimal.valueOf(22.2));
+        final ExtraService es = newService("Window cleaning", "Thorough window and mirror cleaning", BigDecimal.valueOf(22.2));
         ExtraServiceTO esto = mapper.map(es, ExtraServiceTO.class);
         //
         service.create(esto);
-        verify(dao).create(es);
+        verify(dao).create(argThat(new BaseMatcher<ExtraService>() {
+
+            @Override
+            public boolean matches(Object item) {
+                if (!(item instanceof ExtraService)) {
+                    return false;
+                }
+                final ExtraService other = (ExtraService) item;
+                if (!Objects.equals(es.getId(), other.getId())) {
+                    return false;
+                }
+                if (!Objects.equals(es.getName(), other.getName())) {
+                    return false;
+                }
+                if (!Objects.equals(es.getDescription(), other.getDescription())) {
+                    return false;
+                }
+                if (es.getPrice().compareTo(other.getPrice()) != 0) {
+                    return false;
+                }
+                return true;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        }));
     }
 
     @Test
@@ -178,42 +207,7 @@ public class ExtraServiceServiceTest {
     }
     
     private static ExtraService newService(String name, String description, BigDecimal price) {
-        ExtraService es = new ExtraService() {
-
-            @Override
-            public int hashCode() {
-                int hash = 3;
-                hash = 97 * hash + Objects.hashCode(this.getId());
-                hash = 97 * hash + Objects.hashCode(this.getName());
-                hash = 97 * hash + Objects.hashCode(this.getDescription());
-                return hash;
-            }
-
-            @Override
-            public boolean equals(Object obj) {
-                if (obj == null) {
-                    return false;
-                }
-                if (!(obj instanceof ExtraService)) {
-                    return false;
-                }
-                final ExtraService other = (ExtraService) obj;
-                if (!Objects.equals(this.getId(), other.getId())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getName(), other.getName())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getDescription(), other.getDescription())) {
-                    return false;
-                }
-                if (this.getPrice().compareTo(other.getPrice()) != 0) {
-                    return false;
-                }
-                return true;
-            }
-            
-        };
+        ExtraService es = new ExtraService();
         es.setName(name);
         es.setDescription(description);
         es.setPrice(price);

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.stis.service;
 
 import cz.muni.fi.pa165.stis.dao.CustomerDAO;
@@ -14,7 +10,6 @@ import java.util.Objects;
 import org.dozer.DozerBeanMapper;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -121,18 +116,20 @@ public class CustomerServiceTest {
                 if (!(item instanceof Customer)) {
                     return false;
                 }
-                
-                Customer tc = (Customer) item;
-                if (!Objects.equals(c.getFirstName(), tc.getFirstName())) {
+                final Customer other = (Customer) item;
+                if (!Objects.equals(c.getId(), other.getId())) {
                     return false;
                 }
-                if (!Objects.equals(c.getLastName(), tc.getLastName())) {
+                if (!Objects.equals(c.getFirstName(), other.getFirstName())) {
                     return false;
                 }
-                if (!Objects.equals(c.getAddress(), tc.getAddress())) {
+                if (!Objects.equals(c.getLastName(), other.getLastName())) {
                     return false;
                 }
-                if (!Objects.equals(c.getPhone(), tc.getPhone())) {
+                if (!Objects.equals(c.getAddress(), other.getAddress())) {
+                    return false;
+                }
+                if (!Objects.equals(c.getPhone(), other.getPhone())) {
                     return false;
                 }
                 

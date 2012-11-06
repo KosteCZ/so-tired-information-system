@@ -87,7 +87,7 @@ public class Tyre implements Serializable {
             return false;
         }
         final Tyre other = (Tyre) obj;
-        if ((this.id == null) || (this.id != null && !this.id.equals(other.id))) {
+        if (this.id == null || !this.id.equals(other.id)) {
             return false;
         }
         return true;

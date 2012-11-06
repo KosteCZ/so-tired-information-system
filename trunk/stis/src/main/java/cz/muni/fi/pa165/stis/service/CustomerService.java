@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.stis.service;
 
 import cz.muni.fi.pa165.stis.dto.CustomerTO;
@@ -9,7 +5,7 @@ import java.util.List;
 
 /**
  *
- * @author Dusan
+ * @author Dusan Svancara
  */
 public interface CustomerService {
     

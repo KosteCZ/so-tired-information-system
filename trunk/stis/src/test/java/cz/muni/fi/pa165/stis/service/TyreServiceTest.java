@@ -9,7 +9,10 @@ import cz.muni.fi.pa165.stis.service.impl.TyreServiceImpl;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import org.dozer.DozerBeanMapper;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -107,16 +110,44 @@ public class TyreServiceTest {
         }
     }
     
-    
-            
     @Test
     public void testCreate() {
-        Tyre tyre = createTyre(19D, "P Zero", "235/40ZR19", "Pirelli", BigDecimal.valueOf(420));
-//        tyre.setId(2L);
+        final Tyre tyre = createTyre(19D, "P Zero", "235/40ZR19", "Pirelli", BigDecimal.valueOf(420));
         TyreTO tto = mapper.map(tyre, TyreTO.class);
         
         service.create(tto);
-        verify(dao).create(any(Tyre.class));
+        verify(dao).create(argThat(new BaseMatcher<Tyre>() {
+
+            @Override
+            public boolean matches(Object item) {
+                if (!(item instanceof Tyre)) {
+                    return false;
+                }
+                final Tyre t = (Tyre) item;
+                if (!Objects.equals(t.getDiameter(), tyre.getDiameter())) {
+                    return false;
+                }
+                if (!Objects.equals(t.getName(), tyre.getName())) {
+                    return false;
+                }
+                if (!Objects.equals(t.getPrice(), tyre.getPrice())) {
+                    return false;
+                }
+                if (!Objects.equals(t.getType(), tyre.getType())) {
+                    return false;
+                }
+                if (!Objects.equals(t.getVendor(), tyre.getVendor())) {
+                    return false;
+                }
+                
+                return true;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        }));
     }
 
     @Test
@@ -129,7 +160,6 @@ public class TyreServiceTest {
         TyreTO tyreTO = service.get(4L);
         assertEquals(tyreTO, tto);
     }
-    
     
     @Test
     public void testUpdate() {
@@ -150,7 +180,6 @@ public class TyreServiceTest {
         service.remove(tto);
         verify(dao).remove(tyre);        
     }
-    
     
     @Test
     public void testFindAll() {
@@ -190,11 +219,6 @@ public class TyreServiceTest {
         
         assertTrue(tyreTOServiceList.containsAll(tyreTOList) && tyreTOList.containsAll(tyreTOServiceList));
     }
-    
-    
-    
-    
-    
     
     private static Tyre createTyre(Double diameter, String name, String type, String vendor, BigDecimal price) {
         Tyre t = new Tyre();

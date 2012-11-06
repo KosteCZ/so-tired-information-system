@@ -31,6 +31,8 @@ import org.dozer.DozerBeanMapper;
 import org.dozer.loader.api.BeanMappingBuilder;
 import org.dozer.loader.api.FieldsMappingOptions;
 import org.dozer.loader.api.TypeMappingOptions;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +41,8 @@ import static org.mockito.Mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
@@ -69,20 +73,20 @@ public class OrderServiceTest {
         ReflectionTestUtils.setField(orderService, "mapper", mapper);
         
         customer = newCustomer("Jozin", "Zbazin", "Baziny 22", "005544");
-        //customerTO = mapper.map(customer, CustomerTO.class);
+        customer.setId(1L);
         //
         ExtraService es1 = newExtraService("Umytie", "Umytie okien a zrkadiel", BigDecimal.valueOf(22.2));
-        //extraServiceDAO.create(es1);
+        es1.setId(1L);
         ExtraService es2 = newExtraService("Vysavanie", "Vysavanie auta", BigDecimal.valueOf(122.5));
-        //extraServiceDAO.create(es2);
+        es2.setId(2L);
         extraServices = new HashSet<ExtraService>(Arrays.asList(new ExtraService[]{es1, es2}));
         //
         Tyre t1 = newTyre(17D, "MM22", "EZ256", "Michellin", BigDecimal.valueOf(222));
-        //tyreDAO.create(t1);
+        t1.setId(1L);
         Tyre t2 = newTyre(17D, "MM23", "EZ257", "Michellin", BigDecimal.valueOf(222));
-        //tyreDAO.create(t2);
+        t2.setId(2L);
         Tyre t3 = newTyre(18D, "PR89", "NT99", "Pirelli", BigDecimal.valueOf(253.4));
-        //tyreDAO.create(t3);
+        t3.setId(3L);
         tyres = new EnumMap<TyrePosition, Tyre>(TyrePosition.class);
         tyres.put(TyrePosition.FRONT_LEFT, t1);
         tyres.put(TyrePosition.FRONT_RIGHT, t2);
@@ -153,7 +157,60 @@ public class OrderServiceTest {
     @Test
     public void testCreate() {
         orderService.create(orderTO);
-        verify(dao).create(order);
+        final Order o = order;
+        verify(dao).create(argThat(new BaseMatcher<Order>() {
+
+            @Override
+            public boolean matches(Object item) {
+                if (!(item instanceof Order)) {
+                    return false;
+                }
+                
+                Order no = (Order) item;
+                if (!Objects.equals(no.getCarType(), o.getCarType())) {
+                    return false;
+                }
+                if (!Objects.equals(no.getCustomer(), o.getCustomer())) {
+                    return false;
+                }
+                if (!Objects.equals(no.getOrderNewDate(), o.getOrderNewDate())) {
+                    return false;
+                }
+                if (!Objects.equals(no.getOrderPaidDate(), o.getOrderPaidDate())) {
+                    return false;
+                }
+                if (!Objects.equals(no.getOrderServicedDate(), o.getOrderServicedDate())) {
+                    return false;
+                }
+                if (!Objects.equals(no.getTotalPrice(), o.getTotalPrice())) {
+                    return false;
+                }
+                if (!(no.getExtraServices().containsAll(o.getExtraServices()) && o.getExtraServices().containsAll(no.getExtraServices()))) {
+                    return false;
+                }
+                if (no.getTyres() == null || o.getTyres() == null) {
+                    if (no.getTyres() != null || o.getTyres() != null) {
+                        return false;
+                    }
+                }
+                if (no.getTyres().size() != o.getTyres().size()) {
+                    return false;
+                }
+                for (Map.Entry<TyrePosition, Tyre> me : no.getTyres().entrySet()) {
+                    Tyre t = o.getTyres().get(me.getKey());
+                    if (!Objects.equals(t, me.getValue())) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        }));
     }
 
     @Test
@@ -217,41 +274,7 @@ public class OrderServiceTest {
     }
     
     private static Tyre newTyre(Double diameter, String name, String type, String vendor, BigDecimal price) {
-        Tyre t = new Tyre() {
-            @Override
-            public int hashCode() {
-                int hash = 7;
-                hash = 67 * hash + Objects.hashCode(this.getId());
-                hash = 67 * hash + Objects.hashCode(this.getType());
-                hash = 67 * hash + Objects.hashCode(this.getName());
-                hash = 67 * hash + Objects.hashCode(this.getVendor());
-                return hash;
-            }
-
-            @Override
-            public boolean equals(Object obj) {
-                if (obj == null) {
-                    return false;
-                }
-                if (!(obj instanceof Tyre)) {
-                    return false;
-                }
-                final Tyre other = (Tyre) obj;
-                if (!Objects.equals(this.getId(), other.getId())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getType(), other.getType())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getName(), other.getName())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getVendor(), other.getVendor())) {
-                    return false;
-                }
-                return true;
-            }
-        };
+        Tyre t = new Tyre();
         t.setDiameter(diameter);
         t.setName(name);
         t.setType(type);
@@ -262,42 +285,7 @@ public class OrderServiceTest {
     }
     
     private static ExtraService newExtraService(String name, String desc, BigDecimal price) {
-        ExtraService es = new ExtraService() {
-
-            @Override
-            public int hashCode() {
-                int hash = 3;
-                hash = 97 * hash + Objects.hashCode(this.getId());
-                hash = 97 * hash + Objects.hashCode(this.getName());
-                hash = 97 * hash + Objects.hashCode(this.getDescription());
-                return hash;
-            }
-
-            @Override
-            public boolean equals(Object obj) {
-                if (obj == null) {
-                    return false;
-                }
-                if (!(obj instanceof ExtraService)) {
-                    return false;
-                }
-                final ExtraService other = (ExtraService) obj;
-                if (!Objects.equals(this.getId(), other.getId())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getName(), other.getName())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getDescription(), other.getDescription())) {
-                    return false;
-                }
-                if (this.getPrice().compareTo(other.getPrice()) != 0) {
-                    return false;
-                }
-                return true;
-            }
-            
-        };
+        ExtraService es = new ExtraService();
         es.setName(name);
         es.setDescription(desc);
         es.setPrice(price);
@@ -306,45 +294,7 @@ public class OrderServiceTest {
     }
     
     private static Customer newCustomer(String firstName, String lastName, String address, String phone) {
-        Customer c = new Customer() {
-            @Override
-            public int hashCode() {
-                int hash = 7;
-                hash = 53 * hash + Objects.hashCode(this.getId());
-                hash = 53 * hash + Objects.hashCode(this.getFirstName());
-                hash = 53 * hash + Objects.hashCode(this.getLastName());
-                hash = 53 * hash + Objects.hashCode(this.getAddress());
-                hash = 53 * hash + Objects.hashCode(this.getPhone());
-                return hash;
-            }
-
-            @Override
-            public boolean equals(Object obj) {
-                if (obj == null) {
-                    return false;
-                }
-                if (!(obj instanceof Customer)) {
-                    return false;
-                }
-                final Customer other = (Customer) obj;
-                if (!Objects.equals(this.getId(), other.getId())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getFirstName(), other.getFirstName())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getLastName(), other.getLastName())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getAddress(), other.getAddress())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getPhone(), other.getPhone())) {
-                    return false;
-                }
-                return true;
-            }
-        };
+        Customer c = new Customer();
         c.setFirstName(firstName);
         c.setLastName(lastName);
         c.setAddress(address);
@@ -355,21 +305,7 @@ public class OrderServiceTest {
     
     private static Order newOrder(Customer c, Date orderNewDate, Date orderServicedDate, 
             Date orderPaidDate, Set<ExtraService> extraServices, Map<TyrePosition, Tyre> tyres, BigDecimal totalPrice) {
-        Order o = new Order() {
-
-            
-                    @Override
-                    public boolean equals(Object object) {
-                        return true;
-                    }
-
-                    @Override
-                    public int hashCode() {
-                        int hash = 7;
-                        return hash;
-                    }
-            
-        };
+        Order o = new Order();
         o.setCustomer(c);
         o.setOrderNewDate(orderNewDate);
         o.setOrderServicedDate(orderServicedDate);
