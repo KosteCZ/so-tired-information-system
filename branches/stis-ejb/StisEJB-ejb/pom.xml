@@ -49,7 +49,7 @@
             <scope>provided</scope>                        
         </dependency>
 
-<!-- MAYBE NOT NEEDED AT ALL -->                
+<!-- MAYBE NOT NEEDED AT ALL                 
         <dependency>
             <groupId>org.apache.openejb</groupId>
             <artifactId>openejb-core</artifactId>
@@ -62,7 +62,7 @@
             <artifactId>openejb-jee</artifactId>
             <version>4.0.0-beta-1</version>
         </dependency>
-<!-- These 2 dependencies might be deleted imo. -->
+ These 2 dependencies might be deleted imo. -->
 
     </dependencies>
 
