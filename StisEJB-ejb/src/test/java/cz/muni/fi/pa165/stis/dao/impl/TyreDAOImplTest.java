@@ -59,6 +59,22 @@ public class TyreDAOImplTest {
 
     @Test
     public void testCreate() throws Exception {
+        try {
+            tyreDAO.create(null);
+            fail("InvalidArgumentException has not been thrown. <null tyre>");
+        } catch (IllegalArgumentException e) {
+            // ok
+        }
+        
+        try {
+            tyre1.setId(1L);
+            tyreDAO.create(tyre1);
+            fail("InvalidArgumentException has not been thrown. <tyre.id is null>");
+        } catch (IllegalArgumentException e) {
+            // ok        
+        } 
+        
+        tyre1.setId(null);
         tyreDAO.create(tyre1);
         Mockito.verify(tyreEM).persist(Mockito.argThat(new BaseMatcher<Tyre>() {
             @Override
@@ -93,8 +109,7 @@ public class TyreDAOImplTest {
     }
 
     @Test
-    public void testGet() throws Exception {
-        tyreDAO.create(tyre2);
+    public void testGet() {
         tyre2.setId(2L);
 
         when(tyreDAO.get(2L)).thenReturn(tyre2);
@@ -114,8 +129,7 @@ public class TyreDAOImplTest {
     }
 
     @Test
-    public void testUpdate() throws Exception {
-        tyreDAO.create(tyre3);
+    public void testUpdate() {
         try {
             tyreDAO.update(null);
             fail("IllegalArgumentException has not been thrown <tyre is null>");
@@ -143,20 +157,15 @@ public class TyreDAOImplTest {
         } catch (IllegalArgumentException e) {
             // ok
         }
-
-        tyreDAO.create(tyre3);
+        
         try {
             tyreDAO.remove(tyre3);
             fail("IllegalArgumentException has not been thrown. <tyre.id is null>");
         } catch (IllegalArgumentException e) {
             // ok
-        }
-        
-        
-        //doReturn(null).when(tyreEM.find(Tyre.class, tyre3));
-        //assertNull(tyreDAO.remove(tyre3));
+        }              
                 
-        //doThrow(new IllegalArgumentException()).when(tyreEM).find(Tyre.class, null);
+        doThrow(new IllegalArgumentException()).when(tyreEM).find(Tyre.class, null);
         try {
             tyreDAO.remove(tyre3);
             fail("IllegalArgumentException has not been thrown. <tyre not in db>");
@@ -164,29 +173,32 @@ public class TyreDAOImplTest {
             // ok
         }
                      
-        tyreDAO.create(tyre1);
-        tyre1.setId(1L);                        
+        tyre1.setId(1L);        
+        when(tyreEM.find(Tyre.class, tyre1.getId())).thenReturn(tyre1);
         tyreDAO.remove(tyre1);
         verify(tyreEM).remove(tyre1);
     }
 
     @Test
     public void testFindAll() {
+        /*
+         * Mock query & play with em.createQuery
+         */
         List<Tyre> tyreList = new ArrayList<Tyre>();
         List<Tyre> tyreList2;
         
-        tyreList2 = tyreDAO.findAll();        
-        assertNull(tyreList2);
+//        tyreList2 = tyreDAO.findAll();        
+//        assertNull(tyreList2);
         
         tyre1.setId(1L);
         tyre2.setId(2L);
         tyreList.add(tyre1);
         tyreList.add(tyre2);
         
-        tyreList2 = tyreDAO.findAll();
-        verify(tyreDAO, times(2)).findAll();
-        assertTrue(tyreList.size() == tyreList2.size());
-        assertTrue(tyreList.containsAll(tyreList2) && tyreList2.containsAll(tyreList));
+//        tyreList2 = tyreDAO.findAll();
+//        verify(tyreDAO, times(2)).findAll();
+//       assertTrue(tyreList.size() == tyreList2.size());
+//        assertTrue(tyreList.containsAll(tyreList2) && tyreList2.containsAll(tyreList));
     }
 
     @Test
