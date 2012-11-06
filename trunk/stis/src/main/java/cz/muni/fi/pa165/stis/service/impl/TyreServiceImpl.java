@@ -23,24 +23,55 @@ public class TyreServiceImpl implements TyreService {
     private DozerBeanMapper mapper;
 
     @Transactional
+    @Override
     public void create(TyreTO tyre) {
+        if (tyre == null) {
+            throw new IllegalArgumentException("tyre is null");
+        }
+        
+        if (tyre.getId() != null) {
+            throw new IllegalArgumentException("tyre.id is not null");
+        }
         Tyre tm = mapper.map(tyre, Tyre.class);
         tyreDAO.create(tm);
     }
 
     @Transactional(readOnly = true)
+    @Override
     public TyreTO get(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Tyre.Id is null");
+        }
+        
+        Tyre tyre = tyreDAO.get(id);
+        if (tyre == null) {
+            return null;
+        }        
         return mapper.map(tyreDAO.get(id), TyreTO.class);
     }
 
     @Transactional
+    @Override
     public void update(TyreTO tyre) {
+        if (tyre == null) {
+            throw new IllegalArgumentException("Tyre is null");
+        }        
+        if (tyre.getId() == null) {
+            throw new IllegalArgumentException("Tyre.id is null");
+        }
         Tyre tm = mapper.map(tyre, Tyre.class);
         tyreDAO.update(tm);
     }
 
     @Transactional
+    @Override
     public void remove(TyreTO tyre) {
+        if (tyre == null) {
+            throw new IllegalArgumentException("Tyre is null");
+        }        
+        if (tyre.getId() == null) {
+            throw new IllegalArgumentException("Tyre.id is null");
+        }
         Tyre tm = mapper.map(tyre, Tyre.class);
         tyreDAO.remove(tm);
     }
@@ -49,7 +80,7 @@ public class TyreServiceImpl implements TyreService {
     @Override
     public List<TyreTO> findAll() {
         List<Tyre> result = tyreDAO.findAll();
-        List<TyreTO> tyreTOList = new ArrayList<TyreTO>();
+        List<TyreTO> tyreTOList = new ArrayList<>();
         
         for (Tyre t : result) {
             tyreTOList.add(mapper.map(t, TyreTO.class));
@@ -58,9 +89,14 @@ public class TyreServiceImpl implements TyreService {
     }
 
     @Transactional(readOnly= true)
+    @Override
     public List<TyreTO> findByName(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("null name");
+        }       
+        
         List<Tyre> result = tyreDAO.findByName(name);
-        List<TyreTO> tyreTOList = new ArrayList<TyreTO>();
+        List<TyreTO> tyreTOList = new ArrayList<>();
         
         for (Tyre t : result) {
             tyreTOList.add(mapper.map(t, TyreTO.class));

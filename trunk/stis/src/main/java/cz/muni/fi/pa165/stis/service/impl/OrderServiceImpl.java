@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService{
     @Transactional(readOnly=true)
     public List<OrderTO> findAll() {
         List<Order> result = orderDAO.findAll();
-        List<OrderTO> ret = new ArrayList<OrderTO>();
+        List<OrderTO> ret = new ArrayList<>();
         for (Order ord : result) {
             ret.add(mapper.map(ord, OrderTO.class));
         }
@@ -86,7 +86,7 @@ public class OrderServiceImpl implements OrderService{
             throw new IllegalArgumentException("customer is null");
         }
         List<Order> result = orderDAO.findByCustomer(mapper.map(customer, Customer.class));
-        List<OrderTO> ret = new ArrayList<OrderTO>();
+        List<OrderTO> ret = new ArrayList<>();
         for (Order ord : result) {
             ret.add(mapper.map(ord, OrderTO.class));
         }

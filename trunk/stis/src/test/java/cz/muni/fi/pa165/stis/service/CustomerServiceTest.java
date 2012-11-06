@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.dozer.DozerBeanMapper;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -110,7 +113,37 @@ public class CustomerServiceTest {
     @Test
     public void testCreate() {
         service.create(customerTO);
-        verify(dao).create(customer);
+        final Customer c = customer;
+        verify(dao).create(argThat(new BaseMatcher<Customer>() {
+
+            @Override
+            public boolean matches(Object item) {
+                if (!(item instanceof Customer)) {
+                    return false;
+                }
+                
+                Customer tc = (Customer) item;
+                if (!Objects.equals(c.getFirstName(), tc.getFirstName())) {
+                    return false;
+                }
+                if (!Objects.equals(c.getLastName(), tc.getLastName())) {
+                    return false;
+                }
+                if (!Objects.equals(c.getAddress(), tc.getAddress())) {
+                    return false;
+                }
+                if (!Objects.equals(c.getPhone(), tc.getPhone())) {
+                    return false;
+                }
+                
+                return true;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        }));
     }
 
     @Test
@@ -172,45 +205,7 @@ public class CustomerServiceTest {
     }
     
     private static Customer createCustomer(Long id, String firstName, String lastName, String address, String phone) {
-        Customer c = new Customer() {
-            @Override
-            public int hashCode() {
-                int hash = 7;
-                hash = 53 * hash + Objects.hashCode(this.getId());
-                hash = 53 * hash + Objects.hashCode(this.getFirstName());
-                hash = 53 * hash + Objects.hashCode(this.getLastName());
-                hash = 53 * hash + Objects.hashCode(this.getAddress());
-                hash = 53 * hash + Objects.hashCode(this.getPhone());
-                return hash;
-            }
-
-            @Override
-            public boolean equals(Object obj) {
-                if (obj == null) {
-                    return false;
-                }
-                if (!(obj instanceof Customer)) {
-                    return false;
-                }
-                final Customer other = (Customer) obj;
-                if (!Objects.equals(this.getId(), other.getId())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getFirstName(), other.getFirstName())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getLastName(), other.getLastName())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getAddress(), other.getAddress())) {
-                    return false;
-                }
-                if (!Objects.equals(this.getPhone(), other.getPhone())) {
-                    return false;
-                }
-                return true;
-            }
-        };
+        Customer c = new Customer();
         c.setId(id);
         c.setFirstName(firstName);
         c.setLastName(lastName);

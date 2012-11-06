@@ -1,7 +1,9 @@
 package cz.muni.fi.pa165.stis.service;
 
 import cz.muni.fi.pa165.stis.dao.TyreDAO;
+import cz.muni.fi.pa165.stis.dto.ExtraServiceTO;
 import cz.muni.fi.pa165.stis.dto.TyreTO;
+import cz.muni.fi.pa165.stis.entity.ExtraService;
 import cz.muni.fi.pa165.stis.entity.Tyre;
 import cz.muni.fi.pa165.stis.service.impl.TyreServiceImpl;
 import java.math.BigDecimal;
@@ -50,13 +52,71 @@ public class TyreServiceTest {
     }
     
     @Test
+    public void testExceptions() {
+        try {            
+            service.create(null);
+            fail("exception should be thrown ASdas");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        try {                        
+            service.update(null);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        try {
+            service.get(null);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        try {
+            service.remove(null);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        try {
+            service.findByName(null);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        
+        Tyre t = createTyre(19D, "P Zero", "235/40ZR19", "Pirelli", BigDecimal.valueOf(450));
+        TyreTO tto = mapper.map(t, TyreTO.class);
+        try {
+            service.update(tto);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        try {
+            service.remove(tto);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        tto.setId(1L);
+        try {
+            service.create(tto);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+             //ok
+        }
+    }
+    
+    
+            
+    @Test
     public void testCreate() {
         Tyre tyre = createTyre(19D, "P Zero", "235/40ZR19", "Pirelli", BigDecimal.valueOf(420));
-        tyre.setId(2L);
+//        tyre.setId(2L);
         TyreTO tto = mapper.map(tyre, TyreTO.class);
         
-        service.remove(tto);
-        verify(dao).remove(tyre);
+        service.create(tto);
+        verify(dao).create(any(Tyre.class));
     }
 
     @Test
@@ -130,6 +190,9 @@ public class TyreServiceTest {
         
         assertTrue(tyreTOServiceList.containsAll(tyreTOList) && tyreTOList.containsAll(tyreTOServiceList));
     }
+    
+    
+    
     
     
     
