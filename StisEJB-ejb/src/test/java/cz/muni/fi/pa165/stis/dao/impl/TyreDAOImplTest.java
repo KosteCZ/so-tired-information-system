@@ -49,9 +49,13 @@ public class TyreDAOImplTest {
             Field changeEM = c.getDeclaredField("em");
             changeEM.setAccessible(true);
             changeEM.set(tyreDAO, tyreEM);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(TyreDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchFieldException ex) {
             Logger.getLogger(TyreDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
+            Logger.getLogger(TyreDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
             Logger.getLogger(TyreDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -184,17 +188,17 @@ public class TyreDAOImplTest {
     }
 
     @Test
-    public void testFindAll() {               
+    public void testFindAll() {
         List<Tyre> tqList = new ArrayList<Tyre>();
         List<Tyre> tyreList = new ArrayList<Tyre>();
-        
+
         // Test empty result set
         when(tyreEM.createQuery("FROM Tyre", Tyre.class)).thenReturn(typedQuery);
-        when(typedQuery.getResultList()).thenReturn(tqList);  
+        when(typedQuery.getResultList()).thenReturn(tqList);
         doReturn(tqList).when(typedQuery).getResultList();
         tyreList = tyreDAO.findAll();
         assertTrue(tyreList.isEmpty() && tqList.isEmpty());
-                    
+
 
         tyre1.setId(1L);
         tyre2.setId(2L);
@@ -203,44 +207,44 @@ public class TyreDAOImplTest {
 
         tyreList = tyreDAO.findAll();
         assertTrue(tyreList.containsAll(tqList) && tqList.containsAll(tyreList));
-   }
+    }
 
     @Test
     public void testFindByName() {
-        
+
         try {
             tyreDAO.findByName(null);
             fail("IllegalArgumentException has not been thrown. Name is null");
         } catch (IllegalArgumentException e) {
             // ok
-        }                
-        
+        }
+
         List<Tyre> tyreList;
         List<Tyre> tqList = new ArrayList<Tyre>();
         when(tyreEM.createQuery("SELECT t FROM Tyre t WHERE t.name LIKE :name", Tyre.class)).thenReturn(typedQuery);
-        when(typedQuery.getResultList()).thenReturn(tqList);                        
+        when(typedQuery.getResultList()).thenReturn(tqList);
         // test empty list  
         tyreList = tyreDAO.findByName("MM21");
         assertTrue(tyreList.isEmpty() && tqList.isEmpty());
-        
+
         // found in "db"
-        tqList.add(tyre1);       
+        tqList.add(tyre1);
         tqList.add(tyre2);
         when(tyreEM.createQuery("SELECT t FROM Tyre t WHERE t.name LIKE :name", Tyre.class)).thenReturn(typedQuery);
-        when(typedQuery.getResultList()).thenReturn(tqList);        
+        when(typedQuery.getResultList()).thenReturn(tqList);
         tqList.get(0);
         tyreList = tyreDAO.findByName("MM21");
         assertTrue(tqList.get(0).equals(tyreList.get(0)));
-        
+
         // not found in "db"   (???)
         tyreList = tyreDAO.findByName("MM23");
         tqList.clear();
-        when(typedQuery.getResultList()).thenReturn(tqList);        
+        when(typedQuery.getResultList()).thenReturn(tqList);
         //System.out.println("Not Found in DB" + "\n" + tyreList + "\n"+ tqList);        
         assertTrue(tqList.isEmpty() && tyreList.isEmpty());
-        
+
     }
- 
+
     private static Tyre createTyre(Double diameter, String name, String type, String vendor, BigDecimal price) {
         Tyre t = new Tyre();
         t.setDiameter(diameter);
