@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.Before;
@@ -30,6 +32,8 @@ public class TyreDAOImplTest {
 
     @Mock
     private EntityManager tyreEM;
+    @Mock
+    private TypedQuery typedQuery;
     private TyreDAOImpl tyreDAO;
     private Tyre tyre1;
     private Tyre tyre2;
@@ -52,9 +56,9 @@ public class TyreDAOImplTest {
         }
 
 
-        tyre1 = createTyre(17D, "MM22", "EZ256", "Michellin", BigDecimal.valueOf(222));
+        tyre1 = createTyre(17D, "MM21", "EZ256", "Michellin", BigDecimal.valueOf(222));
         tyre2 = createTyre(18D, "MM22", "EZ256", "Michellin", BigDecimal.valueOf(222));
-        tyre3 = createTyre(19D, "MM22", "EZ256", "Pirelli", BigDecimal.valueOf(222));
+        tyre3 = createTyre(19D, "MM23", "EZ256", "Pirelli", BigDecimal.valueOf(222));
     }
 
     @Test
@@ -65,15 +69,15 @@ public class TyreDAOImplTest {
         } catch (IllegalArgumentException e) {
             // ok
         }
-        
+
         try {
             tyre1.setId(1L);
             tyreDAO.create(tyre1);
             fail("InvalidArgumentException has not been thrown. <tyre.id is null>");
         } catch (IllegalArgumentException e) {
             // ok        
-        } 
-        
+        }
+
         tyre1.setId(null);
         tyreDAO.create(tyre1);
         Mockito.verify(tyreEM).persist(Mockito.argThat(new BaseMatcher<Tyre>() {
@@ -146,25 +150,25 @@ public class TyreDAOImplTest {
 
         tyre3.setId(3L);
         tyreDAO.update(tyre3);
-        verify(tyreEM).merge(tyre3);                
+        verify(tyreEM).merge(tyre3);
     }
 
     @Test
-    public void testRemove() {        
+    public void testRemove() {
         try {
             tyreDAO.remove(null);
             fail("IllegalArgumentException has not been thrown <tyre is null>");
         } catch (IllegalArgumentException e) {
             // ok
         }
-        
+
         try {
             tyreDAO.remove(tyre3);
             fail("IllegalArgumentException has not been thrown. <tyre.id is null>");
         } catch (IllegalArgumentException e) {
             // ok
-        }              
-                
+        }
+
         doThrow(new IllegalArgumentException()).when(tyreEM).find(Tyre.class, null);
         try {
             tyreDAO.remove(tyre3);
@@ -172,37 +176,64 @@ public class TyreDAOImplTest {
         } catch (IllegalArgumentException e) {
             // ok
         }
-                     
-        tyre1.setId(1L);        
+
+        tyre1.setId(1L);
         when(tyreEM.find(Tyre.class, tyre1.getId())).thenReturn(tyre1);
         tyreDAO.remove(tyre1);
         verify(tyreEM).remove(tyre1);
     }
 
     @Test
-    public void testFindAll() {
-        /*
-         * Mock query & play with em.createQuery
-         */
+    public void testFindAll() {               
+        List<Tyre> tqList = new ArrayList<Tyre>();
         List<Tyre> tyreList = new ArrayList<Tyre>();
-        List<Tyre> tyreList2;
         
-//        tyreList2 = tyreDAO.findAll();        
-//        assertNull(tyreList2);
-        
+        // Test empty result set
+        when(tyreEM.createQuery("FROM Tyre", Tyre.class)).thenReturn(typedQuery);
+        when(typedQuery.getResultList()).thenReturn(tqList);  
+        doReturn(tqList).when(typedQuery).getResultList();
+        tyreList = tyreDAO.findAll();
+        assertTrue(tyreList.isEmpty() && tqList.isEmpty());
+                    
+
         tyre1.setId(1L);
         tyre2.setId(2L);
-        tyreList.add(tyre1);
-        tyreList.add(tyre2);
-        
-//        tyreList2 = tyreDAO.findAll();
-//        verify(tyreDAO, times(2)).findAll();
-//       assertTrue(tyreList.size() == tyreList2.size());
-//        assertTrue(tyreList.containsAll(tyreList2) && tyreList2.containsAll(tyreList));
-    }
+        tqList.add(tyre1);
+        tqList.add(tyre2);
+
+        tyreList = tyreDAO.findAll();
+        assertTrue(tyreList.containsAll(tqList) && tqList.containsAll(tyreList));
+   }
 
     @Test
     public void testFindByName() {
+        
+        try {
+            tyreDAO.findByName(null);
+            fail("IllegalArgumentException has not been thrown. Name is null");
+        } catch (IllegalArgumentException e) {
+            // ok
+        }                
+        
+        List<Tyre> tyreList;
+        List<Tyre> tqList = new ArrayList<Tyre>();
+        when(tyreEM.createQuery("SELECT t FROM Tyre t WHERE t.name LIKE :name", Tyre.class)).thenReturn(typedQuery);
+        when(typedQuery.getResultList()).thenReturn(tqList);                        
+        // test empty list  
+        tyreList = tyreDAO.findByName("MM21");
+        assertTrue(tyreList.isEmpty() && tqList.isEmpty());
+        
+        // found in "db"
+        tqList.add(tyre1);       
+        when(tyreEM.createQuery("SELECT t FROM Tyre t WHERE t.name LIKE :name", Tyre.class)).thenReturn(typedQuery);
+        when(typedQuery.getResultList()).thenReturn(tqList);        
+        tyreList = tyreDAO.findByName("MM21");
+        assertTrue(tqList.containsAll(tyreList) && tyreList.containsAll(tqList));
+        
+        // not found in "db"
+        tyreList = tyreDAO.findByName("MM22");
+        assertTrue(tqList.containsAll(tyreList) && tyreList.containsAll(tqList));
+        
     }
 
     private static Tyre createTyre(Double diameter, String name, String type, String vendor, BigDecimal price) {
