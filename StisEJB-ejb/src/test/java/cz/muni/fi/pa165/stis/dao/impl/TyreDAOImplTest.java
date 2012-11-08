@@ -41,7 +41,7 @@ public class TyreDAOImplTest {
 
     @Before
     public void setUp() {
-        // tyreDAO. set field ENtityManager to tyreEM
+        // tyreDAO. set field EntityManager to tyreEM
         // similar to spring's ReflectionTestUtils.setField(..)
         tyreDAO = new TyreDAOImpl();
         Class c = tyreDAO.getClass();
@@ -62,7 +62,7 @@ public class TyreDAOImplTest {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
         try {
             tyreDAO.create(null);
             fail("InvalidArgumentException has not been thrown. <null tyre>");
@@ -225,17 +225,22 @@ public class TyreDAOImplTest {
         
         // found in "db"
         tqList.add(tyre1);       
+        tqList.add(tyre2);
         when(tyreEM.createQuery("SELECT t FROM Tyre t WHERE t.name LIKE :name", Tyre.class)).thenReturn(typedQuery);
         when(typedQuery.getResultList()).thenReturn(tqList);        
+        tqList.get(0);
         tyreList = tyreDAO.findByName("MM21");
-        assertTrue(tqList.containsAll(tyreList) && tyreList.containsAll(tqList));
+        assertTrue(tqList.get(0).equals(tyreList.get(0)));
         
-        // not found in "db"
-        tyreList = tyreDAO.findByName("MM22");
-        assertTrue(tqList.containsAll(tyreList) && tyreList.containsAll(tqList));
+        // not found in "db"   (???)
+        tyreList = tyreDAO.findByName("MM23");
+        tqList.clear();
+        when(typedQuery.getResultList()).thenReturn(tqList);        
+        //System.out.println("Not Found in DB" + "\n" + tyreList + "\n"+ tqList);        
+        assertTrue(tqList.isEmpty() && tyreList.isEmpty());
         
     }
-
+ 
     private static Tyre createTyre(Double diameter, String name, String type, String vendor, BigDecimal price) {
         Tyre t = new Tyre();
         t.setDiameter(diameter);
