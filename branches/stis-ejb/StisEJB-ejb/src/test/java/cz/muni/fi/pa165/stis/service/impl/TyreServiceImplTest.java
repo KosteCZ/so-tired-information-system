@@ -4,6 +4,8 @@ import cz.muni.fi.pa165.stis.dao.TyreDAOLocal;
 import cz.muni.fi.pa165.stis.entity.Tyre;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +18,9 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -174,22 +178,59 @@ public class TyreServiceImplTest {
 
     @Test
     public void testGet() {
+        tyre2.setId(11L);
+        when(service.get(11L)).thenReturn(tyre2);
+        Tyre tyre = service.get(11L);
+        verify(dao, times(1)).get(11L);
+        assertEquals(tyre2, tyre);
     }
 
     @Test
     public void testUpdate() {
+        tyre3.setId(22L);
+        service.update(tyre3);
+        verify(dao).update(tyre3);
     }
 
     @Test
     public void testRemove() {
+        tyre1.setId(1L);
+        when(dao.get(tyre1.getId())).thenReturn(tyre1);
+        service.remove(tyre1);
+        verify(dao).remove(tyre1);
     }
 
     @Test
     public void testFindAll() {
+        List<Tyre> tyreList = new ArrayList<Tyre>();
+        List<Tyre> serviceList = new ArrayList<Tyre>();
+        
+        tyre1.setId(1L);
+        tyre2.setId(2L);
+        tyreList.add(tyre1);
+        tyreList.add(tyre2);
+        
+        when(dao.findAll()).thenReturn(tyreList);
+        serviceList = service.findAll();
+        assertTrue(serviceList.containsAll(tyreList) && tyreList.containsAll(serviceList));
     }
 
     @Test
     public void testFindByName() {
+        List<Tyre> tyreList = new ArrayList<Tyre>();
+        List<Tyre> serviceList = new ArrayList<Tyre>();
+        
+        tyreList.add(tyre1);
+        tyreList.add(tyre2);
+        
+        when(dao.findAll()).thenReturn(tyreList);
+        when(dao.findByName("MM21")).thenReturn(tyreList);
+        serviceList = service.findByName("MM21");
+        assertTrue(tyreList.get(0).equals(serviceList.get(0)));
+        
+        serviceList = service.findByName("MM29");
+        tyreList.clear();
+        assertTrue(serviceList.isEmpty() && tyreList.isEmpty());
     }
     
     private static Tyre createTyre(Double diameter, String name, String type, String vendor, BigDecimal price) {
