@@ -29,12 +29,10 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>org.apache.openejb</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>6.0-3</version>
-            <scope>test</scope>
-            <type>jar</type>
-        </dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>4.1.4.Final</version>
+        </dependency>        
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
@@ -43,26 +41,25 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>6.0</version>
-            <scope>provided</scope>                        
-        </dependency>
-
-<!-- MAYBE NOT NEEDED AT ALL                 
-        <dependency>
             <groupId>org.apache.openejb</groupId>
             <artifactId>openejb-core</artifactId>
             <version>4.0.0</version>
             <scope>test</scope>
         </dependency>       
         
+        <!--        <dependency>
+                   <groupId>org.apache.openejb</groupId>
+                   <artifactId>openejb-jee</artifactId>
+                   <version>4.0.0-beta-1</version>
+               </dependency>
+        These 2 dependencies might be deleted imo. -->
+
         <dependency>
-            <groupId>org.apache.openejb</groupId>
-            <artifactId>openejb-jee</artifactId>
-            <version>4.0.0-beta-1</version>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>6.0</version>
+            <scope>provided</scope>                        
         </dependency>
- These 2 dependencies might be deleted imo. -->
 
     </dependencies>
 
