@@ -12,7 +12,7 @@
         <s:layout-component name="header">
             <jsp:include page="/fragment/header.jsp"/>
         </s:layout-component>
-        <div id="content">
+        <div class="container" id="content">
             <s:layout-component name="content"/>
         </div>
     </body>
