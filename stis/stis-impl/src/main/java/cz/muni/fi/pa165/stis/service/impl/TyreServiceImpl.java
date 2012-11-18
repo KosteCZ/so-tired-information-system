@@ -34,6 +34,7 @@ public class TyreServiceImpl implements TyreService {
         }
         Tyre tm = mapper.map(tyre, Tyre.class);
         tyreDAO.create(tm);
+        tyre.setId(tm.getId());
     }
 
     @Transactional(readOnly = true)

@@ -36,6 +36,7 @@ public class OrderServiceImpl implements OrderService{
         }
         Order ord = mapper.map(order, Order.class);
         orderDAO.create(ord);
+        order.setId(ord.getId());
     }
 
     @Transactional(readOnly=true)
