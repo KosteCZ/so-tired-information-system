@@ -36,6 +36,7 @@ public class ExtraServiceServiceImpl implements ExtraServiceService {
         
         ExtraService es = mapper.map(extraService, ExtraService.class);
         extraServiceDAO.create(es);
+        extraService.setId(es.getId());
     }
 
     @Transactional(readOnly = true)

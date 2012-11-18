@@ -36,6 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
         
         Customer c = mapper.map(customer, Customer.class);
         dao.create(c);
+        customer.setId(c.getId());
     }
 
     @Transactional(readOnly = true)
