@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
  * @author Dusan Svancara
  */
 
-// @UrlBinding("/customer/{$event}") -- NOT WORKING! 
 @UrlBinding("/customer/{$event}/")
 public class CustomerActionBean implements ActionBean {
     
