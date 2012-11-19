@@ -20,7 +20,7 @@
     </context-param>
 
     <!-- Stripes -->
-    <filter>
+    <filter>        
         <display-name>Stripes Filter</display-name>
         <filter-name>StripesFilter</filter-name>
         <filter-class>net.sourceforge.stripes.controller.StripesFilter</filter-class>
