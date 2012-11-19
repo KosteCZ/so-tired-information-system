@@ -4,38 +4,13 @@
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 
 <s:layout-render name="/layout.jsp" title="Customers">
-    <s:layout-component name="content">
-
-        <s:form beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean"> 
-            <fieldset><legend>Search</legend>
-                <table>
-                    <tr>                        
-                        <th><s:label for="s1" name="Search by name:"/></th>
-                        <td><s:text id="s1" name="firstname"/></td> 
-
-                        <th><s:label for="s2" name=" "/></th>
-                        <td><s:text id="s2" name="lastname"/></td>                
-                        <td><s:submit name="findByName">Search</s:submit></td>
-                        </tr>                    
-                    </table>                
-                </fieldset>     
-        </s:form>
-
-
+    <s:layout-component name="content">   
+        <FORM><INPUT TYPE="button" VALUE="Back" onClick="history.go(-1);return true;"></FORM>
+        <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="findByName" var="CustomerActionBean"/>
         <hr>
-        <s:form beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean">
-            <s:errors/>
-            <fieldset><legend>New Customer</legend>
-                <%@include file="/customer/form.jsp"%>
-                <s:submit name="newcustomer">Create customer</s:submit>
-            </fieldset>            
-        </s:form>
-
-
-
-        <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="all" var="CustomerActionBean"/>
-        <hr>
-        <span>Customers</span>
+        <c:choose>
+        <c:when test="${not empty CustomerActionBean.foundList}">
+        <span>Found Customers</span>
         <table class="table">
             <tr>
                 <th>id</th>
@@ -45,8 +20,8 @@
                 <th>Phone</th>                                
                 <th>Edit</th>
                 <th>Remove</th>
-            </tr>
-            <c:forEach items="${CustomerActionBean.customers}" var="cto">
+            </tr>            
+            <c:forEach items="${CustomerActionBean.foundList}" var="cto">                
                 <tr>
                     <td>${cto.id}</td>                    
                     <td><c:out value="${cto.firstName}"/></td>
@@ -55,14 +30,17 @@
                     <td><c:out value="${cto.phone}"/></td>
                     <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="edit">
                             <s:param name="cto.id" value="${cto.id}"/><img alt="edit" src="http://ecocms.com/demo/editor_images/ico_edit.png" width="20px" height="20px"/>
-                        </s:link></td>
+                        </s:link> </td>
                     <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="deleteCustomer">
                             <s:param name="cto.id" value="${cto.id}"/><img alt="remove" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTgerrfVO8sAIilDDea0cIVBMoNW37dNNDG6C6RH9T279yBMfzwgw" width="20px" height="20px"/>
-                        </s:link></td>
+                        </s:link> </td>
                 </tr>                
             </c:forEach>
         </table>
-
-
+        </c:when>
+        <c:otherwise>
+            <span class="noresults">Sorry, no customers found with given name/surname.</span>
+        </c:otherwise>
+        </c:choose>          
     </s:layout-component>
 </s:layout-render>
