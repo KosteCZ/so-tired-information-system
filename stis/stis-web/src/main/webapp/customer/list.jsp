@@ -24,8 +24,8 @@
                 <th>Last Name</th>
                 <th>Address</th>
                 <th>Phone</th>                                
-                <th>Order-ids??</th>
-                <th></th>
+                <th>Edit</th>
+                <th>Remove</th>
             </tr>
             <c:forEach items="${CustomerActionBean.customers}" var="cto">
                 <tr>
@@ -34,22 +34,12 @@
                     <td><c:out value="${cto.lastName}"/></td>
                     <td><c:out value="${cto.address}"/></td>
                     <td><c:out value="${cto.phone}"/></td>
+                    <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="edit"><s:param name="cto.id" value="${cto.id}"/>edit</s:link> </td>
+                    <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="deleteCustomer">
+                            <s:param name="cto.id" value="${cto.id}"/><img alt="remove" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTgerrfVO8sAIilDDea0cIVBMoNW37dNNDG6C6RH9T279yBMfzwgw" width="20px" height="20px"/>
+                        </s:link> </td>
                 </tr>                
             </c:forEach>
-                <tr>
-                    <td>4</td>                    
-                    <td><c:out value="${cto.firstName}"/>dsada</td>
-                    <td><c:out value="${cto.lastName}"/>das</td>
-                    <td><c:out value="${cto.address}"/>adsa</td>
-                    <td><c:out value="${cto.phone}"/>fsd</td>
-                </tr>
-                <tr>
-                    <td>4</td>                    
-                    <td><c:out value="${cto.firstName}"/>dsada</td>
-                    <td><c:out value="${cto.lastName}"/>das</td>
-                    <td><c:out value="${cto.address}"/>adsa</td>
-                    <td><c:out value="${cto.phone}"/>fsd</td>
-                </tr>
         </table>
                 
                 
