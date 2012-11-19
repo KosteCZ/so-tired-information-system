@@ -33,8 +33,8 @@ public class TyreActionBean implements ActionBean {
     private ActionBeanContext context;
     
     @ValidateNestedProperties(value = {
-        @Validate(on = {"newTyre", "saveTyre"}, field = "name", required = true),
-        @Validate(on = {"newTyre", "saveTyre"}, field = "type", required = true)
+        @Validate(on = {"newTyre", "save"}, field = "name", required = true),
+        @Validate(on = {"newTyre", "save"}, field = "type", required = true)
 //        @Validate(on = {"newTyre", "saveTyre"}, field = "address", required = true, minlength = 10),
 //        @Validate(on = {"newTyre", "saveTyre"}, field = "phone", required = true, minlength= 10, maxlength=14)
     })

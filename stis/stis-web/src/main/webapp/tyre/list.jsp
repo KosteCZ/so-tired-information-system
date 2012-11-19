@@ -1,24 +1,9 @@
 <%-- 
     Document   : list
     Created on : Nov 18, 2012, 8:51:44 PM
-    Author     : Honza Koščák
+    Author     : Honza Koscak
 --%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
-
-<%-- 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
---%>        
+<%@include file="/fragment/taglibs.jsp" %>
 <s:layout-render name="/layout.jsp" title="Tyres">
     <s:layout-component name="content">
         
@@ -55,9 +40,9 @@
                     <td><s:link beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="delete"><s:param name="tyre.id" value="${tyre.id}"/>delete</s:link></td>
                     <td><s:link beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="edit"><s:param name="tyre.id" value="${tyre.id}"/>edit</s:link></td>
                     --%>
-                    <td><s:link beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="edit"><s:param name="tto.id" value="${tto.id}"/>edit</s:link> </td>
+                    <td><s:link beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="edit"><s:param name="tto.id" value="${tto.id}"/><i class="icon-edit"></i></s:link> </td>
                     <td><s:link beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="deleteTyre">
-                            <s:param name="tto.id" value="${tto.id}"/><img alt="remove" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTgerrfVO8sAIilDDea0cIVBMoNW37dNNDG6C6RH9T279yBMfzwgw" width="20px" height="20px"/>
+                            <s:param name="tto.id" value="${tto.id}"/><i class="icon-remove"></i>
                         </s:link>
                     </td>
                 </tr>
