@@ -2,6 +2,8 @@ package cz.muni.fi.pa165.stis.web;
 
 import cz.muni.fi.pa165.stis.dto.CustomerTO;
 import cz.muni.fi.pa165.stis.service.CustomerService;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import net.sourceforge.stripes.action.ActionBean;
@@ -23,25 +25,45 @@ import org.slf4j.LoggerFactory;
  *
  * @author Dusan Svancara
  */
-
 @UrlBinding("/customer/{$event}/")
 public class CustomerActionBean implements ActionBean {
-    
-    private final static Logger log = LoggerFactory.getLogger(CustomerActionBean.class); 
+
+    private final static Logger log = LoggerFactory.getLogger(CustomerActionBean.class);
     private ActionBeanContext context;
+    private List<CustomerTO> foundList;
+
+//    public void fillDB() {
+//        CustomerTO cto1 = new CustomerTO();
+//        CustomerTO cto2 = new CustomerTO();
+//        CustomerTO cto3 = new CustomerTO();
+//        cto1.setFirstName("Lukas");
+//        cto1.setFirstName("Novy");
+//        cto1.setAddress("Polna 22, Brno");
+//
+//        cto2.setFirstName("Lukas");
+//        cto2.setFirstName("Novotny");
+//        cto2.setAddress("Prazska 2, Praha");
+//
+//        cto3.setFirstName("Tomas");
+//        cto3.setFirstName("Novy");
+//        cto3.setAddress("Domazlicka 36, Bratislava");
+//
+//        customerService.create(cto1);
+//        customerService.create(cto2);
+//        customerService.create(cto3);
+//    }
     
     @SpringBean
     protected CustomerService customerService;
-    
+
     @DefaultHandler
     public Resolution all() {
-        log.debug("all()");        
+        log.debug("all()");
         return new ForwardResolution("/customer/list.jsp");
     }
-    
-    public List<CustomerTO> getCustomers() {        
-        List<CustomerTO> list = customerService.findAll();
-        return list;
+
+    public List<CustomerTO> getCustomers() {
+        return customerService.findAll();
     }
 
     @Override
@@ -53,42 +75,39 @@ public class CustomerActionBean implements ActionBean {
     public ActionBeanContext getContext() {
         return context;
     }
-    
-    
-    
+
     public CustomerTO getCustomerTO() {
         return cto;
     }
-    
+
     public void setCustomerTO(CustomerTO cto) {
         this.cto = cto;
     }
-                    
     @ValidateNestedProperties(value = {
-        @Validate(on = {"newCustomer"}, field="lastname", required=true, minlength= 10)        
+        @Validate(on = {"newcustomer"}, field = "customerTO.firstName", required = true),
+        @Validate(on = {"newcustomer"}, field = "customerTO.lastName", required = true),
+        @Validate(on = {"newcustomer"}, field = "customerTO.address", required = true)
     })
     private CustomerTO cto;
 
-    public Resolution newCustomer() {
-        log.debug("newCustomer() cto={}", cto);
+    public Resolution newcustomer() {
+        log.debug("newcustomer() cto={}", cto);
         HttpServletRequest req = context.getRequest();
         System.out.println(req.getParameterMap());
         customerService.create(cto);
         System.err.println(cto);
         return new RedirectResolution(this.getClass(), "all");
     }
-        
-     public Resolution deleteCustomer() {                
+
+    public Resolution deleteCustomer() {
         HttpServletRequest req = context.getRequest();
-        //System.out.println(req.getContextPath() + "./." + req.getServletPath() + "./."  +req.getPathInfo() +"\n"+ req.getParameterMap());        
         Long id = Long.parseLong(req.getParameter("cto.id"));
         cto = customerService.get(id);
         log.debug("deleteCustomer() cto={}", cto);
         customerService.remove(cto);
         return new RedirectResolution(this.getClass(), "all");
     }
-     
-     
+
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
     public void loadCustomerFromDatabase() {
         String ids = context.getRequest().getParameter("cto.id");
@@ -108,7 +127,32 @@ public class CustomerActionBean implements ActionBean {
         customerService.update(cto);
         return new RedirectResolution(this.getClass(), "all");
     }
-     
-    
-}
 
+    public Resolution findByName() {
+        log.debug("findByName() ");
+        HttpServletRequest req = context.getRequest();
+        System.out.println(req.getContextPath() + "./." + req.getServletPath() + "./." + req.getPathInfo() + "\n" + req.getParameterMap());
+
+        String fn = context.getRequest().getParameter("firstname");
+        String ln = context.getRequest().getParameter("lastname");        
+             
+        if (!fn.equals("") && !ln.equals("")){
+            foundList = customerService.findByName(fn, ln);
+        } else if (ln.equals("")) {
+            foundList = customerService.findByName(fn, null);
+        } else if (fn.equals("")) {
+            foundList = customerService.findByName(null, ln);
+        } else {
+            return new RedirectResolution(this.getClass(), "all");
+        }
+            //log.debug(foundList.toString());
+        return new ForwardResolution("/customer/resultlist.jsp");
+    }
+
+    /**
+     * returns list of found customers
+     */
+    public List<CustomerTO> getFoundList() {
+        return foundList;
+    }
+}

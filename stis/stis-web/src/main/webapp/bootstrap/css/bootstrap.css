@@ -8,6 +8,14 @@
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
 
+ 
+
+.input.error { background-color: yellow; }
+.noresults {
+    color: red;
+    font-size: large;
+}
+
 article,
 aside,
 details,
