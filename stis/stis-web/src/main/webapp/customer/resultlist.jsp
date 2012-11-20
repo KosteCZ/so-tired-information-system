@@ -29,10 +29,10 @@
                     <td><c:out value="${cto.address}"/></td>
                     <td><c:out value="${cto.phone}"/></td>
                     <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="edit">
-                            <s:param name="cto.id" value="${cto.id}"/><img alt="edit" src="http://ecocms.com/demo/editor_images/ico_edit.png" width="20px" height="20px"/>
+                            <s:param name="cto.id" value="${cto.id}"/><i class="icon-edit" alt="edit"></i>
                         </s:link> </td>
-                    <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="deleteCustomer">
-                            <s:param name="cto.id" value="${cto.id}"/><img alt="remove" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTgerrfVO8sAIilDDea0cIVBMoNW37dNNDG6C6RH9T279yBMfzwgw" width="20px" height="20px"/>
+                    <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="delete">
+                            <s:param name="cto.id" value="${cto.id}"/><i class="icon-remove" alt="remove"></i>
                         </s:link> </td>
                 </tr>                
             </c:forEach>

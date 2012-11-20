@@ -31,6 +31,12 @@ public class CustomerActionBean implements ActionBean {
     private final static Logger log = LoggerFactory.getLogger(CustomerActionBean.class);
     private ActionBeanContext context;
     private List<CustomerTO> foundList;
+    @ValidateNestedProperties(value = {
+        @Validate(on = {"add", "save"}, field = "firstName", required = true),
+        @Validate(on = {"add", "save"}, field = "lastName", required = true),
+        @Validate(on = {"add", "save"}, field = "address", required = true)
+    })
+    private CustomerTO cto;
 
 //    public void fillDB() {
 //        CustomerTO cto1 = new CustomerTO();
@@ -52,7 +58,6 @@ public class CustomerActionBean implements ActionBean {
 //        customerService.create(cto2);
 //        customerService.create(cto3);
 //    }
-    
     @SpringBean
     protected CustomerService customerService;
 
@@ -76,21 +81,15 @@ public class CustomerActionBean implements ActionBean {
         return context;
     }
 
-    public CustomerTO getCustomerTO() {
+    public CustomerTO getCto() {
         return cto;
     }
 
-    public void setCustomerTO(CustomerTO cto) {
+    public void setCto(CustomerTO cto) {
         this.cto = cto;
     }
-    @ValidateNestedProperties(value = {
-        @Validate(on = {"newcustomer"}, field = "customerTO.firstName", required = true),
-        @Validate(on = {"newcustomer"}, field = "customerTO.lastName", required = true),
-        @Validate(on = {"newcustomer"}, field = "customerTO.address", required = true)
-    })
-    private CustomerTO cto;
 
-    public Resolution newcustomer() {
+    public Resolution add() {
         log.debug("newcustomer() cto={}", cto);
         HttpServletRequest req = context.getRequest();
         System.out.println(req.getParameterMap());
@@ -99,7 +98,7 @@ public class CustomerActionBean implements ActionBean {
         return new RedirectResolution(this.getClass(), "all");
     }
 
-    public Resolution deleteCustomer() {
+    public Resolution delete() {
         HttpServletRequest req = context.getRequest();
         Long id = Long.parseLong(req.getParameter("cto.id"));
         cto = customerService.get(id);
@@ -134,9 +133,9 @@ public class CustomerActionBean implements ActionBean {
         System.out.println(req.getContextPath() + "./." + req.getServletPath() + "./." + req.getPathInfo() + "\n" + req.getParameterMap());
 
         String fn = context.getRequest().getParameter("firstname");
-        String ln = context.getRequest().getParameter("lastname");        
-             
-        if (!fn.equals("") && !ln.equals("")){
+        String ln = context.getRequest().getParameter("lastname");
+
+        if (!fn.equals("") && !ln.equals("")) {
             foundList = customerService.findByName(fn, ln);
         } else if (ln.equals("")) {
             foundList = customerService.findByName(fn, null);
@@ -145,7 +144,7 @@ public class CustomerActionBean implements ActionBean {
         } else {
             return new RedirectResolution(this.getClass(), "all");
         }
-            //log.debug(foundList.toString());
+        //log.debug(foundList.toString());
         return new ForwardResolution("/customer/resultlist.jsp");
     }
 
