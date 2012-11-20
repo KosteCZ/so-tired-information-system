@@ -15,7 +15,7 @@
         </s:form>
         <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="all" var="actionBean"/>
         <c:choose>
-            <c:when test="${not empty ActionBean.tyres}">
+            <c:when test="${not empty actionBean.tyres}">
                 <span>Tyres</span>
                 <table class="table">
                     <tr>
@@ -31,7 +31,7 @@
                     <%-- --%>
                     <c:forEach items="${actionBean.tyres}" var="tto">
                         <tr>
-                            <td>${tto.id}</td>
+                              <td>${tto.id}</td>
                             <td><c:out value="${tto.type}"/></td>
                             <td><c:out value="${tto.name}"/></td>
                             <td><c:out value="${tto.diameter}"/></td>

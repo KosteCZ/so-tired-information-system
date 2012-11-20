@@ -28,39 +28,41 @@
         </s:form>
 
 
-
-        <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="all" var="CustomerActionBean"/>
         <c:choose>
-            <c:when test="${not empty CustomerActionBean.customers}">
+            <c:when test="${not empty actionBean.customers}">            
+                <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="all" var="CustomerActionBean"/>
                 <span>Customers</span>
-                <table class="table">
-                    <tr>
-                        <th><s:label class="table" name="firstName"/></th>
-                        <th><s:label class="table" name="lastName"/>Last Name</th>
-                        <th><s:label class="table" name="address"/>Address</th>
-                        <th><s:label class="table" name="phone"/>Phone</th>                                
-                        <th><s:label class="table" name="edit"/>Edit</th>
-                        <th><s:label class="table" name="remove"/>Remove</th>
-                    </tr>
-                    <c:forEach items="${CustomerActionBean.customers}" var="cto">
-                        <tr>                  
-                            <td><c:out value="${cto.firstName}"/></td>
-                            <td><c:out value="${cto.lastName}"/></td>
-                            <td><c:out value="${cto.address}"/></td>
-                            <td><c:out value="${cto.phone}"/></td>
-                            <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="edit">
-                                    <s:param name="cto.id" value="${cto.id}"/><i class="icon-edit" alt="edit"></i>
-                                </s:link></td>
-                            <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="delete">
-                                    <s:param name="cto.id" value="${cto.id}"/><i class="icon-remove" alt="remove"></i>
-                                </s:link></td>
-                        </tr>                
-                    </c:forEach>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th><s:label class="table" name="firstName"/></th>
+                            <th><s:label class="table" name="lastName"/>Last Name</th>
+                            <th><s:label class="table" name="address"/>Address</th>
+                            <th><s:label class="table" name="phone"/>Phone</th>                                
+                            <th><s:label class="table" name="edit"/>Edit</th>
+                            <th><s:label class="table" name="remove"/>Remove</th>
+                        </tr>
+                        </head>
+
+                    <tbody>  
+                        <c:forEach items="${actionBean.customers}" var="cto">
+                            <tr>
+                                <td><c:out value="${cto.firstName}"/></td>
+                                <td><c:out value="${cto.lastName}"/></td>
+                                <td><c:out value="${cto.address}"/></td>
+                                <td><c:out value="${cto.phone}"/></td>
+                                <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="edit">
+                                        <s:param name="cto.id" value="${cto.id}"/><i class="icon-pencil" alt="edit"></i></s:link></td>
+                                <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="delete">
+                                        <s:param name="cto.id" value="${cto.id}"/><i class="icon-trash" alt="remove"></i></s:link></td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>                
                 </table>
             </c:when>
             <c:otherwise>
                 <hr>
-                <span class="noresults"> Customer Catalog is empty</span>
+                <h4> Customer Catalog is empty</h4>
             </c:otherwise>
         </c:choose>
 
