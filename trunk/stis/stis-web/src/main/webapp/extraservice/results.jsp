@@ -4,7 +4,7 @@
 <s:layout-render name="/layout.jsp" title="${msg}">
     <s:layout-component name="content">
         <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" var="actionBean"/>
-        <s:link class="btn" beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" event="list"><i class="icon-arrow-left"></i> <f:message key="button.back"/></s:link>
+        <s:link class="btn" beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" style="margin-bottom: 5px;" event="list"><i class="icon-arrow-left"></i> <f:message key="button.back"/></s:link>
 
         <c:choose>
             <c:when test="${not empty actionBean.results}">
