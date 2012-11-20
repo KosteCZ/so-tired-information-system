@@ -1,0 +1,14 @@
+/* 
+    Document   : style
+    Created on : Nov 20, 2012, 8:16:19 AM
+    Author     : michalxo
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+input.error { background-color: #ffcccc; }
+
+.noresults {
+    color: red;
+    font-size: large;
+}

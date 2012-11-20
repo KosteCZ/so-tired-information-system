@@ -1,68 +1,68 @@
-<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@include file="/fragment/taglibs.jsp" %>
 
 <s:layout-render name="/layout.jsp" title="Customers">
     <s:layout-component name="content">
 
         <s:form beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean"> 
             <fieldset><legend>Search</legend>
-                <table>
-                    <tr>                        
-                        <th><s:label for="s1" name="Search by name:"/></th>
-                        <td><s:text id="s1" name="firstname"/></td> 
-
-                        <th><s:label for="s2" name=" "/></th>
-                        <td><s:text id="s2" name="lastname"/></td>                
-                        <td><s:submit name="findByName">Search</s:submit></td>
-                        </tr>                    
-                    </table>                
-                </fieldset>     
+                <form class="form-search">
+                    <div class="input-append input-prepend">
+                        <input placeholder="firstname" type="text" class="span2" name="firstname"/>                    
+                        <input placeholder="lastname" type="text" id="appendedPrependedInputButton" class="span2" name="lastname"/>
+                        <!--<span class="btn" type="" name="findByName">-->
+                        <%--<s:submit class="btn" value="Search" name="findByName"/>--%>
+                        <button type="submit" name="findByName" class="btn"><i class="icon-search"></i> Search</button>
+                        <!--</span>-->
+                    </div>                                        
+                </form>
+            </fieldset>     
         </s:form>
 
 
-        <hr>
-        <s:form beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean">
-            <s:errors/>
-            <fieldset><legend>New Customer</legend>
-                <%@include file="/customer/form.jsp"%>
-                <s:submit name="newcustomer">Create customer</s:submit>
+        <s:form class="form-horizontal" beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean">
+            <fieldset>
+                <legend>New Customer</legend>
+                <%@include file="/customer/form.jsp"%>                
+                <%--<s:submit name="add">Create customer</s:submit>--%>
             </fieldset>            
         </s:form>
 
 
 
         <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="all" var="CustomerActionBean"/>
-        <hr>
-        <span>Customers</span>
-        <table class="table">
-            <tr>
-                <th>id</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Address</th>
-                <th>Phone</th>                                
-                <th>Edit</th>
-                <th>Remove</th>
-            </tr>
-            <c:forEach items="${CustomerActionBean.customers}" var="cto">
-                <tr>
-                    <td>${cto.id}</td>                    
-                    <td><c:out value="${cto.firstName}"/></td>
-                    <td><c:out value="${cto.lastName}"/></td>
-                    <td><c:out value="${cto.address}"/></td>
-                    <td><c:out value="${cto.phone}"/></td>
-                    <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="edit">
-                            <s:param name="cto.id" value="${cto.id}"/><img alt="edit" src="http://ecocms.com/demo/editor_images/ico_edit.png" width="20px" height="20px"/>
-                        </s:link></td>
-                    <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="deleteCustomer">
-                            <s:param name="cto.id" value="${cto.id}"/><img alt="remove" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTgerrfVO8sAIilDDea0cIVBMoNW37dNNDG6C6RH9T279yBMfzwgw" width="20px" height="20px"/>
-                        </s:link></td>
-                </tr>                
-            </c:forEach>
-        </table>
-
+        <c:choose>
+            <c:when test="${not empty CustomerActionBean.customers}">
+                <span>Customers</span>
+                <table class="table">
+                    <tr>
+                        <th><s:label class="table" name="firstName"/></th>
+                        <th><s:label class="table" name="lastName"/>Last Name</th>
+                        <th><s:label class="table" name="address"/>Address</th>
+                        <th><s:label class="table" name="phone"/>Phone</th>                                
+                        <th><s:label class="table" name="edit"/>Edit</th>
+                        <th><s:label class="table" name="remove"/>Remove</th>
+                    </tr>
+                    <c:forEach items="${CustomerActionBean.customers}" var="cto">
+                        <tr>                  
+                            <td><c:out value="${cto.firstName}"/></td>
+                            <td><c:out value="${cto.lastName}"/></td>
+                            <td><c:out value="${cto.address}"/></td>
+                            <td><c:out value="${cto.phone}"/></td>
+                            <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="edit">
+                                    <s:param name="cto.id" value="${cto.id}"/><i class="icon-edit" alt="edit"></i>
+                                </s:link></td>
+                            <td><s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="delete">
+                                    <s:param name="cto.id" value="${cto.id}"/><i class="icon-remove" alt="remove"></i>
+                                </s:link></td>
+                        </tr>                
+                    </c:forEach>
+                </table>
+            </c:when>
+            <c:otherwise>
+                <hr>
+                <span class="noresults"> Customer Catalog is empty</span>
+            </c:otherwise>
+        </c:choose>
 
     </s:layout-component>
 </s:layout-render>

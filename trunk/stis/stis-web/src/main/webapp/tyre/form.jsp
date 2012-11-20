@@ -1,12 +1,10 @@
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@include file="/fragment/taglibs.jsp" %>
 <s:errors/>
 <table class="table">
     <tr>
         <th><s:label for="c2" name="tyreTO.type"/></th>
-        <td>
-            <s:errors field="type"/>
-            <s:text id="c2" name="tyreTO.type"/>
-        </td>
+        <td><s:text id="c2" name="tyreTO.type"/></td>
 
         <th><s:label for="c1" name="tyreTO.name"/></th>
         <td><s:text id="c1" name="tyreTO.name"/></td>
