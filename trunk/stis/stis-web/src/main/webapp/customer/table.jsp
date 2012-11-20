@@ -13,7 +13,7 @@
             </head>
 
         <tbody>  
-            <c:forEach items="${actionBean.customers}" var="cto">
+            <c:forEach items="${items}" var="cto">
                 <tr>
                     <td><c:out value="${cto.firstName}"/></td>
                     <td><c:out value="${cto.lastName}"/></td>

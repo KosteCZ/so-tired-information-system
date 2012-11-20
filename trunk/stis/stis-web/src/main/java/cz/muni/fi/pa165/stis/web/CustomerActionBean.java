@@ -31,6 +31,7 @@ public class CustomerActionBean implements ActionBean {
     private final static Logger log = LoggerFactory.getLogger(CustomerActionBean.class);
     private ActionBeanContext context;
     private List<CustomerTO> foundList;
+    
     @ValidateNestedProperties(value = {
         @Validate(on = {"add", "save"}, field = "firstName", required = true),
         @Validate(on = {"add", "save"}, field = "lastName", required = true),
@@ -38,26 +39,6 @@ public class CustomerActionBean implements ActionBean {
     })
     private CustomerTO cto;
 
-//    public void fillDB() {
-//        CustomerTO cto1 = new CustomerTO();
-//        CustomerTO cto2 = new CustomerTO();
-//        CustomerTO cto3 = new CustomerTO();
-//        cto1.setFirstName("Lukas");
-//        cto1.setFirstName("Novy");
-//        cto1.setAddress("Polna 22, Brno");
-//
-//        cto2.setFirstName("Lukas");
-//        cto2.setFirstName("Novotny");
-//        cto2.setAddress("Prazska 2, Praha");
-//
-//        cto3.setFirstName("Tomas");
-//        cto3.setFirstName("Novy");
-//        cto3.setAddress("Domazlicka 36, Bratislava");
-//
-//        customerService.create(cto1);
-//        customerService.create(cto2);
-//        customerService.create(cto3);
-//    }
     @SpringBean
     protected CustomerService customerService;
 
@@ -133,7 +114,6 @@ public class CustomerActionBean implements ActionBean {
         log.debug("findByName() ");
         //HttpServletRequest req = context.getRequest();
         //System.out.println(req.getContextPath() + "./." + req.getServletPath() + "./." + req.getPathInfo() + "\n" + req.getParameterMap());
-
         String fn = context.getRequest().getParameter("firstname");
         String ln = context.getRequest().getParameter("lastname");
 
@@ -157,3 +137,25 @@ public class CustomerActionBean implements ActionBean {
         return foundList;
     }
 }
+
+
+//    public void fillDB() {
+//        CustomerTO cto1 = new CustomerTO();
+//        CustomerTO cto2 = new CustomerTO();
+//        CustomerTO cto3 = new CustomerTO();
+//        cto1.setFirstName("Lukas");
+//        cto1.setFirstName("Novy");
+//        cto1.setAddress("Polna 22, Brno");
+//
+//        cto2.setFirstName("Lukas");
+//        cto2.setFirstName("Novotny");
+//        cto2.setAddress("Prazska 2, Praha");
+//
+//        cto3.setFirstName("Tomas");
+//        cto3.setFirstName("Novy");
+//        cto3.setAddress("Domazlicka 36, Bratislava");
+//
+//        customerService.create(cto1);
+//        customerService.create(cto2);
+//        customerService.create(cto3);
+//    }
