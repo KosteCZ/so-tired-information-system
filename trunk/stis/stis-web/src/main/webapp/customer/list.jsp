@@ -23,14 +23,13 @@
             <fieldset>
                 <legend>New Customer</legend>
                 <%@include file="/customer/form.jsp"%>                
-                <%--<s:submit name="add">Create customer</s:submit>--%>
+                <s:submit name="add" class="btn">Create customer</s:submit>
             </fieldset>            
         </s:form>
 
-
+        <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="all" var="actionBean"/>
         <c:choose>
             <c:when test="${not empty actionBean.customers}">            
-                <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="all" var="CustomerActionBean"/>
                 <span>Customers</span>
                 <table class="table table-striped">
                     <thead>

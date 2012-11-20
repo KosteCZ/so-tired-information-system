@@ -1,15 +1,17 @@
 <%@include file="/fragment/taglibs.jsp" %>
-<s:layout-render name="/layout.jsp" title="Search results">
+
+<f:message key="search.results" var="msg"/>
+<s:layout-render name="/layout.jsp" title="${msg}">
     <s:layout-component name="content">
         <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" var="actionBean"/>
-        <s:link class="btn" beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" event="list"><i class="icon-arrow-left"></i> Back</s:link>
+        <s:link class="btn" beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" event="list"><i class="icon-arrow-left"></i> <f:message key="button.back"/></s:link>
 
         <c:choose>
             <c:when test="${not empty actionBean.results}">
                 <s:layout-render name="/extraservice/tableLayout.jsp" items="${actionBean.results}"/>
             </c:when>
             <c:otherwise>
-                <h4>No results found</h4>
+                <h4><f:message key="extraService.noResults"/></h4>
             </c:otherwise>
         </c:choose>
     </s:layout-component>
