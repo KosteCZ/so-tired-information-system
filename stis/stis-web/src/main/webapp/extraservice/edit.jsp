@@ -7,10 +7,9 @@
             <fieldset><legend>Edit extra service</legend>
             <s:hidden name="extraService.id"/>
             <%@include file="/extraservice/form.jsp"%>
-            <div class="control-group">
-                <div class="controls">
-                    <s:submit class="btn" name="save">Save</s:submit>
-                </div>
+            <div div class="form-actions">
+                <button type="submit" class="btn btn-primary" name="save"><i class="icon-ok"></i> Save</button>
+                <s:link beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" event="list" class="btn"><i class="icon-ban-circle"></i> Cancel</s:link>
             </div>
             </fieldset>
         </s:form>
