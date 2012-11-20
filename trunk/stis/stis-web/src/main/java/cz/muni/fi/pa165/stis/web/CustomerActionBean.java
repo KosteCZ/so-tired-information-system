@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Dusan Svancara
+ * @author Michal Toth
  */
 @UrlBinding("/customer/{$event}/")
 public class CustomerActionBean implements ActionBean {
@@ -91,16 +91,18 @@ public class CustomerActionBean implements ActionBean {
 
     public Resolution add() {
         log.debug("newcustomer() cto={}", cto);
-        HttpServletRequest req = context.getRequest();
-        System.out.println(req.getParameterMap());
         customerService.create(cto);
-        System.err.println(cto);
         return new RedirectResolution(this.getClass(), "all");
+        
+    }
+    
+    public Resolution create() {
+        log.debug("create()");
+        return new ForwardResolution("/customer/create.jsp");
     }
 
     public Resolution delete() {
-        HttpServletRequest req = context.getRequest();
-        Long id = Long.parseLong(req.getParameter("cto.id"));
+        Long id = Long.parseLong(context.getRequest().getParameter("cto.id"));
         cto = customerService.get(id);
         log.debug("deleteCustomer() cto={}", cto);
         customerService.remove(cto);
@@ -129,8 +131,8 @@ public class CustomerActionBean implements ActionBean {
 
     public Resolution findByName() {
         log.debug("findByName() ");
-        HttpServletRequest req = context.getRequest();
-        System.out.println(req.getContextPath() + "./." + req.getServletPath() + "./." + req.getPathInfo() + "\n" + req.getParameterMap());
+        //HttpServletRequest req = context.getRequest();
+        //System.out.println(req.getContextPath() + "./." + req.getServletPath() + "./." + req.getPathInfo() + "\n" + req.getParameterMap());
 
         String fn = context.getRequest().getParameter("firstname");
         String ln = context.getRequest().getParameter("lastname");

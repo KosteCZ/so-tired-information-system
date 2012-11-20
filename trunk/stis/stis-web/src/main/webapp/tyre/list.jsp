@@ -18,8 +18,7 @@
             <c:when test="${not empty actionBean.tyres}">
                 <span>Tyres</span>
                 <table class="table">
-                    <tr>
-                        <th>id</th>
+                    <tr>                       
                         <th>Type</th>
                         <th>Name</th>
                         <th>Diameter</th>
@@ -31,7 +30,6 @@
                     <%-- --%>
                     <c:forEach items="${actionBean.tyres}" var="tto">
                         <tr>
-                              <td>${tto.id}</td>
                             <td><c:out value="${tto.type}"/></td>
                             <td><c:out value="${tto.name}"/></td>
                             <td><c:out value="${tto.diameter}"/></td>

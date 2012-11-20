@@ -1,4 +1,5 @@
 <%@include file="taglibs.jsp"%>
+
 <div id="header">
     <div id="navigation">
         <div class="navbar navbar-fixed-top navbar-inverse">
@@ -6,16 +7,17 @@
                 <div class="container">
                     <s:link class="brand" href="/">STIS</s:link>
                     <ul class="nav">
-                        <li><s:link href="/tyre/list.jsp">Tyre catalog</s:link></li>
-                        <li><s:link href="/extraservice/list.jsp">Extra service catalog</s:link></li>
-                        <li><s:link href="/order/create.jsp">Create order</s:link></li>
+                        
+                        <li><s:link href="/tyre/list.jsp" ><f:message key="tyre.catalog"/></s:link></li>
+                        <li><s:link href="/extraservice/list.jsp"><f:message key="extraService.catalog"/></s:link></li>
+                        <li><s:link href="/order/create.jsp"><f:message key="order.create.title"/></s:link></li>
                         <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin<b class="caret"></b></a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><f:message key="admin"/><b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><s:link href="/order/list.jsp">Orders</s:link></li>
-                                <li><s:link href="/customer/list.jsp">Customers</s:link></li>
-                                <li><s:link href="/tyre/list.jsp">Tyres</s:link></li>
-                                <li><s:link href="/extraservice/list.jsp">Extra services</s:link></li>
+                                <li><s:link href="/order/list.jsp"><f:message key="order.catalog"/></s:link></li>
+                                <li><s:link href="/customer/list.jsp"><f:message key="customer.catalog"/></s:link></li>
+                                <li><s:link href="/tyre/list.jsp"><f:message key="tyre.catalog"/></s:link></li>
+                                <li><s:link href="/extraservice/list.jsp"><f:message key="extraService.catalog"/></s:link></li>
                             </ul>
                         </li>
                     </ul>
@@ -23,4 +25,4 @@
             </div>
         </div>
     </div>
-</div>
+    </div>

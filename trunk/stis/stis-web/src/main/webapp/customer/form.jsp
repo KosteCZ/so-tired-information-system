@@ -2,33 +2,29 @@
 <%@include file="/fragment/taglibs.jsp" %>
 <s:errors/>                    
 <div class="control-group">
-    <s:label class="control-label" for="inputFirstName" name="ffirstName"/>
+    <s:label class="control-label" for="inputFirstName" name="customer.form.firstName"/>
     <div class="controls">        
-        <!--<input type="text" id="inputFirstName" placeholder="Firstname" name="cto.firstName"/>-->
         <s:text id="inputFirstName" name="cto.firstName"/>
     </div>               
 </div>
 
 <div class="control-group">        
-    <s:label class="control-label" for="inputLastName" name="flastName"/>
-    <div class="controls">
-        <!--<input class="input.error" type="text" id="inputLastName" placeholder="Lastname" name="cto.lastName"/>-->     
+    <s:label class="control-label" for="inputLastName" name="customer.form.lastName"/>
+    <div class="controls">     
         <s:text id="inputLastName" name="cto.lastName"/>             
     </div>
 </div>
 
 <div class="control-group">
-    <s:label class="control-label" for="inputAddress" name="faddress"/>
-    <div class="controls">
-        <!--<input type="text" id="inputAddress" placeholder="Address" name="cto.address"/>-->               
+    <s:label class="control-label" for="inputAddress" name="customer.form.address"/>
+    <div class="controls">               
         <s:text id="inputAddress" name="cto.address"/>             
     </div>
 </div>
 
 <div class="control-group">
-    <s:label class="control-label" for="inputPhone" name="fphone"/>                               
-    <div class="controls">
-        <!--<input type="text" id="inputPhone" placeholder="Phone number" name="cto.phone"/>-->               
+    <s:label class="control-label" for="inputPhone" name="customer.form.phone"/>                               
+    <div class="controls">             
         <s:text id="inputPhone" name="cto.phone"/>             
     </div>
 </div>
