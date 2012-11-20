@@ -23,7 +23,4 @@
             </div>
         </div>
     </div>
-    <div class="container" style="padding-top: 40px;">
-        <h1>STIS (So Tired Information System)</h1>
-    </div>
 </div>

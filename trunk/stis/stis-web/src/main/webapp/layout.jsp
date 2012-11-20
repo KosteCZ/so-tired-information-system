@@ -12,7 +12,8 @@
         <s:layout-component name="header">
             <jsp:include page="/fragment/header.jsp"/>
         </s:layout-component>
-        <div class="container" id="content">
+        <div class="container" id="content" style="padding-top: 40px;">
+            <h1><c:out value="${title}"/></h1>
             <s:layout-component name="content"/>
         </div>
     </body>

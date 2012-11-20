@@ -1,5 +1,6 @@
 <%@include file="/fragment/taglibs.jsp" %>
 <s:errors/>
+
 <div class="control-group">
     <s:label class="control-label" for="es1" name="extraService.name">Name:</s:label>
         <div class="controls">

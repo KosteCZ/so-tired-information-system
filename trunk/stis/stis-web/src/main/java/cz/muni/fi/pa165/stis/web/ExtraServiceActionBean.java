@@ -38,10 +38,11 @@ public class ExtraServiceActionBean implements ActionBean {
     
     @ValidateNestedProperties(value = {
             @Validate(on = {"create", "save"}, field = "name", required = true),
-            @Validate(on = {"create", "save"}, field = "description", required = true),
             @Validate(on = {"create", "save"}, field = "price", required = true, minvalue = 1)
     })
     private ExtraServiceTO extraService;
+    
+    private List<ExtraServiceTO> results;
     
     @DefaultHandler
     public Resolution list() {
@@ -52,6 +53,12 @@ public class ExtraServiceActionBean implements ActionBean {
     public List<ExtraServiceTO> getAllExtraServices() {
         logger.debug("getting all");
         return service.findAll();
+    }
+    
+    public Resolution newExtraService() {
+        logger.debug("newExtraService()");
+        //
+        return new ForwardResolution("/extraservice/create.jsp");
     }
     
     public Resolution create() {
@@ -81,6 +88,14 @@ public class ExtraServiceActionBean implements ActionBean {
         return new RedirectResolution(ExtraServiceActionBean.class, "list");
     }
     
+    public Resolution findByName() {
+        String name = context.getRequest().getParameter("name");
+        logger.debug("findByName() {}", name);
+        this.results = service.findByName(name);
+        //
+        return new ForwardResolution("/extraservice/results.jsp");
+    }
+    
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
     public void loadESFromDatabase() {
         String ids = context.getRequest().getParameter("extraService.id");
@@ -95,6 +110,14 @@ public class ExtraServiceActionBean implements ActionBean {
 
     public void setExtraService(ExtraServiceTO extraService) {
         this.extraService = extraService;
+    }
+
+    public List<ExtraServiceTO> getResults() {
+        return results;
+    }
+
+    public void setResults(List<ExtraServiceTO> results) {
+        this.results = results;
     }
     
     @Override
