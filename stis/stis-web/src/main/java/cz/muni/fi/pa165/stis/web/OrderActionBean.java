@@ -11,8 +11,13 @@ import cz.muni.fi.pa165.stis.service.OrderService;
 import cz.muni.fi.pa165.stis.service.TyreService;
 import cz.muni.fi.pa165.stis.web.wrapper.CustomerTOWrapper;
 import cz.muni.fi.pa165.stis.web.wrapper.OrderTOWrapper;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Before;
@@ -94,6 +99,7 @@ public class OrderActionBean implements ActionBean {
     }
     
     public Resolution create() {
+        processBeforeSave(order);
         logger.debug("create() {}", order);
         service.create(order);
         //
@@ -106,7 +112,8 @@ public class OrderActionBean implements ActionBean {
     }
 
     public Resolution save() {
-        logger.debug("save() cto={}", order);
+        processBeforeSave(order);
+        logger.debug("save() order={}", order);
         service.update(order);
         return new RedirectResolution(this.getClass(), "list");
     }
@@ -129,12 +136,12 @@ public class OrderActionBean implements ActionBean {
         }
     }
 
-    public OrderTO getOrder() {
+    public OrderTOWrapper getOrder() {
         return order;
     }
 
-    public void setOrder(OrderTO order) {
-        this.order = new OrderTOWrapper(order);
+    public void setOrder(OrderTOWrapper order) {
+        this.order = order;
     }
     
     @Override
@@ -145,6 +152,41 @@ public class OrderActionBean implements ActionBean {
     @Override
     public ActionBeanContext getContext() {
         return context;
+    }
+    
+    private void processBeforeSave(OrderTOWrapper wrapper) {
+        BigDecimal price = BigDecimal.ZERO;
+        //
+        Set<ExtraServiceTO> exSs = new HashSet<>();
+        if (wrapper.getExtraServiceIds() != null) {
+            for (Long l : order.getExtraServiceIds()) {
+                ExtraServiceTO esto = esService.get(l);
+                if (esto != null && esto.getPrice() != null) {
+                    price = price.add(esto.getPrice());
+                    exSs.add(esto);
+                }
+            }
+        }
+        
+        Map<Long, TyreTO> tyres = new HashMap<>();
+        for (Map.Entry<TyrePosition, TyreTO> em : wrapper.getTyres().entrySet()) {
+            if (em.getValue() == null) {
+                continue;
+            }
+            Long id = em.getValue().getId();
+            if (id != null) {
+                TyreTO tto = tyres.get(id);
+                if (tto == null) {
+                    tto = tyreService.get(id);
+                    tyres.put(id, tto);
+                }
+                if (tto != null && tto.getPrice() != null) {
+                    price = price.add(tto.getPrice());
+                }
+            }
+        }
+        wrapper.setExtraServices(exSs);
+        wrapper.setTotalPrice(price);
     }
     
 }
