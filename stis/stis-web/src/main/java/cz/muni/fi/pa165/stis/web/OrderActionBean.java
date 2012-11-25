@@ -56,7 +56,7 @@ public class OrderActionBean implements ActionBean {
     
     @ValidateNestedProperties(value = {
             @Validate(on = {"create", "save"}, field = "customer.id", required = true),
-            @Validate(on = {"create", "save"}, field = "carType", required = true, minvalue = 1)
+            @Validate(on = {"create", "save"}, field = "carType", required = true, minvalue = 1),
     })
     private OrderTOWrapper order;
     
@@ -171,7 +171,7 @@ public class OrderActionBean implements ActionBean {
     
     public Resolution findByCustomer() {
         try {
-            Long id = Long.parseLong(context.getRequest().getParameter("customer.id"));
+            Long id = Long.parseLong(context.getRequest().getParameter("customerId"));
             CustomerTO customer = custService.get(id);
             if (customer != null) {
                 result = service.findByCustomer(customer);
@@ -220,19 +220,21 @@ public class OrderActionBean implements ActionBean {
         }
         
         Map<Long, TyreTO> tyres = new HashMap<>();
-        for (Map.Entry<TyrePosition, TyreTO> em : wrapper.getTyres().entrySet()) {
-            if (em.getValue() == null) {
-                continue;
-            }
-            Long id = em.getValue().getId();
-            if (id != null) {
-                TyreTO tto = tyres.get(id);
-                if (tto == null) {
-                    tto = tyreService.get(id);
-                    tyres.put(id, tto);
+        if (wrapper.getTyres() != null) {
+            for (Map.Entry<TyrePosition, TyreTO> em : wrapper.getTyres().entrySet()) {
+                if (em.getValue() == null) {
+                    continue;
                 }
-                if (tto != null && tto.getPrice() != null) {
-                    price = price.add(tto.getPrice());
+                Long id = em.getValue().getId();
+                if (id != null) {
+                    TyreTO tto = tyres.get(id);
+                    if (tto == null) {
+                        tto = tyreService.get(id);
+                        tyres.put(id, tto);
+                    }
+                    if (tto != null && tto.getPrice() != null) {
+                        price = price.add(tto.getPrice());
+                    }
                 }
             }
         }
