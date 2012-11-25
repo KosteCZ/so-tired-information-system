@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 public class TyreActionBean implements ActionBean {
         
     private final static Logger log = LoggerFactory.getLogger(TyreActionBean.class); 
-    private static final Logger logger = LoggerFactory.getLogger(ExtraServiceActionBean.class);
+    private static final Logger logger = LoggerFactory.getLogger(TyreActionBean.class);
     private ActionBeanContext context;
     
     @ValidateNestedProperties(value = {
@@ -50,8 +50,9 @@ public class TyreActionBean implements ActionBean {
     
     public List<TyreTO> getAllTyres() {
         logger.debug("getting all");
-        List<TyreTO> list = tyreService.findAll();
-        return list;
+        return tyreService.findAll();
+        //List<TyreTO> list = tyreService.findAll();
+        //return list;
     }
 
     @Override

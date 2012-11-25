@@ -13,9 +13,9 @@
                 <%@include file="/tyre/form.jsp"%>
                 <s:submit name="newTyre">Create tyre</s:submit>
                 </fieldset>
-        </s:form>
-        <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="all" var="actionBean"/>
-        --%>
+        </s:form>--%>
+        <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="list" var="actionBean"/>
+        
         
         <div class="row-fluid" style="margin-bottom: 5px;">
             <div style="float: left;">
