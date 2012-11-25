@@ -13,6 +13,7 @@ import cz.muni.fi.pa165.stis.web.wrapper.CustomerTOWrapper;
 import cz.muni.fi.pa165.stis.web.wrapper.OrderTOWrapper;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -99,6 +100,8 @@ public class OrderActionBean implements ActionBean {
     }
     
     public Resolution create() {
+        Date date = new Date();
+        order.setOrderNewDate(date);
         processBeforeSave(order);
         logger.debug("create() {}", order);
         service.create(order);
@@ -124,6 +127,28 @@ public class OrderActionBean implements ActionBean {
         logger.debug("delete() {}", ot);
         //
         service.remove(ot);
+        //
+        return new RedirectResolution(OrderActionBean.class, "list");
+    }
+    
+    public Resolution done() {
+        Date date = new Date();
+        Long id = Long.parseLong(context.getRequest().getParameter("order.id"));
+        OrderTO ot = service.get(id);
+        ot.setOrderServicedDate(date);
+        logger.debug("done() {}", ot);
+        service.update(ot);
+        //
+        return new RedirectResolution(OrderActionBean.class, "list");
+    }
+
+    public Resolution paid() {
+        Date date = new Date();
+        Long id = Long.parseLong(context.getRequest().getParameter("order.id"));
+        OrderTO ot = service.get(id);
+        ot.setOrderPaidDate(date);
+        logger.debug("paid() {}", ot);
+        service.update(ot);
         //
         return new RedirectResolution(OrderActionBean.class, "list");
     }

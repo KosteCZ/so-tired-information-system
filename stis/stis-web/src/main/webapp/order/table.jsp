@@ -29,6 +29,8 @@
                         <div class="btn-group">
                             <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="edit"><s:param name="order.id" value="${item.id}"/><i class="icon-pencil"></i> <f:message key="button.edit"/></s:link>
                             <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="delete"><s:param name="order.id" value="${item.id}"/><i class="icon-trash"></i> <f:message key="button.remove"/></s:link>
+                            <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="done"><s:param name="order.id" value="${item.id}"/><i class="icon-thumbs-up"></i> <f:message key="button.done"/></s:link>
+                            <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="paid"><s:param name="order.id" value="${item.id}"/> <f:message key="button.paid"/></s:link>
                         </div>
                     </td>
                 </tr>
