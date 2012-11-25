@@ -1,17 +1,21 @@
-<%-- 
-    Document   : list
-    Created on : Nov 18, 2012, 8:51:44 PM
-    Author     : dusan
---%>
+<%@include file="/fragment/taglibs.jsp" %>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+<f:message key="order.title.create" var="msg"/>
+<s:layout-render name="/layout.jsp" title="${msg}">
+    <s:layout-component name="content">
+        <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" var="actionBean"/>
+        
+        <div id="createOrder" class="collapse in">
+            <s:form beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" class="form-horizontal">
+                <fieldset><legend><f:message key="order.title.create"/></legend>
+                    <%@include file="/order/form.jsp"%>
+                </fieldset>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" name="create"><i class="icon-plus"></i> <f:message key="button.create"/></button>
+                    <s:link beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" class="btn" event="list"><i class="icon-ban-circle"></i> <f:message key="button.cancel"/></s:link>
+                </div>
+            </s:form>
+        </div>
+        
+    </s:layout-component>
+</s:layout-render>
