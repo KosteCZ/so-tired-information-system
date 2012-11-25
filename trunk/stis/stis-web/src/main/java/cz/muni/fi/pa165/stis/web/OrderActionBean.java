@@ -52,6 +52,8 @@ public class OrderActionBean implements ActionBean {
     @SpringBean
     private ExtraServiceService esService;
     
+    private List<OrderTO> result;
+    
     @ValidateNestedProperties(value = {
             @Validate(on = {"create", "save"}, field = "customer.id", required = true),
             @Validate(on = {"create", "save"}, field = "carType", required = true, minvalue = 1)
@@ -97,6 +99,12 @@ public class OrderActionBean implements ActionBean {
     public List<OrderTO> getAllOrders() {
         logger.debug("getting all orders");
         return service.findAll();
+    }
+    
+    public Resolution newOrder() {
+        logger.debug("newOrder()");
+        //
+        return new ForwardResolution("/order/create.jsp");
     }
     
     public Resolution create() {
@@ -159,6 +167,24 @@ public class OrderActionBean implements ActionBean {
         if (ids != null) {
             order = new OrderTOWrapper(service.get(Long.parseLong(ids)));
         }
+    }
+    
+    public Resolution findByCustomer() {
+        try {
+            Long id = Long.parseLong(context.getRequest().getParameter("customer.id"));
+            CustomerTO customer = custService.get(id);
+            if (customer != null) {
+                result = service.findByCustomer(customer);
+            }
+        } catch (NumberFormatException ex) {
+            result = new ArrayList<>();
+        }
+        
+        return new ForwardResolution("/order/results.jsp");
+    }
+    
+    public List<OrderTO> getResult() {
+        return result;
     }
 
     public OrderTOWrapper getOrder() {
