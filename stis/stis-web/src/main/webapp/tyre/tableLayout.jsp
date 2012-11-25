@@ -10,15 +10,15 @@
             </tr>
         </thead>
         <tbody>
-            <c:forEach items="${items}" var="item" varStatus="it">
+            <c:forEach items="${items}" var="tto" varStatus="it">
                 <tr>
-                    <td><c:out value="${item.type}"/></td>
-                    <td><c:out value="${item.name}"/></td>
-                    <td><c:out value="${item.price}"/></td>
+                    <td><c:out value="${tto.type}"/></td>
+                    <td><c:out value="${tto.name}"/></td>
+                    <td><c:out value="${tto.price}"/></td>
                     <td>
                         <div class="btn-group">
-                            <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="edit"><s:param name="tyre.id" value="${item.id}"/><i class="icon-pencil"></i> <f:message key="button.edit"/></s:link>
-                            <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="delete"><s:param name="tyre.id" value="${item.id}"/><i class="icon-trash"></i> <f:message key="button.remove"/></s:link>
+                            <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="edit"><s:param name="tto.id" value="${tto.id}"/><i class="icon-pencil"></i> <f:message key="button.edit"/></s:link>
+                            <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="delete"><s:param name="tto.id" value="${tto.id}"/><i class="icon-trash"></i> <f:message key="button.remove"/></s:link>
                             <!--<a href="#confirmDelete${it.index}" role="button" class="btn btn-small" data-toggle="modal"><i class="icon-trash"></i> <f:message key="button.remove"/></a>-->
                         </div>
                     </td>
@@ -37,7 +37,7 @@
         </div>
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal"><f:message key="button.no"/></a>
-            <s:link class="btn btn-primary" beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="delete"><s:param name="tyre.id" value="${item.id}"/><f:message key="button.yes"/></s:link>
+            <s:link class="btn btn-primary" beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="delete"><s:param name="tyre.id" value="${tto.id}"/><f:message key="button.yes"/></s:link>
         </div>
     </div>
 </s:layout-definition>
