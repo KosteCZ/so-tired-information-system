@@ -23,15 +23,16 @@
 </div>
     
 <div class="control-group">
-    <s:label class="control-label" for="inputPrice" name="tyre.form.label.price"><f:message key="tyre.form.label.price"/></s:label>
-    <div class="controls">
-        <s:text id="inputPrice" name="tto.price"/>
-    </div>
-</div>
-    
-<div class="control-group">
      <s:label class="control-label" for="inputVendor" name="tyre.form.label.vendor"><f:message key="tyre.form.label.vendor"/></s:label>
     <div class="controls">
         <s:text id="inputVendor" name="tto.vendor"/>
     </div>
 </div>
+    
+<div class="control-group">
+    <s:label class="control-label" for="inputPrice" name="tyre.form.label.price"><f:message key="tyre.form.label.price"/></s:label>
+    <div class="controls">
+        <s:text id="inputPrice" name="tto.price"/>
+    </div>
+</div>
+
