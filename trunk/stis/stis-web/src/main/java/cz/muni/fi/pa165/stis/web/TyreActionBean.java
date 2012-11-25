@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 public class TyreActionBean implements ActionBean {
         
     private final static Logger log = LoggerFactory.getLogger(TyreActionBean.class); 
+    private static final Logger logger = LoggerFactory.getLogger(ExtraServiceActionBean.class);
     private ActionBeanContext context;
     
     @ValidateNestedProperties(value = {
@@ -40,9 +41,11 @@ public class TyreActionBean implements ActionBean {
     })
     private TyreTO tto;
     
+    private List<TyreTO> results;
+     
     @SpringBean
     protected TyreService tyreService;
-    
+    /*
     @DefaultHandler
     public Resolution all() {
         //tto = new TyreTO();
@@ -53,9 +56,16 @@ public class TyreActionBean implements ActionBean {
         //log.debug("New tyre: " + tto.getId());
         log.debug("all()");
         return new ForwardResolution("/tyre/list.jsp");
+    }*/
+    
+    @DefaultHandler
+    public Resolution list() {
+        logger.info("listing");
+        return new ForwardResolution("/tyre/list.jsp");
     }
     
-    public List<TyreTO> getTyres() {
+    public List<TyreTO> getAllTyres() {
+        logger.debug("getting all");
         List<TyreTO> list = tyreService.findAll();
         //System.err.println(list);
         return list;
@@ -79,14 +89,30 @@ public class TyreActionBean implements ActionBean {
         this.tto = tto;
     }
     
-    public Resolution newTyre() {
+    public TyreTO getTto() {
+        return tto;
+    }
+    
+    public void setTto(TyreTO tto) {
+        this.tto = tto;
+    }
+    
+    public List<TyreTO> getResults() {
+        return results;
+    }
+
+    public void setResults(List<TyreTO> results) {
+        this.results = results;
+    }
+    
+/*    public Resolution newTyre() {
         log.debug("newTyre() tto={}", tto);
         HttpServletRequest req = context.getRequest();
         System.out.println(req.getParameterMap());
         tyreService.create(tto);
         System.err.println(tto);
         return new RedirectResolution(this.getClass(), "all");
-    }
+    }*/
     
     public Resolution deleteTyre() {                
         HttpServletRequest req = context.getRequest();
@@ -95,7 +121,7 @@ public class TyreActionBean implements ActionBean {
         tto = tyreService.get(id);
         log.debug("deleteTyre() tto={}", tto);
         tyreService.remove(tto);
-        return new RedirectResolution(this.getClass(), "all");
+        return new RedirectResolution(this.getClass(), "list");
     }
      
      
@@ -108,6 +134,26 @@ public class TyreActionBean implements ActionBean {
         tto = tyreService.get(Long.parseLong(ids));
     }
 
+    public Resolution newTyre() {
+        logger.debug("newTyre()");
+        //
+        return new ForwardResolution("/tyre/create.jsp");
+    }
+    
+    public Resolution create() {
+        logger.debug("create() {}", tto);
+        tyreService.create(tto);
+        //
+        return new RedirectResolution(TyreActionBean.class, "list");
+    }
+    
+    public Resolution delete() {
+        logger.debug("delete() {}", tto);
+        tyreService.remove(tto);
+        //
+        return new RedirectResolution(TyreActionBean.class, "list");
+    }    
+    
     public Resolution edit() {
         log.debug("edit() tto={}", tto);
         return new ForwardResolution("/tyre/edit.jsp");
@@ -119,4 +165,13 @@ public class TyreActionBean implements ActionBean {
         return new RedirectResolution(this.getClass(), "all");
     }
      
+    /* TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public Resolution findByName() {
+        String name = context.getRequest().getParameter("name");
+        logger.debug("findByName() {}", name);
+        this.results = service.findByName(name);
+        //
+        return new ForwardResolution("/extraservice/results.jsp");
+    }
+    */
 }
