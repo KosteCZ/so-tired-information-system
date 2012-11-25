@@ -3,11 +3,14 @@ package cz.muni.fi.pa165.stis.web;
 import cz.muni.fi.pa165.stis.dto.CustomerTO;
 import cz.muni.fi.pa165.stis.dto.ExtraServiceTO;
 import cz.muni.fi.pa165.stis.dto.OrderTO;
+import cz.muni.fi.pa165.stis.dto.TyrePosition;
 import cz.muni.fi.pa165.stis.dto.TyreTO;
 import cz.muni.fi.pa165.stis.service.CustomerService;
 import cz.muni.fi.pa165.stis.service.ExtraServiceService;
 import cz.muni.fi.pa165.stis.service.OrderService;
 import cz.muni.fi.pa165.stis.service.TyreService;
+import cz.muni.fi.pa165.stis.web.wrapper.CustomerTOWrapper;
+import cz.muni.fi.pa165.stis.web.wrapper.OrderTOWrapper;
 import java.util.ArrayList;
 import java.util.List;
 import net.sourceforge.stripes.action.ActionBean;
@@ -20,6 +23,8 @@ import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.integration.spring.SpringBean;
+import net.sourceforge.stripes.validation.Validate;
+import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,26 +46,38 @@ public class OrderActionBean implements ActionBean {
     @SpringBean
     private ExtraServiceService esService;
     
-    private OrderTO order;
+    @ValidateNestedProperties(value = {
+            @Validate(on = {"create", "save"}, field = "customer.id", required = true),
+            @Validate(on = {"create", "save"}, field = "carType", required = true, minvalue = 1)
+    })
+    private OrderTOWrapper order;
     
     private List<CustomerTO> customers = new ArrayList<CustomerTO>();
-    private List<CustomerTOWrap> customers1 = new ArrayList<CustomerTOWrap>();
+    private List<CustomerTOWrapper> customers1 = new ArrayList<CustomerTOWrapper>();
     
-    public List<CustomerTOWrap> getAllCustomers(){
+    public List<CustomerTOWrapper> getAllCustomers(){
         customers = custService.findAll();
-        for(CustomerTO c : customers){
-            CustomerTOWrap c1 = new CustomerTOWrap();
+        customers1.clear();
+        for (CustomerTO c : customers){
+            CustomerTOWrapper c1 = new CustomerTOWrapper();
+            
             c1.setId(c.getId());
-            c1.setFullName(c.getFirstName()+" "+c.getLastName());
+            c1.setFullName(c.getFirstName() + " " + c.getLastName());
+            
             customers1.add(c1);
         }
+        
         return customers1;
     }
     
     public List<TyreTO> getAllTyres(){
         return tyreService.findAll();
     }
-
+    
+    public TyrePosition[] getTyrePositions() {
+        return TyrePosition.values();
+    }
+    
     public List<ExtraServiceTO> getAllExtraServices(){
         return esService.findAll();
     }
@@ -82,21 +99,42 @@ public class OrderActionBean implements ActionBean {
         //
         return new RedirectResolution(OrderActionBean.class, "list");
     }
+    
+    public Resolution edit() {
+        logger.debug("edit() order={}", order);
+        return new ForwardResolution("/order/edit.jsp");
+    }
 
-//    @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
-//    public void loadESFromDatabase() {
-//        String ids = context.getRequest().getParameter("order.id");
-//        if (ids != null) {
-//            order = service.get(Long.parseLong(ids));
-//        }
-//    }
+    public Resolution save() {
+        logger.debug("save() cto={}", order);
+        service.update(order);
+        return new RedirectResolution(this.getClass(), "list");
+    }
+    
+    public Resolution delete() {
+        Long id = Long.parseLong(context.getRequest().getParameter("order.id"));
+        OrderTO ot = service.get(id);
+        logger.debug("delete() {}", ot);
+        //
+        service.remove(ot);
+        //
+        return new RedirectResolution(OrderActionBean.class, "list");
+    }
+
+    @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
+    public void loadOrderFromDatabase() {
+        String ids = context.getRequest().getParameter("order.id");
+        if (ids != null) {
+            order = new OrderTOWrapper(service.get(Long.parseLong(ids)));
+        }
+    }
 
     public OrderTO getOrder() {
         return order;
     }
 
     public void setOrder(OrderTO order) {
-        this.order = order;
+        this.order = new OrderTOWrapper(order);
     }
     
     @Override
@@ -109,24 +147,4 @@ public class OrderActionBean implements ActionBean {
         return context;
     }
     
-    public class CustomerTOWrap{
-        private Long id;
-        private String fullName;
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getFullName() {
-            return fullName;
-        }
-
-        public void setFullName(String fullName) {
-            this.fullName = fullName;
-        }
-    }
 }

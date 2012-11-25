@@ -29,6 +29,7 @@ public class TyreActionBean implements ActionBean {
         
     private final static Logger log = LoggerFactory.getLogger(TyreActionBean.class); 
     private static final Logger logger = LoggerFactory.getLogger(TyreActionBean.class);
+    
     private ActionBeanContext context;
     
     @ValidateNestedProperties(value = {

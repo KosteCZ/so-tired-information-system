@@ -17,14 +17,14 @@
         <tbody>
             <c:forEach items="${items}" var="item" varStatus="it">
                 <tr>
-                    <td><c:out value="${item.customer.firstname} ${item.customer.lastname}"/></td>
-                    <td><c:out value="${item.description}"/></td>
-                    <td><c:out value="${item.description}"/></td>
-                    <td><c:out value="${item.description}"/></td>
-                    <td><c:out value="${item.description}"/></td>
-                    <td><c:out value="${item.description}"/></td>
-                    <td><c:out value="${item.description}"/></td>
-                    <td><c:out value="${item.price}"/></td>
+                    <td><c:out value="${item.customer.firstName} ${item.customer.lastName}"/></td>
+                    <td><c:out value="${item.carType}"/></td>
+                    <td><c:out value="${item.tyres}"/></td>
+                    <td><c:out value="${item.extraServices}"/></td>
+                    <td><c:out value="${item.orderNewDate}"/></td>
+                    <td><c:out value="${item.orderServicedDate}"/></td>
+                    <td><c:out value="${item.orderPaidDate}"/></td>
+                    <td><c:out value="${item.totalPrice}"/></td>
                     <td>
                         <div class="btn-group">
                             <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="edit"><s:param name="order.id" value="${item.id}"/><i class="icon-pencil"></i> <f:message key="button.edit"/></s:link>

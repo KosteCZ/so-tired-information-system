@@ -5,7 +5,7 @@
     <s:layout-component name="content">
         <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" var="actionBean"/>
         
-        <div id="createOrder" class="collapse in">
+        <div id="createOrder">
             <s:form beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" class="form-horizontal">
                 <fieldset><legend><f:message key="order.title.create"/></legend>
                     <%@include file="/order/form.jsp"%>
