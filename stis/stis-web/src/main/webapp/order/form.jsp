@@ -5,7 +5,7 @@
     <s:label class="control-label" for="order1" name="order.customer.id"><f:message key="order.form.label.customer"/></s:label>
         <div class="controls">
         <s:select name="order.customer.id"> 
-            <s:option id="null" label="..."/>
+            <s:option id="null" label=""/>
             <s:options-collection collection="${actionBean.allCustomers}" value="id" label="fullName"/>
         </s:select>
     </div>
@@ -22,7 +22,7 @@
         <s:label class="control-label" name="order.tyres[${position}].id"><f:message key="order.form.label.${position}"/></s:label>
         <div class="controls">
             <s:select name="order.tyres[${position}].id"> 
-                <s:option id="null" label="..."/>
+                <s:option id="null" label=""/>
                 <s:options-collection collection="${actionBean.allTyres}" value="id" label="name"/>
             </s:select>
         </div>
