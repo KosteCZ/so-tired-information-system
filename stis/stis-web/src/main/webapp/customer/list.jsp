@@ -11,17 +11,13 @@
                 </div>
                 <div style="float: right;">                
                 <s:form beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" class="form-inline" style="margin-bottom: 0px;"> 
-                    <fieldset>
-                        <form class="form-search">
-                            <div class="input-append input-prepend">
-                                <f:message key="customer.firstName" var="firstname"/>
-                                <input class="span4" placeholder="${firstname}" type="text" name="firstname"/>                    
-                                <f:message key="customer.lastName" var="lastname"/>
-                                <input class="span4" placeholder="${lastname}" type="text"  id="appendedPrependedInputButton" name="lastname"/>
-                                <button type="submit" name="findByName" class="btn"><i class="icon-search"></i></button>
-                            </div>                                        
-                        </form>
-                    </fieldset>     
+                    <div class="input-append input-prepend">
+                        <f:message key="customer.firstName" var="firstname"/>
+                        <input style="width: 118px;" placeholder="${firstname}" type="text" name="firstname"/>                    
+                        <f:message key="customer.lastName" var="lastname"/>
+                        <input style="width: 118px; margin-left: -1px;" placeholder="${lastname}" type="text"  id="appendedPrependedInputButton" name="lastname"/>
+                        <button type="submit" name="findByName" class="btn"><i class="icon-search"></i></button>
+                    </div>                                        
                 </s:form>
             </div>
         </div>
