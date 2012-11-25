@@ -28,18 +28,11 @@
         </div>
     </div>
 </c:forEach>
-
-<!--<div class="control-group">
-<f:message key="order.form.label.es"/>
-<c:forEach items="${actionBean.allExtraServices}" var="es" varStatus="status">
-    <s:checkbox name="order.extraServices[${status.index}].id" value="${es.id}"/><c:out value="${es.name}"/>
-</c:forEach>
-</div>-->
-
+    
 <div class="control-group">
-    <s:label class="control-label" for="order7" name="order.extraServices"><f:message key="order.form.label.es"/></s:label>
+    <s:label class="control-label" for="order7" name="order.extraServiceIds"><f:message key="order.form.label.es"/></s:label>
         <div class="controls">
-        <s:select multiple="multiple" name="order.es"> 
+        <s:select multiple="multiple" name="order.extraServiceIds"> 
             <s:options-collection collection="${actionBean.allExtraServices}" value="id" label="name"/>
         </s:select>
     </div>
