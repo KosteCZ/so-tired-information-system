@@ -24,8 +24,6 @@ import org.slf4j.LoggerFactory;
  * @author Honza Koščák
  */
 
-//@UrlBinding("/tyre/{$event}")
-//@UrlBinding("/tyre/all")
 @UrlBinding("/tyre/{$event}/")
 public class TyreActionBean implements ActionBean {
         
@@ -34,10 +32,8 @@ public class TyreActionBean implements ActionBean {
     private ActionBeanContext context;
     
     @ValidateNestedProperties(value = {
-        @Validate(on = {"newTyre", "save"}, field = "name", required = true),
-        @Validate(on = {"newTyre", "save"}, field = "type", required = true)
-//        @Validate(on = {"newTyre", "saveTyre"}, field = "address", required = true, minlength = 10),
-//        @Validate(on = {"newTyre", "saveTyre"}, field = "phone", required = true, minlength= 10, maxlength=14)
+        @Validate(on = {"create", "save"}, field = "name", required = true),
+        @Validate(on = {"create", "save"}, field = "type", required = true)
     })
     private TyreTO tto;
     
@@ -45,19 +41,7 @@ public class TyreActionBean implements ActionBean {
      
     @SpringBean
     protected TyreService tyreService;
-    /*
-    @DefaultHandler
-    public Resolution all() {
-        //tto = new TyreTO();
-        //tto.setName("Michelin");
-        //tto.setType("Normal");
-        //tyreService.create(tto);
-        //
-        //log.debug("New tyre: " + tto.getId());
-        log.debug("all()");
-        return new ForwardResolution("/tyre/list.jsp");
-    }*/
-    
+
     @DefaultHandler
     public Resolution list() {
         logger.info("listing");
@@ -67,7 +51,6 @@ public class TyreActionBean implements ActionBean {
     public List<TyreTO> getAllTyres() {
         logger.debug("getting all");
         List<TyreTO> list = tyreService.findAll();
-        //System.err.println(list);
         return list;
     }
 
@@ -105,18 +88,8 @@ public class TyreActionBean implements ActionBean {
         this.results = results;
     }
     
-/*    public Resolution newTyre() {
-        log.debug("newTyre() tto={}", tto);
-        HttpServletRequest req = context.getRequest();
-        System.out.println(req.getParameterMap());
-        tyreService.create(tto);
-        System.err.println(tto);
-        return new RedirectResolution(this.getClass(), "all");
-    }*/
-    
     public Resolution deleteTyre() {                
         HttpServletRequest req = context.getRequest();
-        //System.out.println(req.getContextPath() + "./." + req.getServletPath() + "./."  +req.getPathInfo() +"\n"+ req.getParameterMap());        
         Long id = Long.parseLong(req.getParameter("tto.id"));
         tto = tyreService.get(id);
         log.debug("deleteTyre() tto={}", tto);
@@ -165,13 +138,11 @@ public class TyreActionBean implements ActionBean {
         return new RedirectResolution(this.getClass(), "all");
     }
      
-    /* TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public Resolution findByName() {
         String name = context.getRequest().getParameter("name");
         logger.debug("findByName() {}", name);
-        this.results = service.findByName(name);
+        this.results = tyreService.findByName(name);
         //
-        return new ForwardResolution("/extraservice/results.jsp");
+        return new ForwardResolution("/tyre/results.jsp");
     }
-    */
 }

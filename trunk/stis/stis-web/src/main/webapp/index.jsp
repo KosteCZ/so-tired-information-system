@@ -14,7 +14,7 @@
         </ul>
 
         The Team:
-<br>
+<br/>
 <s:label name="authors"/>
 </s:layout-component>
 </s:layout-render>
