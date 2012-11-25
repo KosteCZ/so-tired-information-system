@@ -5,7 +5,7 @@
     <s:layout-component name="content">
         <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" var="actionBean"/>
 
-        <div id="createCustomer" class="collapse in">
+        <div id="createCustomer">
             <s:form class="form-horizontal" beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean">
                 <fieldset>
                     <legend>&nbsp;

@@ -5,7 +5,7 @@
     <s:layout-component name="content">
         <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" var="actionBean"/>
         
-        <div id="createExtraService" class="collapse in">
+        <div id="createExtraService">
             <s:form beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" class="form-horizontal">
                 <fieldset><legend><f:message key="extraService.title.create"/></legend>
                     <%@include file="/extraservice/form.jsp"%>

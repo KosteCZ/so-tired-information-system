@@ -5,7 +5,7 @@
     <s:layout-component name="content">
         <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" var="actionBean"/>
         
-        <div id="createTyre" class="collapse in">
+        <div id="createTyre">
             <s:form beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" class="form-horizontal">
                 <fieldset><legend><f:message key="tyre.title.create"/></legend>
                     <%@include file="/tyre/form.jsp"%>
