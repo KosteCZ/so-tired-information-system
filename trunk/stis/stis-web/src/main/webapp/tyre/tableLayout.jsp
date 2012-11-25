@@ -5,6 +5,8 @@
             <tr>
                 <th><f:message key="tyre.table.type"/></th>
                 <th><f:message key="tyre.table.name"/></th>
+                <th><f:message key="tyre.table.diameter"/></th>
+                <th><f:message key="tyre.table.vendor"/></th>
                 <th><f:message key="tyre.table.price"/></th>
                 <th style="width: 32px;"><f:message key="tyre.table.actions"/></th>
             </tr>
@@ -14,6 +16,8 @@
                 <tr>
                     <td><c:out value="${tto.type}"/></td>
                     <td><c:out value="${tto.name}"/></td>
+                    <td><c:out value="${tto.diameter}"/></td>
+                    <td><c:out value="${tto.vendor}"/></td>
                     <td><c:out value="${tto.price}"/></td>
                     <td>
                         <div class="btn-group">
