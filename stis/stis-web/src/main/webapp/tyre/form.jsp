@@ -1,24 +1,37 @@
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@include file="/fragment/taglibs.jsp" %>
 <s:errors/>
-<table class="table">
-    <tr>
-        <th><s:label for="c2" name="tyreTO.type"/></th>
-        <td><s:text id="c2" name="tyreTO.type"/></td>
+<div class="control-group">
+    <s:label class="control-label" for="inputType" name="tyre.form.label.type"><f:message key="tyre.form.label.type"/></s:label>
+    <div class="controls">
+        <s:text id="inputType" name="tto.type"/>
+    </div>
+</div>
+    
+<div class="control-group">
+    <s:label class="control-label" for="inputName" name="tyre.form.label.name"><f:message key="tyre.form.label.name"/></s:label>
+    <div class="controls">
+        <s:text id="inputName" name="tto.name"/>
+    </div>
+</div>
 
-        <th><s:label for="c1" name="tyreTO.name"/></th>
-        <td><s:text id="c1" name="tyreTO.name"/></td>
-        
-    </tr>
-    <tr>
-        <th><s:label for="c3" name="tyreTO.diameter"/></th>
-        <td><s:text id="c3" name="tyreTO.diameter"/></td>
-   
-        <th><s:label for="c4" name="tyreTO.price"/></th>
-        <td><s:text id="c4" name="tyreTO.price"/></td>
-    </tr>
-    <tr>
-        <th><s:label for="c5" name="tyreTO.vendor"/></th>
-        <td><s:text id="c5" name="tyreTO.vendor"/></td>
-   </tr>
-</table>
+<div class="control-group">
+    <s:label class="control-label" for="inputDiameter" name="tyre.form.label.diameter"><f:message key="tyre.form.label.diameter"/></s:label>
+    <div class="controls">
+        <s:text id="inputDiameter" name="tto.diameter"/>
+    </div>
+</div>
+    
+<div class="control-group">
+    <s:label class="control-label" for="inputPrice" name="tyre.form.label.price"><f:message key="tyre.form.label.price"/></s:label>
+    <div class="controls">
+        <s:text id="inputPrice" name="tto.price"/>
+    </div>
+</div>
+    
+<div class="control-group">
+     <s:label class="control-label" for="inputVendor" name="tyre.form.label.vendor"><f:message key="tyre.form.label.vendor"/></s:label>
+    <div class="controls">
+        <s:text id="inputVendor" name="tto.vendor"/>
+    </div>
+</div>
