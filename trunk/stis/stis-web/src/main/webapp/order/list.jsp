@@ -13,8 +13,8 @@
                 <s:form beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" class="form-inline" style="margin-bottom: 0px;">
                     <div class="input-append">
                         <f:message key="order.placeholder.customer" var="msg"/>
-                        <s:select id="appendedInputButton" name="customer.id"> 
-                            <s:option id="null" label="${msg}"/>
+                        <s:select id="appendedInputButton" name="customerId"> 
+                            <s:option value="null" label="${msg}"/>
                             <s:options-collection collection="${actionBean.allCustomers}" value="id" label="fullName"/>
                         </s:select>
                         <button name="findByCustomer" class="btn"><i class="icon-search"></i></button>
