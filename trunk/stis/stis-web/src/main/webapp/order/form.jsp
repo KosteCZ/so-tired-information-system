@@ -2,7 +2,7 @@
 <s:errors/>
 
 <div class="control-group">
-    <s:label class="control-label" for="order1" name="order.customer.id"><f:message key="order.form.label.customer"/></s:label>
+    <label class="control-label" for="order1" name="order.customer.id"><f:message key="order.form.label.customer"/></label>
         <div class="controls">
         <s:select name="order.customer.id"> 
             <s:option label=""/>
@@ -11,7 +11,7 @@
     </div>
 </div>
 <div class="control-group">
-    <s:label class="control-label" for="order2" name="order.carType"><f:message key="order.form.label.carType"/></s:label>
+    <label class="control-label" for="order2" name="order.carType"><f:message key="order.form.label.carType"/></label>
         <div class="controls">
         <s:text id="order2" name="order.carType"/>
     </div>
@@ -19,9 +19,9 @@
 
 <c:forEach items="${actionBean.tyrePositions}" var="position" varStatus="status">
     <div class="control-group">
-        <s:label class="control-label" name="order.tyres[${position}].id"><f:message key="order.form.label.${position}"/></s:label>
+        <label class="control-label" for="orderTyres${position}" name="order.tyres[${position}].id"><f:message key="order.form.label.${position}"/></label>
         <div class="controls">
-            <s:select name="order.tyres[${position}].id"> 
+            <s:select name="order.tyres[${position}].id" id="orderTyres${position}"> 
                 <s:option value="null" label=""/>
                 <s:options-collection collection="${actionBean.allTyres}" value="id" label="name"/>
             </s:select>
@@ -30,9 +30,9 @@
 </c:forEach>
     
 <div class="control-group">
-    <s:label class="control-label" for="order7" name="order.extraServiceIds"><f:message key="order.form.label.es"/></s:label>
+    <label class="control-label" for="order7" name="order.extraServiceIds"><f:message key="order.form.label.es"/></label>
         <div class="controls">
-        <s:select multiple="multiple" name="order.extraServiceIds"> 
+        <s:select id="order7" multiple="multiple" name="order.extraServiceIds"> 
             <s:options-collection collection="${actionBean.allExtraServices}" value="id" label="name"/>
         </s:select>
     </div>
