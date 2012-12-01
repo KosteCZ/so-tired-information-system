@@ -34,7 +34,8 @@ public class TyreActionBean implements ActionBean {
     
     @ValidateNestedProperties(value = {
         @Validate(on = {"create", "save"}, field = "name", required = true),
-        @Validate(on = {"create", "save"}, field = "type", required = true)
+        @Validate(on = {"create", "save"}, field = "type", required = true),
+        @Validate(on = {"create", "save"}, field = "price", required = true)
     })
     private TyreTO tto;
     
