@@ -3,7 +3,6 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/webAppContext.xml</param-value>
@@ -12,15 +11,27 @@
         <param-name>spring.profiles.active</param-name>
         <param-value>production</param-value>
     </context-param>
+    <servlet>
+        <servlet-name>restService</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>  
+            <param-name>contextConfigLocation</param-name>  
+            <param-value>/WEB-INF/restContext.xml</param-value>  
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>restService</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 
     <!-- JSTL -->
     <context-param>
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
         <param-value>StripesResources</param-value>
     </context-param>
-
     <!-- Stripes -->
-    <filter>        
+    <filter>
         <display-name>Stripes Filter</display-name>
         <filter-name>StripesFilter</filter-name>
         <filter-class>net.sourceforge.stripes.controller.StripesFilter</filter-class>
@@ -42,13 +53,11 @@
         <url-pattern>*.jsp</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
-
     <filter>
         <display-name>Stripes Dynamic Mapping Filter</display-name>
         <filter-name>DynamicMappingFilter</filter-name>
         <filter-class>net.sourceforge.stripes.controller.DynamicMappingFilter</filter-class>
     </filter>
-    
     <filter-mapping>
         <filter-name>DynamicMappingFilter</filter-name>
         <url-pattern>/*</url-pattern>
