@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Dusan Svancara
  */
 @Controller
-@RequestMapping("/rest/extraservices")
+@RequestMapping("/extraservices")
 public class ExtraServiceController {
     
     @Autowired

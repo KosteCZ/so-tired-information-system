@@ -22,7 +22,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>restService</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
 
     <!-- JSTL -->
