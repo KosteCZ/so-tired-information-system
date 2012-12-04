@@ -5,9 +5,12 @@
  
        <s:form class="form-horizontal" beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean">
            <s:hidden name="cto.id"/>
-            <fieldset><legend>Change info</legend>
+            <fieldset><legend><f:message key="customer.title.edit"/></legend>
                 <%@include file="form.jsp"%>
-            <s:submit name="save">Update</s:submit>
+                <div class="form-actions">
+                    <button type="submit" name="save" class="btn btn-primary"><i class="icon-ok"></i> <f:message key="button.save"/></button>
+                    <s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="list" class="btn"><i class="icon-ban-circle"></i> <f:message key="button.cancel"/></s:link>
+                </div>
             </fieldset>
         </s:form>
  
