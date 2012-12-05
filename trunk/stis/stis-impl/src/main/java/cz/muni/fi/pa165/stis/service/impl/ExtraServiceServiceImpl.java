@@ -46,7 +46,12 @@ public class ExtraServiceServiceImpl implements ExtraServiceService {
             throw new IllegalArgumentException("id is null");
         }
         
-        return mapper.map(extraServiceDAO.get(id), ExtraServiceTO.class);
+        ExtraService es = extraServiceDAO.get(id);
+        if (es == null) {
+            return null;
+        }
+        
+        return mapper.map(es, ExtraServiceTO.class);
     }
 
     @Transactional
