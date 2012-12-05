@@ -48,7 +48,7 @@ public class TyreServiceImpl implements TyreService {
         if (tyre == null) {
             return null;
         }        
-        return mapper.map(tyreDAO.get(id), TyreTO.class);
+        return mapper.map(tyre, TyreTO.class);
     }
 
     @Transactional

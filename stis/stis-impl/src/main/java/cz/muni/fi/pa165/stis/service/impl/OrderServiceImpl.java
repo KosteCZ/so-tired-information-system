@@ -44,7 +44,11 @@ public class OrderServiceImpl implements OrderService{
         if (id == null) {
             throw new IllegalArgumentException("id is null");
         }
-        return mapper.map(orderDAO.get(id), OrderTO.class);
+        Order o = orderDAO.get(id);
+        if (o == null) {
+            return null;
+        }
+        return mapper.map(o, OrderTO.class);
     }
 
     @Transactional
