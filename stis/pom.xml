@@ -10,5 +10,6 @@
     <module>stis-web</module>
     <module>stis-api</module>
     <module>stis-impl</module>
+    <module>stis-rest-client</module>
   </modules>
 </project>
