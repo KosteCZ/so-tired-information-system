@@ -7,29 +7,15 @@
          version="2.5">
 
     <display-name>STIS REST Client</display-name>	
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/web.xml</param-value>
+        <param-value>/WEB-INF/restServiceContext.xml</param-value>
     </context-param>
     
-   
-    <servlet>
-        <servlet-name>restService</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>  
-            <param-name>contextConfigLocation</param-name>  
-            <param-value>/WEB-INF/restServiceContext.xml</param-value>  
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-<!--    <servlet-mapping>
-        <servlet-name>restService</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>-->
-
-
-
     <!-- JSTL -->
     <context-param>
         <description>JSTL tagy použijí lokalizované texty ze stejného zdroje jako Stripes tagy</description>
@@ -76,16 +62,4 @@
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
-    
-
-
-    <!--    <servlet>
-        <servlet-name>TyreClient</servlet-name>
-        <servlet-class>cz.muni.fi.pa165.stis.rest.client.TyreClient</servlet-class>       
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TyreClient</servlet-name>
-        <url-pattern>/tyre/*</url-pattern>
-    </servlet-mapping>-->
-
 </web-app>
