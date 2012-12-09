@@ -17,36 +17,13 @@
           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
           http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd
 ">
-    <!--<import resource="classpath:applicationContext.xml"/>-->
-    
-    <mvc:annotation-driven/>     
-    <context:annotation-config/>
-    <context:component-scan base-package="cz.muni.fi.pa165.stis.rest"/>                               
-        
-    
     <!-- Rest template for Spring 3.1. Used HttpClientFactory to make request -->
-    <bean id="restTemplate" name="restTemplate" class="org.springframework.web.client.RestTemplate">
-        <property name="messageConverters"> 
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+<!--        <property name="messageConverters"> 
             <list> 
                 <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>                        
             </list> 
-        </property>
+        </property>-->
     </bean>
     
-
-
-    
-<!--    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">  
-        <property name="messageConverters">  
-            <util:list id="beanList">  
-                <ref bean="jsonMessageConverter"/>  
-            </util:list>  
-        </property>  
-    </bean>  -->
-
-    
-    <!--  
-          Converts JSON to POJO and vice versa  
-    -->  
-    <!--<bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>-->
 </beans>

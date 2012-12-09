@@ -15,7 +15,6 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,7 +23,6 @@ import org.springframework.web.client.RestTemplate;
  * @author Michal Toth
  */
 
-@Component
 @UrlBinding("/extraservice/{$event}/")
 public class ExtraServiceClientActionBean implements ActionBean {
 
@@ -37,7 +35,7 @@ public class ExtraServiceClientActionBean implements ActionBean {
     private ActionBeanContext context;
 
     @SpringBean
-    RestTemplate restTemplate;// = new RestTemplate();
+    private RestTemplate restTemplate;// = new RestTemplate();
    
     @ValidateNestedProperties(value = {
         @Validate(on = {"create", "save"}, field = "name", required = true),
