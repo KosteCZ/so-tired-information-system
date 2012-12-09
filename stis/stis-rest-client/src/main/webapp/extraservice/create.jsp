@@ -4,14 +4,14 @@
 <s:layout-render name="/layout.jsp" title="${msg}">
     <s:layout-component name="content">
         <div id="createExtraService">
-            <s:form beanclass="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean">
+            <s:form beanclass="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean" class="form-horizontal">
                 <fieldset><legend><f:message key="extraService.title.create"/></legend>
                     <%@include file="/extraservice/form.jsp"%>
                 </fieldset>
-                <div>
-                    <button type="submit" name="create"><f:message key="button.create"/></button>
-                    <s:link beanclass="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean" event="list"> <f:message key="button.cancel"/></s:link>
-                    </div>
+                <div class="form-actions">                   
+                    <button type="submit" class="btn btn-primary" name="create"><i class="icon-plus"></i> <f:message key="button.create"/></button>
+                    <s:link beanclass="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean" class="btn" event="list"><i class="icon-ban-circle"></i><f:message key="button.cancel"/></s:link>
+                </div>
             </s:form>
         </div>
 

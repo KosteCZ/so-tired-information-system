@@ -9,7 +9,7 @@
             <fieldset><legend><f:message key="extraService.title.edit"/></legend>
             <s:hidden name="extraService.id"/>
             <%@include file="/extraservice/form.jsp"%>
-            <div div class="form-actions">
+            <div class="form-actions">
                 <button type="submit" class="btn btn-primary" name="save"><i class="icon-ok"></i> <f:message key="button.save"/></button>
                 <s:link beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" event="list" class="btn"><i class="icon-ban-circle"></i> <f:message key="button.cancel"/></s:link>
             </div>

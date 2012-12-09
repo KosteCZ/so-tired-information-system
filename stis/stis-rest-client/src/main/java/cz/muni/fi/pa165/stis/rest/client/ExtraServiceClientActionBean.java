@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.stis.rest.client;
 
 import cz.muni.fi.pa165.stis.dto.ExtraServiceTO;
+import javax.ws.rs.core.Response;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Before;
@@ -22,7 +23,6 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author Michal Toth
  */
-
 @UrlBinding("/extraservice/{$event}/")
 public class ExtraServiceClientActionBean implements ActionBean {
 
@@ -31,17 +31,14 @@ public class ExtraServiceClientActionBean implements ActionBean {
     static String webapp = "pa165/rest";
     final String url = "http://" + HOST + ":" + PORT + "/" + webapp + "/extraservices";
     final static Logger logger = LoggerFactory.getLogger(ExtraServiceClientActionBean.class);
-    
     private ActionBeanContext context;
-
     @SpringBean
-    private RestTemplate restTemplate;// = new RestTemplate();
-   
+    private RestTemplate restTemplate;
     @ValidateNestedProperties(value = {
         @Validate(on = {"create", "save"}, field = "name", required = true),
         @Validate(on = {"create", "save"}, field = "price", required = true, minvalue = 1)
     })
-    private ExtraServiceTO extraService;    
+    private ExtraServiceTO extraService;
 
     @DefaultHandler
     public Resolution list() {
@@ -63,20 +60,15 @@ public class ExtraServiceClientActionBean implements ActionBean {
 
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
     public void loadESFromDatabase() {
-        String id = context.getRequest().getParameter("extraService.id");        
+        String id = context.getRequest().getParameter("extraService.id");
         if (id != null) {
             extraService = restTemplate.getForObject(url + "/{id}", ExtraServiceTO.class, id);
-        }        
+        }
     }
 
     public Resolution delete() {
-
         logger.debug("delete({})", extraService);
-        try {
-            restTemplate.delete(url + "/{id}", extraService.getId());
-        } catch (RestClientException e) {
-            System.err.println("Exception has been thrown " + e.getStackTrace());
-        }
+        restTemplate.delete(url + "/{id}", extraService.getId());
         return new RedirectResolution(this.getClass(), "list");
     }
 
@@ -87,7 +79,12 @@ public class ExtraServiceClientActionBean implements ActionBean {
 
     public Resolution create() {
         logger.debug("create() {}", extraService);
+        System.out.println(extraService);
+//        try {
         restTemplate.postForObject(url + "/", extraService, ExtraServiceTO.class);
+//        } catch (RestClientException e) {
+//            return new ForwardResolution("/extraservice/error.jsp");
+//        }
         return new RedirectResolution(this.getClass(), "list");
     }
 
@@ -97,6 +94,13 @@ public class ExtraServiceClientActionBean implements ActionBean {
         return ess;
     }
 
+    
+    public Resolution error() {
+        logger.debug("error()");
+        return new ForwardResolution("/extraservice/error.jsp");
+    }
+    
+    
     public ExtraServiceTO getExtraService() {
         return extraService;
     }

@@ -8,7 +8,7 @@
             <div style="float: left;">                       
                 <s:link  beanclass="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean" event="newExtraService" class="btn"><i class="icon-plus"></i><f:message key="button.create"/></s:link>
             </div>
-                
+
             <c:choose>
                 <c:when test="${not empty actionBean.allExtraServices}">
                     <table class="table table-striped table-bordered">
@@ -33,43 +33,44 @@
                             </tr>
                         </c:forEach>
                     </table>
-
-
-
-                    <div id="confirmDelete" class="modal fade hide">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h3><f:message key="confirmDelete.title"/></h3>
-                        </div>
-                        <div class="modal-body">
-                            <p><f:message key="confirmDelete.extraService.message"/></p>
-                        </div>
-                        <div class="modal-footer">
-                            <s:link id="confirmButton" class="btn btn-primary" beanclass="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean" event="delete"><s:param name="extraService.id" value=""/><i class="icon-ok"></i> <f:message key="button.yes"/></s:link>
-                            <a href="#" class="btn" data-dismiss="modal"><i class="icon-ban-circle"></i> <f:message key="button.no"/></a>
-                        </div>
-                    </div>
-
-
-                    <script type="text/javascript">
-                        function setLink(anchor) {
-                            var url = $('#confirmButton').attr('href');
-                            if ($('#confirmButton').data('url') === undefined) {
-                                $('#confirmButton').data('url', url);
-                            }
-                            url = $('#confirmButton').data('url');
-                            var id = $(anchor).data('id');
-                            $('#confirmButton').attr('href', url + id);
-                        }
-                    </script>
-
-
-                </c:when>
-
-                <c:otherwise>                
-                    <h4><f:message key="extraService.catalogEmpty"/></h4>
-                </c:otherwise>
-            </c:choose>
         </div>
+
+
+                <div id="confirmDelete" class="modal fade hide">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3><f:message key="confirmDelete.title"/></h3>
+                    </div>
+                    <div class="modal-body">
+                        <p><f:message key="confirmDelete.extraService.message"/></p>
+                    </div>
+                    <div class="modal-footer">
+                        <s:link id="confirmButton" class="btn btn-primary" beanclass="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean" event="delete"><s:param name="extraService.id" value=""/><i class="icon-ok"></i> <f:message key="button.yes"/></s:link>
+                        <a href="#" class="btn" data-dismiss="modal"><i class="icon-ban-circle"></i> <f:message key="button.no"/></a>
+                    </div>
+                </div>
+
+
+                <script type="text/javascript">
+                    function setLink(anchor) {
+                        var url = $('#confirmButton').attr('href');
+                        if ($('#confirmButton').data('url') === undefined) {
+                            $('#confirmButton').data('url', url);
+                        }
+                        url = $('#confirmButton').data('url');
+                        var id = $(anchor).data('id');
+                        $('#confirmButton').attr('href', url + id);
+                    }
+                </script>
+
+
+            </c:when>
+
+            <c:otherwise>  
+                <br><hr>
+                <h4><f:message key="extraService.catalogEmpty"/></h4>
+            </c:otherwise>
+        </c:choose>
+
     </s:layout-component>
 </s:layout-render>
