@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Michal Toth
  */
+
 @UrlBinding("/customer/{$event}/")
 public class CustomerActionBean implements ActionBean {
 
@@ -112,8 +113,6 @@ public class CustomerActionBean implements ActionBean {
 
     public Resolution findByName() {
         log.debug("findByName() ");
-        //HttpServletRequest req = context.getRequest();
-        //System.out.println(req.getContextPath() + "./." + req.getServletPath() + "./." + req.getPathInfo() + "\n" + req.getParameterMap());
         String fn = context.getRequest().getParameter("firstname");
         String ln = context.getRequest().getParameter("lastname");
 
@@ -126,7 +125,6 @@ public class CustomerActionBean implements ActionBean {
         } else {
             return new RedirectResolution(this.getClass(), "all");
         }
-        //log.debug(foundList.toString());
         return new ForwardResolution("/customer/resultlist.jsp");
     }
 
@@ -137,25 +135,3 @@ public class CustomerActionBean implements ActionBean {
         return foundList;
     }
 }
-
-
-//    public void fillDB() {
-//        CustomerTO cto1 = new CustomerTO();
-//        CustomerTO cto2 = new CustomerTO();
-//        CustomerTO cto3 = new CustomerTO();
-//        cto1.setFirstName("Lukas");
-//        cto1.setFirstName("Novy");
-//        cto1.setAddress("Polna 22, Brno");
-//
-//        cto2.setFirstName("Lukas");
-//        cto2.setFirstName("Novotny");
-//        cto2.setAddress("Prazska 2, Praha");
-//
-//        cto3.setFirstName("Tomas");
-//        cto3.setFirstName("Novy");
-//        cto3.setAddress("Domazlicka 36, Bratislava");
-//
-//        customerService.create(cto1);
-//        customerService.create(cto2);
-//        customerService.create(cto3);
-//    }
