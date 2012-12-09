@@ -8,8 +8,29 @@
 
     <display-name>STIS REST Client</display-name>	
 
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/web.xml</param-value>
+    </context-param>
+    
+   
+    <servlet>
+        <servlet-name>restService</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>  
+            <param-name>contextConfigLocation</param-name>  
+            <param-value>/WEB-INF/restServiceContext.xml</param-value>  
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+<!--    <servlet-mapping>
+        <servlet-name>restService</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>-->
 
-   <!-- JSTL -->
+
+
+    <!-- JSTL -->
     <context-param>
         <description>JSTL tagy použijí lokalizované texty ze stejného zdroje jako Stripes tagy</description>
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
@@ -30,11 +51,11 @@
             <param-name>LocalePicker.Locales</param-name>
             <param-value>cs:utf-8,en:utf-8</param-value>
         </init-param>
-<!--        <init-param>
+        <init-param>
             <description>propojení Stripes se Spring</description>
             <param-name>Interceptor.Classes</param-name>
             <param-value>net.sourceforge.stripes.integration.spring.SpringInterceptor</param-value>
-        </init-param>-->
+        </init-param>
     </filter>
     <filter-mapping>
         <filter-name>StripesFilter</filter-name>
@@ -56,17 +77,9 @@
         <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
     
-    
-<!--    <servlet>
-        <servlet-name>ExtraServiceClient</servlet-name>
-        <servlet-class>cz.muni.fi.pa165.stis.rest.client.ExtraServiceClient</servlet-class>       
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ExtraServiceClient</servlet-name>
-        <url-pattern>/extraservice*</url-pattern>
-    </servlet-mapping>
 
-    <servlet>
+
+    <!--    <servlet>
         <servlet-name>TyreClient</servlet-name>
         <servlet-class>cz.muni.fi.pa165.stis.rest.client.TyreClient</servlet-class>       
     </servlet>
