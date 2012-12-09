@@ -4,19 +4,20 @@
     <s:layout-component name="content">
         <s:useActionBean beanclass="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean" var="actionBean"/>
 
-        <div class="row-fluid" style="margin-bottom: 5px;">
-            <div style="float: left;">                       
+        <div class="row-fluid">
+            <div style="float: left; margin-bottom: 5px;">                       
                 <s:link  beanclass="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean" event="newExtraService" class="btn"><i class="icon-plus"></i><f:message key="button.create"/></s:link>
             </div>
 
-            <c:choose>
+            <c:choose>                
                 <c:when test="${not empty actionBean.allExtraServices}">
+                    
                     <table class="table table-striped table-bordered">
                         <tr>                     
                             <th><f:message key="extraService.table.name"/></th>                                
                             <th><f:message key="extraService.table.description"/></th>
                             <th><f:message key="extraService.table.price"/></th>
-                            <th><f:message key="extraService.table.actions"/></th>
+                            <th style="width: 32px;"><f:message key="extraService.table.actions"/></th>
                         </tr>    
                         <c:forEach items="${actionBean.allExtraServices}" var="item">
                             <tr>                             

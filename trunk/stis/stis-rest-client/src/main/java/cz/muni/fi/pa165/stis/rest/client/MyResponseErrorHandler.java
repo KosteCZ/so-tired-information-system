@@ -1,7 +1,6 @@
 package cz.muni.fi.pa165.stis.rest.client;
 
 import java.io.IOException;
-import javax.security.sasl.AuthenticationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpStatus;

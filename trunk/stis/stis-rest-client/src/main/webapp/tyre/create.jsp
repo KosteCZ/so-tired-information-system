@@ -4,13 +4,13 @@
 <s:layout-render name="/layout.jsp" title="${msg}">
     <s:layout-component name="content">
         <div id="createTyre">
-            <s:form beanclass="cz.muni.fi.pa165.stis.rest.client.TyreClientActionBean">
+            <s:form beanclass="cz.muni.fi.pa165.stis.rest.client.TyreClientActionBean" class="form-horizontal">
                 <fieldset><legend><f:message key="tyre.title.create"/></legend>
                     <%@include file="/tyre/form.jsp"%>
                 </fieldset>
-                <div>
-                    <button type="submit" name="create"><f:message key="button.create"/></button>
-                    <s:link beanclass="cz.muni.fi.pa165.stis.rest.client.TyreClientActionBean" event="list"> <f:message key="button.cancel"/></s:link>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" name="create"><i class="icon-plus"></i> <f:message key="button.create"/></button>
+                    <s:link beanclass="cz.muni.fi.pa165.stis.rest.client.TyreClientActionBean" class="btn" event="list"><i class="icon-ban-circle"></i> <f:message key="button.cancel"/></s:link>
                     </div>
             </s:form>
         </div>
