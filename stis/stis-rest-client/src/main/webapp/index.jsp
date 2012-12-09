@@ -2,7 +2,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>STIS REST Client</title>
+    <title><f:message key="stis.client"/></title>
 </head>
 <<s:layout-render name="/layout.jsp" title="${msg}">
     <s:layout-component name="content">                          

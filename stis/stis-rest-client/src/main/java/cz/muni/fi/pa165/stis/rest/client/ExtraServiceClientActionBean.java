@@ -1,7 +1,6 @@
 package cz.muni.fi.pa165.stis.rest.client;
 
 import cz.muni.fi.pa165.stis.dto.ExtraServiceTO;
-import javax.ws.rs.core.Response;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Before;
@@ -16,7 +15,6 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 /**

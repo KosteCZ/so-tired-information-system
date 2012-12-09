@@ -8,8 +8,9 @@
         <div class="row-fluid" style="margin-bottom: 5px;">
             <div style="float: left;">
                 <s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="create" class="btn"><i class="icon-plus"></i> <f:message key="button.create"/></s:link>
-                </div>
-                <div style="float: right;">                
+                
+            </div>
+            <div style="float: right;">                
                 <s:form beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" class="form-inline" style="margin-bottom: 0px;"> 
                     <div class="input-append input-prepend">
                         <f:message key="customer.firstName" var="firstname"/>
