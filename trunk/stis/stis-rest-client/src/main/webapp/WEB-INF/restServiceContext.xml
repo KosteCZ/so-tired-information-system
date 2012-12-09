@@ -19,11 +19,14 @@
 ">
     <!-- Rest template for Spring 3.1. Used HttpClientFactory to make request -->
     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <property name="errorHandler"  ref="myErrorHandler"/>
 <!--        <property name="messageConverters"> 
             <list> 
                 <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>                        
             </list> 
         </property>-->
     </bean>
+    
+    <bean id="myErrorHandler" class="cz.muni.fi.pa165.stis.rest.client.MyResponseErrorHandler"/>
     
 </beans>

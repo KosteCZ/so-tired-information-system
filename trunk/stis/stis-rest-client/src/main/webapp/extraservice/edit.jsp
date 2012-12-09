@@ -4,18 +4,16 @@
 <s:layout-render name="/layout.jsp" title="${msg}">
     <s:layout-component name="content">
         <div id="editExtraService">
-            <s:form beanclass="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean">
+            <s:form beanclass="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean" class="form-horizontal">
                 <s:hidden name="extraService.id"/>
                 <fieldset><legend><f:message key="extraService.title.edit"/></legend>            
                     <%@include file="/extraservice/form.jsp"%>
                 </fieldset>
-                <div >
-                    <button type="submit" name="save"><f:message key="button.edit"/></button>
-                    <s:link beanclass="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean" event="list"><f:message key="button.cancel"/></s:link>
-                    </div>
-            </s:form>
-        </div>
-
-
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" name="save"><i class="icon-ok"></i> <f:message key="button.save"/></button>
+                    <s:link beanclass="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean" class="btn" event="list"><i class="icon-ban-circle"></i><f:message key="button.cancel"/></s:link>
+                </div>
+            </div>
+        </s:form>
     </s:layout-component>
 </s:layout-render>

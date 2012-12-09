@@ -8,6 +8,12 @@
 
 input.error { background-color: #ffcccc; }
 
+header,.header,#header{
+  background: red;
+  color: white;
+  font-size: 15px;
+}
+
 .noresults {
     color: black;
     font-size: large;
@@ -32,3 +38,5 @@ input.error { background-color: #ffcccc; }
 .nostyle td:nth-child(2) {
     padding-left: 5px;
 }
+
+
