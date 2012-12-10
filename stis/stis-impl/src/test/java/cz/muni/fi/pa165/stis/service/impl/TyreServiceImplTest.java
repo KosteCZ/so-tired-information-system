@@ -1,11 +1,8 @@
 package cz.muni.fi.pa165.stis.service.impl;
 
 import cz.muni.fi.pa165.stis.dao.TyreDAO;
-import cz.muni.fi.pa165.stis.dto.ExtraServiceTO;
 import cz.muni.fi.pa165.stis.dto.TyreTO;
-import cz.muni.fi.pa165.stis.entity.ExtraService;
 import cz.muni.fi.pa165.stis.entity.Tyre;
-import cz.muni.fi.pa165.stis.service.impl.TyreServiceImpl;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -14,12 +11,13 @@ import org.dozer.DozerBeanMapper;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.After;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.Matchers.argThat;
 import org.mockito.Mock;
 import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 

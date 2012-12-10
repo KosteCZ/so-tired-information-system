@@ -3,7 +3,6 @@ package cz.muni.fi.pa165.stis.web.wrapper;
 import cz.muni.fi.pa165.stis.dto.ExtraServiceTO;
 import cz.muni.fi.pa165.stis.dto.OrderTO;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 /**

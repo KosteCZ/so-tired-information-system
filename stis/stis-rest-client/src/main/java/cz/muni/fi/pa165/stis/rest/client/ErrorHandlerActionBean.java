@@ -10,7 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Stripes web presentation layer of Error handler ActionBean.
+ * Shows errors passed from RestClientExceptionHandler on new web page.
+ * 
+ * 
  * @author Michal Toth
  */
 @UrlBinding("/${event}")

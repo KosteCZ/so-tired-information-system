@@ -203,7 +203,6 @@ public class ExtraServiceDAOImplTest {
      */
     @Test
     public void testFindByName() {
-        //System.out.println("findByName");
         ExtraService e1 = newExtraService("Tyre cleaning", "Proffesional tyre cleaning", BigDecimal.valueOf(325));
         extraServiceDAO.create(e1);
         ExtraService e2 = newExtraService("Tyre fixing", "Proffesional tyre fixing", BigDecimal.valueOf(490));
@@ -245,7 +244,6 @@ public class ExtraServiceDAOImplTest {
         for (ExtraService es : extraServices) {
             if (extraServiceList.contains(es)) {
                 i = extraServiceList.indexOf(es);
-                //System.out.println(t + " vs " + extraServiceList.get(i));
                 assertDeepEquals(es, extraServiceList.get(i));
             }
         }

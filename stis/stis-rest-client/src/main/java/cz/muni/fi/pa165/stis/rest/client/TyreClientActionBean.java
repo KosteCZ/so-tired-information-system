@@ -19,22 +19,22 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  *
+ * TyreClientActionBean - client side of REST stis API. Takes care of entity
+ * Tyre CRUD manipulation.
+ *
  * @author Jan Koščák
  */
-
 @UrlBinding("/tyre/{$event}/")
 public class TyreClientActionBean implements ActionBean {
-    
+
     static String HOST = "localhost";
     static int PORT = 8080;
     static String webapp = "pa165/rest";
     String url = "http://" + HOST + ":" + PORT + "/" + webapp + "/tyres";
     final static Logger logger = LoggerFactory.getLogger(TyreClientActionBean.class);
     private ActionBeanContext context;
-    
     @SpringBean
     private RestTemplate rt;
-   
     @ValidateNestedProperties(value = {
         @Validate(on = {"create", "save"}, field = "name", required = true),
         @Validate(on = {"create", "save"}, field = "price", required = true, minvalue = 1)
@@ -61,20 +61,15 @@ public class TyreClientActionBean implements ActionBean {
 
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
     public void loadESFromDatabase() {
-        String id = context.getRequest().getParameter("tyre.id");        
+        String id = context.getRequest().getParameter("tyre.id");
         if (id != null) {
             tyre = rt.getForObject(url + "/{id}", TyreTO.class, id);
         }
     }
 
     public Resolution delete() {
-
         logger.debug("delete({})", tyre);
-//        try {
-            rt.delete(url + "/{id}", tyre.getId());
-//        } catch (RestClientException e) {
-//            System.err.println("Exception has been thrown " + e.getStackTrace());
-//        }
+        rt.delete(url + "/{id}", tyre.getId());
         return new RedirectResolution(this.getClass(), "list");
     }
 
@@ -102,8 +97,7 @@ public class TyreClientActionBean implements ActionBean {
     public void setTyre(TyreTO tyre) {
         this.tyre = tyre;
     }
-    
-    
+
     @Override
     public void setContext(ActionBeanContext abc) {
         this.context = abc;

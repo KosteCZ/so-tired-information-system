@@ -18,7 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
 
 /**
- *
+ * ExtraServiceClientActionBean - client side of REST stis API.
+ * Takes care of entity ExtraService.
+ *  
  * @author Michal Toth
  */
 @UrlBinding("/extraservice/{$event}/")

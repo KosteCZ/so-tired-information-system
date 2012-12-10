@@ -18,15 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Peter Mravec
  */
 @Service
-public class OrderServiceImpl implements OrderService{
-    
+public class OrderServiceImpl implements OrderService {
+
     @Autowired
     private OrderDAO orderDAO;
-    
     @Autowired
     private DozerBeanMapper mapper;
 
     @Transactional
+    @Override
     public void create(OrderTO order) {
         if (order == null) {
             throw new IllegalArgumentException("order is null");
@@ -39,7 +39,8 @@ public class OrderServiceImpl implements OrderService{
         order.setId(ord.getId());
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
+    @Override
     public OrderTO get(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("id is null");
@@ -52,6 +53,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Transactional
+    @Override
     public void update(OrderTO order) {
         if (order == null) {
             throw new IllegalArgumentException("order is null");
@@ -64,6 +66,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Transactional
+    @Override
     public void remove(OrderTO order) {
         if (order == null) {
             throw new IllegalArgumentException("order is null");
@@ -75,7 +78,8 @@ public class OrderServiceImpl implements OrderService{
         orderDAO.remove(ord);
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
+    @Override
     public List<OrderTO> findAll() {
         List<Order> result = orderDAO.findAll();
         List<OrderTO> ret = new ArrayList<>();
@@ -85,7 +89,8 @@ public class OrderServiceImpl implements OrderService{
         return ret;
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
+    @Override
     public List<OrderTO> findByCustomer(CustomerTO customer) {
         if (customer == null) {
             throw new IllegalArgumentException("customer is null");
@@ -97,5 +102,4 @@ public class OrderServiceImpl implements OrderService{
         }
         return ret;
     }
-    
 }
