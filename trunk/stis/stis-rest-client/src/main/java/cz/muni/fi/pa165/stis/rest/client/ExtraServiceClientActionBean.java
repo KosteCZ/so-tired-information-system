@@ -29,6 +29,7 @@ public class ExtraServiceClientActionBean implements ActionBean {
     static String webapp = "pa165/rest";
     final String url = "http://" + HOST + ":" + PORT + "/" + webapp + "/extraservices";
     final static Logger logger = LoggerFactory.getLogger(ExtraServiceClientActionBean.class);
+    
     private ActionBeanContext context;
     @SpringBean
     private RestTemplate restTemplate;
@@ -78,11 +79,7 @@ public class ExtraServiceClientActionBean implements ActionBean {
     public Resolution create() {
         logger.debug("create() {}", extraService);
         System.out.println(extraService);
-//        try {
         restTemplate.postForObject(url + "/", extraService, ExtraServiceTO.class);
-//        } catch (RestClientException e) {
-//            return new ForwardResolution("/extraservice/error.jsp");
-//        }
         return new RedirectResolution(this.getClass(), "list");
     }
 
@@ -91,12 +88,7 @@ public class ExtraServiceClientActionBean implements ActionBean {
         ExtraServiceTO[] ess = restTemplate.getForObject(url + "/", ExtraServiceTO[].class);
         return ess;
     }
-
     
-    public Resolution error() {
-        logger.debug("error()");
-        return new ForwardResolution("/extraservice/error.jsp");
-    }
     
     
     public ExtraServiceTO getExtraService() {

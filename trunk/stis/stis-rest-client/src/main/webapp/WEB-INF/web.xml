@@ -15,7 +15,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/restServiceContext.xml</param-value>
-    </context-param>
+    </context-param>   
     
     <!-- JSTL -->
     <context-param>
@@ -43,6 +43,11 @@
             <param-name>Interceptor.Classes</param-name>
             <param-value>net.sourceforge.stripes.integration.spring.SpringInterceptor</param-value>
         </init-param>
+        <init-param>
+            <param-name>ExceptionHandler.Class</param-name>
+            <param-value>cz.muni.fi.pa165.stis.rest.client.RestClientExceptionHandler</param-value>
+        </init-param>
+        
     </filter>
     <filter-mapping>
         <filter-name>StripesFilter</filter-name>
