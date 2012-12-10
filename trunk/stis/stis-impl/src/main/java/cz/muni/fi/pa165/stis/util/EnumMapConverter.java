@@ -1,8 +1,8 @@
 package cz.muni.fi.pa165.stis.util;
 
+import cz.muni.fi.pa165.stis.dto.TyrePosition;
 import cz.muni.fi.pa165.stis.dto.TyreTO;
 import cz.muni.fi.pa165.stis.entity.Tyre;
-import cz.muni.fi.pa165.stis.dto.TyrePosition;
 import java.util.EnumMap;
 import java.util.Map;
 import org.dozer.CustomConverter;

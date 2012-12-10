@@ -1,4 +1,5 @@
 <%@include file="fragment/taglibs.jsp" %>
+
 <s:layout-definition>
 <html>
 <head>

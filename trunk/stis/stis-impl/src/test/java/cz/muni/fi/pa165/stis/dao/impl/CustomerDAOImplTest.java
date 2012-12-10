@@ -7,9 +7,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import org.junit.After;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -79,8 +79,6 @@ public class CustomerDAOImplTest {
     public void testGet() {
         Customer cust = newCustomer(null, null, null, null);
         customerDAO.create(cust);
-        //ExtraService e = newExtraService(null, null, BigDecimal.ZERO);
-        //extraServiceDAO.create(e);
         Long id = null;
         try {
             customerDAO.get(id);

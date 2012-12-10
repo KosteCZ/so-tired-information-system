@@ -42,7 +42,7 @@ public class TyreDAOImplTest {
         removeAll();
     }
 
-      /**
+    /**
      * Test of get method, of class TyreDAO.
      */
     @Test
@@ -68,7 +68,7 @@ public class TyreDAOImplTest {
         Tyre t3 = tyreDAO.get(t2.getId() + 1);
         assertNull("Tyre should not exists", t3);
     }
-    
+
     /**
      * Test of create method, of class TyreDAO.
      */
@@ -100,7 +100,6 @@ public class TyreDAOImplTest {
         tyreDAO.create(tyre);
         assertNotNull("ID is null", tyre.getId());
     }
-  
 
     /**
      * Test of update method, of class TyreDAO.
@@ -144,7 +143,6 @@ public class TyreDAOImplTest {
     @Test
     public void testRemove() {
         tyre = createTyre(19D, "P Zero", "235/40ZR19", "Pirelli", BigDecimal.valueOf(420));
-        //tyreDAO.create(tyre);
 
         try {
             tyreDAO.remove(null);
@@ -262,7 +260,6 @@ public class TyreDAOImplTest {
         for (Tyre t : tyres) {
             if (tyreList.contains(t)) {
                 i = tyreList.indexOf(t);
-                //System.out.println(t + " vs " + tyreList.get(i));
                 assertDeepEquals(t, tyreList.get(i));
             }
         }
@@ -297,7 +294,6 @@ public class TyreDAOImplTest {
             assertEquals(t1.getVendor(), t2.getVendor());
         }
     }
-    
     private static Comparator<Tyre> tyreComparator = new Comparator<Tyre>() {
         @Override
         public int compare(Tyre t1, Tyre t2) {
