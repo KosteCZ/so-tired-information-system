@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.stis.rest.client;
 
 import cz.muni.fi.pa165.stis.dto.TyreTO;
+import cz.muni.fi.pa165.stis.rest.util.PropertyHelper;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Before;
@@ -15,7 +16,6 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -28,23 +28,22 @@ import org.springframework.web.client.RestTemplate;
 @UrlBinding("/tyre/{$event}/")
 public class TyreClientActionBean implements ActionBean {
 
-    private static @Value("${host}") String HOST;
-    private static @Value("${port}") int PORT;       
-    private static @Value("${webapp}") String webapp;
-    private static @Value("${tyre}") String entity;
-    
-    String url = "http://" + HOST + ":" + PORT + "/" + webapp + "/" + entity;
-    final static Logger logger = LoggerFactory.getLogger(TyreClientActionBean.class);
+    private static final Logger logger = LoggerFactory.getLogger(TyreClientActionBean.class);
     
     private ActionBeanContext context;
+    
     @SpringBean
     private RestTemplate rt;
+    
+    @SpringBean
+    private PropertyHelper ph;
+    
     @ValidateNestedProperties(value = {
         @Validate(on = {"create", "save"}, field = "name", required = true),
         @Validate(on = {"create", "save"}, field = "price", required = true, minvalue = 1)
     })
     private TyreTO tyre;
-
+    
     @DefaultHandler
     public Resolution list() {
         logger.info("listing");
@@ -58,7 +57,7 @@ public class TyreClientActionBean implements ActionBean {
 
     public Resolution save() {
         logger.debug("save() {}", tyre);
-        rt.put(url + "/{id}", tyre, tyre.getId());
+        rt.put(getURL() + "/{id}", tyre, tyre.getId());
         System.out.println(tyre.toString());
         return new RedirectResolution(this.getClass(), "list.jsp");
     }
@@ -67,13 +66,13 @@ public class TyreClientActionBean implements ActionBean {
     public void loadESFromDatabase() {
         String id = context.getRequest().getParameter("tyre.id");
         if (id != null) {
-            tyre = rt.getForObject(url + "/{id}", TyreTO.class, id);
+            tyre = rt.getForObject(getURL() + "/{id}", TyreTO.class, id);
         }
     }
 
     public Resolution delete() {
         logger.debug("delete({})", tyre);
-        rt.delete(url + "/{id}", tyre.getId());
+        rt.delete(getURL() + "/{id}", tyre.getId());
         return new RedirectResolution(this.getClass(), "list");
     }
 
@@ -84,13 +83,13 @@ public class TyreClientActionBean implements ActionBean {
 
     public Resolution create() {
         logger.debug("create() {}", tyre);
-        rt.postForObject(url + "/", tyre, TyreTO.class);
+        rt.postForObject(getURL() + "/", tyre, TyreTO.class);
         return new RedirectResolution(this.getClass(), "list");
     }
 
     public TyreTO[] getAllTyres() {
         logger.debug("getAllTyres()");
-        TyreTO[] ess = rt.getForObject(url + "/", TyreTO[].class);
+        TyreTO[] ess = rt.getForObject(getURL() + "/", TyreTO[].class);
         return ess;
     }
 
@@ -110,5 +109,9 @@ public class TyreClientActionBean implements ActionBean {
     @Override
     public ActionBeanContext getContext() {
         return context;
+    }
+    
+    private String getURL() {
+        return ph.getTyreURL();
     }
 }
