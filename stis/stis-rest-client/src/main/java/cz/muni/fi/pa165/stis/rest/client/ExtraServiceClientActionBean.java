@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.stis.rest.client;
 
 import cz.muni.fi.pa165.stis.dto.ExtraServiceTO;
+import cz.muni.fi.pa165.stis.rest.util.PropertyHelper;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Before;
@@ -15,7 +16,6 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,22 +30,10 @@ import org.springframework.web.client.RestTemplate;
 @UrlBinding("/extraservice/{$event}/")
 public class ExtraServiceClientActionBean implements ActionBean {
 
-    @Value("${host}")
-    private String HOST;
+    @SpringBean
+    private PropertyHelper ph;
     
-    @Value("${port}") 
-    private int PORT;       
-    
-    @Value("${webapp}")
-    private String WEBAPP;
-    
-    @Value("${tyre}")
-    private String ENTITY;
-    
-    
-    private final String url = "http://" + HOST + ":" + PORT + "/" + WEBAPP + "/" + ENTITY;     
     private final static Logger logger = LoggerFactory.getLogger(ExtraServiceClientActionBean.class);
-       
     
     private ActionBeanContext context;
     
@@ -59,7 +47,7 @@ public class ExtraServiceClientActionBean implements ActionBean {
 
     @DefaultHandler
     public Resolution list() {
-        logger.info("listing url={} HOST={} PORT={} WEBAPP={} ENTITY={}", url, HOST, PORT, WEBAPP, ENTITY);        
+        logger.info("listing");        
         return new ForwardResolution("/extraservice/list.jsp");
     }
 
@@ -70,7 +58,7 @@ public class ExtraServiceClientActionBean implements ActionBean {
 
     public Resolution save() {
         logger.debug("save() {}", extraService);
-        restTemplate.put(url + "/{id}", extraService, extraService.getId());
+        restTemplate.put(getURL() + "/{id}", extraService, extraService.getId());
         System.out.println(extraService.toString());
         return new RedirectResolution(this.getClass(), "list.jsp");
     }
@@ -79,13 +67,13 @@ public class ExtraServiceClientActionBean implements ActionBean {
     public void loadESFromDatabase() {
         String id = context.getRequest().getParameter("extraService.id");
         if (id != null) {
-            extraService = restTemplate.getForObject(url + "/{id}", ExtraServiceTO.class, id);
+            extraService = restTemplate.getForObject(getURL() + "/{id}", ExtraServiceTO.class, id);
         }
     }
 
     public Resolution delete() {
         logger.debug("delete({})", extraService);
-        restTemplate.delete(url + "/{id}", extraService.getId());
+        restTemplate.delete(getURL() + "/{id}", extraService.getId());
         return new RedirectResolution(this.getClass(), "list");
     }
 
@@ -97,13 +85,13 @@ public class ExtraServiceClientActionBean implements ActionBean {
     public Resolution create() {
         logger.debug("create() {}", extraService);
         System.out.println(extraService);
-        restTemplate.postForObject(url + "/", extraService, ExtraServiceTO.class);
+        restTemplate.postForObject(getURL() + "/", extraService, ExtraServiceTO.class);
         return new RedirectResolution(this.getClass(), "list");
     }
 
     public ExtraServiceTO[] getAllExtraServices() {
         logger.debug("getAllExtraService()");
-        ExtraServiceTO[] ess = restTemplate.getForObject(url + "/", ExtraServiceTO[].class);
+        ExtraServiceTO[] ess = restTemplate.getForObject(getURL() + "/", ExtraServiceTO[].class);
         return ess;
     }
     
@@ -125,5 +113,9 @@ public class ExtraServiceClientActionBean implements ActionBean {
     @Override
     public ActionBeanContext getContext() {
         return context;
+    }
+    
+    private String getURL() {
+        return ph.getExtraServiceURL();
     }
 }
