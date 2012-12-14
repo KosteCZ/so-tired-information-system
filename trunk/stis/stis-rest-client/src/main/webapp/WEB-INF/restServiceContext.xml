@@ -17,17 +17,48 @@
           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
           http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd">
     
+    <!-- not needed for component-scan --> 
+    <context:annotation-config/>
+    <context:component-scan base-package="cz.muni.fi.pa165.stis.rest"/>
+     
+    <!--    NOT WORKING     -->
+    <context:property-placeholder location="classpath:server.properties"/>  
     
+    
+    <!-- TRY 2 -->
+<!--    <bean id="projectProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:server.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="properties" ref="projectProperties" />
+    </bean>
+
+
+    <bean class="cz.muni.fi.pa165.stis.rest.client.ExtraServiceClientActionBean">
+        <property name="HOST" value="${host}"/>  
+        <property name="PORT" value="${port}"/>  
+        <property name="WEBAPP" value="${webapp}"/>  
+        <property name="ENTITY" value="${extraservice}"/>  
+   
+    </bean>
+    -->
+        
+    
+    
+    <!--<bean class="cz.muni.fi.pa165.stis.rest.client.TyreClientActionBean"/>-->
     <!-- Rest template for Spring 3.1. Used HttpClientFactory to make request -->
-    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
-        <!--<property name="errorHandler"  ref="myErrorHandler"/>
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
+    <!--<property name="errorHandler"  ref="myErrorHandler"/>
                <property name="messageConverters"> 
             <list> 
                 <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>                        
             </list> 
-        </property>-->
-    </bean>
-    
-    <!--<bean id="myErrorHandler" class="cz.muni.fi.pa165.stis.rest.client.RestClientExceptionHandler"/>-->
+        </property>
+    </bean>-->    
     
 </beans>
