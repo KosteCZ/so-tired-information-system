@@ -15,24 +15,40 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * ExtraServiceClientActionBean - client side of REST stis API.
- * Takes care of entity ExtraService.
+ * Takes care of ENTITY ExtraService.
  *  
  * @author Michal Toth
  */
+
+@Component
 @UrlBinding("/extraservice/{$event}/")
 public class ExtraServiceClientActionBean implements ActionBean {
 
-    static String HOST = "localhost";
-    static int PORT = 8080;
-    static String webapp = "pa165/rest";
-    final String url = "http://" + HOST + ":" + PORT + "/" + webapp + "/extraservices";
-    final static Logger logger = LoggerFactory.getLogger(ExtraServiceClientActionBean.class);
+    @Value("${host}")
+    private String HOST;
+    
+    @Value("${port}") 
+    private int PORT;       
+    
+    @Value("${webapp}")
+    private String WEBAPP;
+    
+    @Value("${tyre}")
+    private String ENTITY;
+    
+    
+    private final String url = "http://" + HOST + ":" + PORT + "/" + WEBAPP + "/" + ENTITY;     
+    private final static Logger logger = LoggerFactory.getLogger(ExtraServiceClientActionBean.class);
+       
     
     private ActionBeanContext context;
+    
     @SpringBean
     private RestTemplate restTemplate;
     @ValidateNestedProperties(value = {
@@ -43,7 +59,7 @@ public class ExtraServiceClientActionBean implements ActionBean {
 
     @DefaultHandler
     public Resolution list() {
-        logger.info("listing");
+        logger.info("listing url={} HOST={} PORT={} WEBAPP={} ENTITY={}", url, HOST, PORT, WEBAPP, ENTITY);        
         return new ForwardResolution("/extraservice/list.jsp");
     }
 

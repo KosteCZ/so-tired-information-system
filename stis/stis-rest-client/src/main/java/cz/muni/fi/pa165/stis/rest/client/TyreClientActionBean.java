@@ -15,6 +15,7 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -27,11 +28,14 @@ import org.springframework.web.client.RestTemplate;
 @UrlBinding("/tyre/{$event}/")
 public class TyreClientActionBean implements ActionBean {
 
-    static String HOST = "localhost";
-    static int PORT = 8080;
-    static String webapp = "pa165/rest";
-    String url = "http://" + HOST + ":" + PORT + "/" + webapp + "/tyres";
+    private static @Value("${host}") String HOST;
+    private static @Value("${port}") int PORT;       
+    private static @Value("${webapp}") String webapp;
+    private static @Value("${tyre}") String entity;
+    
+    String url = "http://" + HOST + ":" + PORT + "/" + webapp + "/" + entity;
     final static Logger logger = LoggerFactory.getLogger(TyreClientActionBean.class);
+    
     private ActionBeanContext context;
     @SpringBean
     private RestTemplate rt;
