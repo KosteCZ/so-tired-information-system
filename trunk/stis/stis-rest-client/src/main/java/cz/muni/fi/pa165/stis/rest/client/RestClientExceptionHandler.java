@@ -25,29 +25,7 @@ public class RestClientExceptionHandler extends DefaultExceptionHandler {
         
     final static org.slf4j.Logger logger = LoggerFactory.getLogger(RestClientExceptionHandler.class);
     private String rootCause;
-    
-/** 
- *  These following ExceptionHandlers might be deleted. After more testings they will be removed from code.
- 
-    public Resolution handleDatabaseException(SqlExceptionHelper exc, HttpServletRequest request, HttpServletResponse response) {
-        // do something to handle RestClient exceptions
-        logger.debug("handleSqlExceptionHelper({})", exc, " ROOT CAUSE=", request, response);            
-        
-        return new ForwardResolution("/error.jsp").addParameter("exception", exc);
-    }
-   
-    public Resolution handleRestClientException(RestClientException exc, HttpServletRequest request, HttpServletResponse response) {
-        rootCause = this.getCause(exc).toString();
-        logger.error("handleRestClientExceptionHelper({})", exc, " ROOT CAUSE=", rootCause, request, response);                            
-        return new ForwardResolution("/error.jsp").addParameter("exception", exc).addParameter("rootCause", rootCause);
-    }
-    
-    public Resolution handleELException(ELException exc, HttpServletRequest request, HttpServletResponse response) {
-        rootCause = this.getCause(exc).toString();
-        logger.error("handleELExceptionHelper({})", exc, " ROOT CAUSE=", rootCause);                            
-        return new ForwardResolution("/error.jsp").addParameter("exception", exc).addParameter("rootCause", rootCause);
-    }
-*/    
+      
     public Resolution handleServletException(ServletException exc, HttpServletRequest request, HttpServletResponse response) {
         rootCause = this.getCause(exc).toString();
         logger.error("handleServletException() {}", exc,  " ROOT CAUSE=", rootCause);          
