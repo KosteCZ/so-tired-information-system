@@ -30,7 +30,6 @@
                                 <td>
                                     <div class="btn-group">
                                         <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.rest.client.TyreClientActionBean" event="edit"><s:param name="tyre.id" value="${item.id}"/><i class="icon-pencil"></i><f:message key="button.edit"/></s:link>                                    
-                                        <!--                                    <s:link  id="confirmButton" class="btn btn-primary" beanclass="cz.muni.fi.pa165.stis.rest.client.TyreClientActionBean" event="delete"><s:param name="tyre.id" value="${item.id}"/><f:message key="button.remove"/></s:link>-->
                                         <a href="#confirmDelete" role="button" onclick="setLink(this);" class="btn btn-small" data-toggle="modal" data-id="${item.id}"><i class="icon-trash"></i> <f:message key="button.remove"/></a>
                                     </div>
                                 </td>
