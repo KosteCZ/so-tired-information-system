@@ -53,8 +53,6 @@ public class TyreActionBean implements ActionBean {
     public List<TyreTO> getAllTyres() {
         logger.debug("getting all");
         return tyreService.findAll();
-        //List<TyreTO> list = tyreService.findAll();
-        //return list;
     }
 
     @Override
@@ -112,21 +110,18 @@ public class TyreActionBean implements ActionBean {
 
     public Resolution newTyre() {
         logger.debug("newTyre()");
-        //
         return new ForwardResolution("/tyre/create.jsp");
     }
     
     public Resolution create() {
         logger.debug("create() {}", tto);
         tyreService.create(tto);
-        //
         return new RedirectResolution(TyreActionBean.class, "list");
     }
     
     public Resolution delete() {
         logger.debug("delete() {}", tto);
         tyreService.remove(tto);
-        //
         return new RedirectResolution(TyreActionBean.class, "list");
     }    
     
@@ -145,7 +140,6 @@ public class TyreActionBean implements ActionBean {
         String name = context.getRequest().getParameter("name");
         logger.debug("findByName() {}", name);
         this.results = tyreService.findByName(name);
-        //
         return new ForwardResolution("/tyre/results.jsp");
     }
 }
