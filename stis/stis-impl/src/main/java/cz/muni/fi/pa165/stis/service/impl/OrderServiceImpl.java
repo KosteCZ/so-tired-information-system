@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private DozerBeanMapper mapper;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or "
+            + "(hasRole('ROLE_USER') and principal.customer.id == #order.customer.id)")
     @Transactional
     @Override
     public void create(OrderTO order) {
@@ -39,6 +43,8 @@ public class OrderServiceImpl implements OrderService {
         order.setId(ord.getId());
     }
 
+    @PostAuthorize("hasRole('ROLE_ADMIN') or "
+            + "(hasRole('ROLE_USER') and returnObject != null and principal.customer.id == returnObject.customer.id)")
     @Transactional(readOnly = true)
     @Override
     public OrderTO get(Long id) {
@@ -52,6 +58,8 @@ public class OrderServiceImpl implements OrderService {
         return mapper.map(o, OrderTO.class);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or "
+            + "(hasRole('ROLE_USER') and principal.customer.id == #order.customer.id)")
     @Transactional
     @Override
     public void update(OrderTO order) {
@@ -65,6 +73,8 @@ public class OrderServiceImpl implements OrderService {
         orderDAO.update(ord);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or "
+            + "(hasRole('ROLE_USER') and principal.customer.id == #order.customer.id)")
     @Transactional
     @Override
     public void remove(OrderTO order) {
@@ -78,6 +88,7 @@ public class OrderServiceImpl implements OrderService {
         orderDAO.remove(ord);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional(readOnly = true)
     @Override
     public List<OrderTO> findAll() {
@@ -89,6 +100,8 @@ public class OrderServiceImpl implements OrderService {
         return ret;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or "
+            + "(hasRole('ROLE_USER') and principal.customer.id == #customer.id)")
     @Transactional(readOnly = true)
     @Override
     public List<OrderTO> findByCustomer(CustomerTO customer) {

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ public class ExtraServiceServiceImpl implements ExtraServiceService {
     @Autowired
     private DozerBeanMapper mapper;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     @Override
     public void create(ExtraServiceTO extraService) {
@@ -54,6 +56,7 @@ public class ExtraServiceServiceImpl implements ExtraServiceService {
         return mapper.map(es, ExtraServiceTO.class);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     @Override
     public void update(ExtraServiceTO extraService) {
@@ -68,6 +71,7 @@ public class ExtraServiceServiceImpl implements ExtraServiceService {
         extraServiceDAO.update(es);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     @Override
     public void remove(ExtraServiceTO extraService) {

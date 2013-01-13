@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private DozerBeanMapper mapper;
 
+    @PreAuthorize("isAuthenticated()")
     @Transactional
     @Override
     public void create(CustomerTO customer) {
@@ -39,6 +42,8 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setId(c.getId());
     }
 
+    @PostAuthorize("hasRole('ROLE_ADMIN') or "
+            + "(hasRole('ROLE_USER') and returnObject != null and principal.customer.id == returnObject.id)")
     @Transactional(readOnly = true)
     @Override
     public CustomerTO get(Long id) {
@@ -52,6 +57,8 @@ public class CustomerServiceImpl implements CustomerService {
         return mapper.map(customer, CustomerTO.class);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or "
+            + "(hasRole('ROLE_USER') and principal.customer.id == #customer.id)")
     @Transactional
     @Override
     public void update(CustomerTO customer) {
@@ -66,6 +73,8 @@ public class CustomerServiceImpl implements CustomerService {
         dao.update(c);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or "
+            + "(hasRole('ROLE_USER') and principal.customer.id == #customer.id)")
     @Transactional
     @Override
     public void remove(CustomerTO customer) {
