@@ -19,8 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import net.sourceforge.stripes.action.ActionBean;
-import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -39,9 +37,8 @@ import org.slf4j.LoggerFactory;
  * @author Peter Mravec
  */
 @UrlBinding("/order/{$event}/")
-public class OrderActionBean implements ActionBean {
+public class OrderActionBean extends BaseActionBean {
     private static final Logger logger = LoggerFactory.getLogger(OrderActionBean.class);
-    private ActionBeanContext context;
     
     @SpringBean
     private OrderService service;    
@@ -130,7 +127,7 @@ public class OrderActionBean implements ActionBean {
     }
     
     public Resolution delete() {
-        Long id = Long.parseLong(context.getRequest().getParameter("order.id"));
+        Long id = Long.parseLong(getContext().getRequest().getParameter("order.id"));
         OrderTO ot = service.get(id);
         logger.debug("delete() {}", ot);
         //
@@ -141,7 +138,7 @@ public class OrderActionBean implements ActionBean {
     
     public Resolution done() {
         Date date = new Date();
-        Long id = Long.parseLong(context.getRequest().getParameter("order.id"));
+        Long id = Long.parseLong(getContext().getRequest().getParameter("order.id"));
         OrderTO ot = service.get(id);
         ot.setOrderServicedDate(date);
         logger.debug("done() {}", ot);
@@ -152,7 +149,7 @@ public class OrderActionBean implements ActionBean {
 
     public Resolution paid() {
         Date date = new Date();
-        Long id = Long.parseLong(context.getRequest().getParameter("order.id"));
+        Long id = Long.parseLong(getContext().getRequest().getParameter("order.id"));
         OrderTO ot = service.get(id);
         ot.setOrderPaidDate(date);
         logger.debug("paid() {}", ot);
@@ -163,7 +160,7 @@ public class OrderActionBean implements ActionBean {
 
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
     public void loadOrderFromDatabase() {
-        String ids = context.getRequest().getParameter("order.id");
+        String ids = getContext().getRequest().getParameter("order.id");
         if (ids != null) {
             order = new OrderTOWrapper(service.get(Long.parseLong(ids)));
         }
@@ -171,7 +168,7 @@ public class OrderActionBean implements ActionBean {
     
     public Resolution findByCustomer() {
         try {
-            Long id = Long.parseLong(context.getRequest().getParameter("customerId"));
+            Long id = Long.parseLong(getContext().getRequest().getParameter("customerId"));
             CustomerTO customer = custService.get(id);
             if (customer != null) {
                 result = service.findByCustomer(customer);
@@ -193,16 +190,6 @@ public class OrderActionBean implements ActionBean {
 
     public void setOrder(OrderTOWrapper order) {
         this.order = order;
-    }
-    
-    @Override
-    public void setContext(ActionBeanContext abc) {
-        this.context = abc;
-    }
-
-    @Override
-    public ActionBeanContext getContext() {
-        return context;
     }
     
     private void processBeforeSave(OrderTOWrapper wrapper) {

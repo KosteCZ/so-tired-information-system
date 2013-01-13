@@ -2,12 +2,7 @@ package cz.muni.fi.pa165.stis.web;
 
 import cz.muni.fi.pa165.stis.dto.CustomerTO;
 import cz.muni.fi.pa165.stis.service.CustomerService;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import net.sourceforge.stripes.action.ActionBean;
-import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -27,10 +22,9 @@ import org.slf4j.LoggerFactory;
  */
 
 @UrlBinding("/customer/{$event}/")
-public class CustomerActionBean implements ActionBean {
+public class CustomerActionBean extends BaseActionBean {
 
     private final static Logger log = LoggerFactory.getLogger(CustomerActionBean.class);
-    private ActionBeanContext context;
     private List<CustomerTO> foundList;
     
     @ValidateNestedProperties(value = {
@@ -51,16 +45,6 @@ public class CustomerActionBean implements ActionBean {
 
     public List<CustomerTO> getCustomers() {
         return customerService.findAll();
-    }
-
-    @Override
-    public void setContext(ActionBeanContext abc) {
-        this.context = abc;
-    }
-
-    @Override
-    public ActionBeanContext getContext() {
-        return context;
     }
 
     public CustomerTO getCto() {
@@ -84,7 +68,7 @@ public class CustomerActionBean implements ActionBean {
     }
 
     public Resolution delete() {
-        Long id = Long.parseLong(context.getRequest().getParameter("cto.id"));
+        Long id = Long.parseLong(getContext().getRequest().getParameter("cto.id"));
         cto = customerService.get(id);
         log.debug("deleteCustomer() cto={}", cto);
         customerService.remove(cto);
@@ -93,7 +77,7 @@ public class CustomerActionBean implements ActionBean {
 
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
     public void loadCustomerFromDatabase() {
-        String ids = context.getRequest().getParameter("cto.id");
+        String ids = getContext().getRequest().getParameter("cto.id");
         if (ids == null) {
             return;
         }
@@ -113,8 +97,8 @@ public class CustomerActionBean implements ActionBean {
 
     public Resolution findByName() {
         log.debug("findByName() ");
-        String fn = context.getRequest().getParameter("firstname");
-        String ln = context.getRequest().getParameter("lastname");
+        String fn = getContext().getRequest().getParameter("firstname");
+        String ln = getContext().getRequest().getParameter("lastname");
 
         if (!fn.equals("") && !ln.equals("")) {
             foundList = customerService.findByName(fn, ln);

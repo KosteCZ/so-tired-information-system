@@ -1,15 +1,23 @@
 <%@include file="/fragment/taglibs.jsp" %>
 <s:errors/>
 
-<div class="control-group">
-    <label class="control-label" for="order1" name="order.customer.id"><f:message key="order.form.label.customer"/></label>
-        <div class="controls">
-        <s:select name="order.customer.id"> 
-            <s:option label=""/>
-            <s:options-collection collection="${actionBean.allCustomers}" value="id" label="fullName"/>
-        </s:select>
-    </div>
-</div>
+<s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" var="actionBean"/>
+<c:choose>
+    <c:when test="${actionBean.user.isAdmin}">
+        <div class="control-group">
+            <label class="control-label" for="order1" name="order.customer.id"><f:message key="order.form.label.customer"/></label>
+            <div class="controls">
+                <s:select name="order.customer.id"> 
+                    <s:option label=""/>
+                    <s:options-collection collection="${actionBean.allCustomers}" value="id" label="fullName"/>
+                </s:select>
+            </div>
+        </div>
+        </c:when>
+    <c:otherwise>
+        <s:hidden name="order.customer.id" value="${actionBean.user.customer.id}"/>
+    </c:otherwise>
+</c:choose>
 <div class="control-group">
     <label class="control-label" for="order2" name="order.carType"><f:message key="order.form.label.carType"/></label>
         <div class="controls">
