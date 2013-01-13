@@ -10,7 +10,9 @@
         <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="list" var="actionBean"/>        
         <div class="row-fluid" style="margin-bottom: 5px;">
             <div style="float: left;">
-                <s:link beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="newTyre" class="btn"><i class="icon-plus"></i> <f:message key="button.create"/></s:link>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <s:link beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="newTyre" class="btn"><i class="icon-plus"></i> <f:message key="button.create"/></s:link>
+                </sec:authorize>
             </div>
             <div style="float: right;">
                 <s:form beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" class="form-inline" style="margin-bottom: 0px;">

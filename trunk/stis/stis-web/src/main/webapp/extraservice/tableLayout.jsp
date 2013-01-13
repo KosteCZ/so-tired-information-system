@@ -6,7 +6,9 @@
                 <th><f:message key="extraService.table.name"/></th>
                 <th><f:message key="extraService.table.description"/></th>
                 <th><f:message key="extraService.table.price"/></th>
-                <th style="width: 32px;"><f:message key="extraService.table.actions"/></th>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <th style="width: 32px;"><f:message key="extraService.table.actions"/></th>
+                </sec:authorize>
             </tr>
         </thead>
         <tbody>
@@ -15,12 +17,14 @@
                     <td><c:out value="${item.name}"/></td>
                     <td><c:out value="${item.description}"/></td>
                     <td><f:formatNumber minFractionDigits="2" maxFractionDigits="2" value="${item.price}"/></td>
-                    <td>
-                        <div class="btn-group">
-                            <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" event="edit"><s:param name="extraService.id" value="${item.id}"/><i class="icon-pencil"></i> <f:message key="button.edit"/></s:link>
-                            <a href="#confirmDelete" role="button" onclick="setLink(this);" class="btn btn-small" data-toggle="modal" data-id="${item.id}"><i class="icon-trash"></i> <f:message key="button.remove"/></a>
-                        </div>
-                    </td>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <td>
+                            <div class="btn-group">
+                                <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" event="edit"><s:param name="extraService.id" value="${item.id}"/><i class="icon-pencil"></i> <f:message key="button.edit"/></s:link>
+                                <a href="#confirmDelete" role="button" onclick="setLink(this);" class="btn btn-small" data-toggle="modal" data-id="${item.id}"><i class="icon-trash"></i> <f:message key="button.remove"/></a>
+                            </div>
+                        </td>
+                    </sec:authorize>
                 </tr>
             </c:forEach>
         </tbody>

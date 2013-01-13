@@ -4,8 +4,6 @@ import cz.muni.fi.pa165.stis.dto.TyreTO;
 import cz.muni.fi.pa165.stis.service.TyreService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import net.sourceforge.stripes.action.ActionBean;
-import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -25,12 +23,10 @@ import org.slf4j.LoggerFactory;
  */
 
 @UrlBinding("/tyre/{$event}/")
-public class TyreActionBean implements ActionBean {
+public class TyreActionBean extends BaseActionBean {
         
     private final static Logger log = LoggerFactory.getLogger(TyreActionBean.class); 
     private static final Logger logger = LoggerFactory.getLogger(TyreActionBean.class);
-    
-    private ActionBeanContext context;
     
     @ValidateNestedProperties(value = {
         @Validate(on = {"create", "save"}, field = "name", required = true),
@@ -55,16 +51,6 @@ public class TyreActionBean implements ActionBean {
         return tyreService.findAll();
     }
 
-    @Override
-    public void setContext(ActionBeanContext abc) {
-        this.context = abc;
-    }
-
-    @Override
-    public ActionBeanContext getContext() {
-        return context;
-    }
-    
     public TyreTO getTyreTO() {
         return tto;
     }
@@ -90,7 +76,7 @@ public class TyreActionBean implements ActionBean {
     }
     
     public Resolution deleteTyre() {                
-        HttpServletRequest req = context.getRequest();
+        HttpServletRequest req = getContext().getRequest();
         Long id = Long.parseLong(req.getParameter("tto.id"));
         tto = tyreService.get(id);
         log.debug("deleteTyre() tto={}", tto);
@@ -101,7 +87,7 @@ public class TyreActionBean implements ActionBean {
      
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
     public void loadTyreFromDatabase() {
-        String ids = context.getRequest().getParameter("tto.id");
+        String ids = getContext().getRequest().getParameter("tto.id");
         if (ids == null) {
             return;
         }
@@ -137,7 +123,7 @@ public class TyreActionBean implements ActionBean {
     }
      
     public Resolution findByName() {
-        String name = context.getRequest().getParameter("name");
+        String name = getContext().getRequest().getParameter("name");
         logger.debug("findByName() {}", name);
         this.results = tyreService.findByName(name);
         return new ForwardResolution("/tyre/results.jsp");

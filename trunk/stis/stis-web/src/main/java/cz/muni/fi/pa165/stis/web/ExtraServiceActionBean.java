@@ -6,8 +6,8 @@ package cz.muni.fi.pa165.stis.web;
 
 import cz.muni.fi.pa165.stis.dto.ExtraServiceTO;
 import cz.muni.fi.pa165.stis.service.ExtraServiceService;
+import cz.muni.fi.pa165.stis.web.security.CustomUserDetails;
 import java.util.List;
-import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -27,14 +27,14 @@ import org.slf4j.LoggerFactory;
  * @author dusan
  */
 @UrlBinding("/extraservice/{$event}/")
-public class ExtraServiceActionBean implements ActionBean {
+public class ExtraServiceActionBean extends BaseActionBean {
+    
+    private CustomUserDetails user;
     
     private static final Logger logger = LoggerFactory.getLogger(ExtraServiceActionBean.class);
     
     @SpringBean
     private ExtraServiceService service;
-    
-    private ActionBeanContext context;
     
     @ValidateNestedProperties(value = {
             @Validate(on = {"create", "save"}, field = "name", required = true),
@@ -89,7 +89,7 @@ public class ExtraServiceActionBean implements ActionBean {
     }
     
     public Resolution findByName() {
-        String name = context.getRequest().getParameter("name");
+        String name = getContext().getRequest().getParameter("name");
         logger.debug("findByName() {}", name);
         this.results = service.findByName(name);
         //
@@ -98,7 +98,7 @@ public class ExtraServiceActionBean implements ActionBean {
     
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
     public void loadESFromDatabase() {
-        String ids = context.getRequest().getParameter("extraService.id");
+        String ids = getContext().getRequest().getParameter("extraService.id");
         if (ids != null) {
             extraService = service.get(Long.parseLong(ids));
         }
@@ -119,15 +119,5 @@ public class ExtraServiceActionBean implements ActionBean {
     public void setResults(List<ExtraServiceTO> results) {
         this.results = results;
     }
-    
-    @Override
-    public void setContext(ActionBeanContext abc) {
-        this.context = abc;
-    }
 
-    @Override
-    public ActionBeanContext getContext() {
-        return context;
-    }
-    
 }

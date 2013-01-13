@@ -7,7 +7,9 @@
 
         <div class="row-fluid" style="margin-bottom: 5px;">
             <div style="float: left;">
-                <s:link beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" event="newExtraService" class="btn"><i class="icon-plus"></i> <f:message key="button.create"/></s:link>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <s:link beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" event="newExtraService" class="btn"><i class="icon-plus"></i> <f:message key="button.create"/></s:link>
+                </sec:authorize>
             </div>
             <div style="float: right;">
                 <s:form beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" class="form-inline" style="margin-bottom: 0px;">
@@ -18,12 +20,11 @@
                     </div>
                 </s:form>
             </div>
-        
         </div>
 
         <c:choose>
             <c:when test="${not empty actionBean.allExtraServices}">
-                <s:layout-render name="/extraservice/tableLayout.jsp" items="${actionBean.allExtraServices}"/>
+                <s:layout-render name="/extraservice/tableLayout.jsp" items="${actionBean.allExtraServices}" />
             </c:when>
             <c:otherwise>                
                 <h4><f:message key="extraService.catalogEmpty"/></h4>

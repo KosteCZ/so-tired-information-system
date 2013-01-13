@@ -8,7 +8,9 @@
                 <th><f:message key="tyre.table.diameter"/></th>
                 <th><f:message key="tyre.table.vendor"/></th>
                 <th><f:message key="tyre.table.price"/></th>
-                <th style="width: 32px;"><f:message key="tyre.table.actions"/></th>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <th style="width: 32px;"><f:message key="tyre.table.actions"/></th>
+                </sec:authorize>
             </tr>
         </thead>
         <tbody>
@@ -19,12 +21,14 @@
                     <td><c:out value="${tto.diameter}"/></td>
                     <td><c:out value="${tto.vendor}"/></td>
                     <td><f:formatNumber minFractionDigits="2" maxFractionDigits="2" value="${tto.price}"/></td>
-                    <td>
-                        <div class="btn-group">
-                            <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="edit"><s:param name="tto.id" value="${tto.id}"/><i class="icon-pencil"></i> <f:message key="button.edit"/></s:link>
-                            <a href="#confirmDelete" role="button" onclick="setLink(this);" class="btn btn-small" data-toggle="modal" data-id="${tto.id}"><i class="icon-trash"></i> <f:message key="button.remove"/></a>
-                        </div>
-                    </td>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <td>
+                            <div class="btn-group">
+                                <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="edit"><s:param name="tto.id" value="${tto.id}"/><i class="icon-pencil"></i> <f:message key="button.edit"/></s:link>
+                                <a href="#confirmDelete" role="button" onclick="setLink(this);" class="btn btn-small" data-toggle="modal" data-id="${tto.id}"><i class="icon-trash"></i> <f:message key="button.remove"/></a>
+                            </div>
+                        </td>
+                    </sec:authorize>
                 </tr>
             </c:forEach>
         </tbody>
