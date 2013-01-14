@@ -22,5 +22,25 @@
     <context:component-scan base-package="cz.muni.fi.pa165.stis.rest"/>
     <context:property-placeholder location="classpath:server.properties"/>  
     <!-- Rest template for Spring 3.1. Used HttpClientFactory to make request -->
-    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>    
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <constructor-arg ref="httpClientFactory"/>                
+    </bean>
+    
+    <bean id="httpClient" class="org.apache.commons.httpclient.HttpClient">
+        <!--<constructor-arg ref="httpClientParams"/>-->
+        <property name="state" ref="httpState"/>
+    </bean>
+    
+    <bean id="httpState" class="cz.muni.fi.pa165.stis.rest.util.CustomHttpState">
+        <property name="credentials" ref="credentials"/>
+    </bean>
+
+    <bean id="credentials" class="org.apache.commons.httpclient.UsernamePasswordCredentials">
+        <constructor-arg value="john"/>
+        <constructor-arg value="johnson"/>
+    </bean>
+
+    <bean id="httpClientFactory" class="org.springframework.http.client.CommonsClientHttpRequestFactory">
+        <constructor-arg ref="httpClient"/>
+    </bean>
 </beans>
