@@ -11,23 +11,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- *
- * @author michalxo
+ * Service layer implementation for DAO methods using
+ * transfer object - UserTO and mapping it to UserEntity
+ * 
+ * @author Michal Toth
  */
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserDAO udao;
-    
+    private UserDAO dao;
     private CustomerServiceImpl csi;
-    
     @Autowired
     private DozerBeanMapper mapper;
-        
+
     @PreAuthorize("isAuthenticated()")
     @Transactional
-    @Override    
+    @Override
     public void create(UserTO user) {
         if (user == null) {
             throw new IllegalArgumentException("user is null");
@@ -35,40 +35,90 @@ public class UserServiceImpl implements UserService {
         if (user.getId() == null) {
             throw new IllegalArgumentException("user.id is null");
         }
-        
+
         UserEntity user2 = mapper.map(user, UserEntity.class);
-        udao.create(user2);
+        dao.create(user2);
         user.setId(user2.getId());
-        // BLBOST, ID musi byt rovnake s Cusotmer id... ci?
     }
 
+    @Transactional
     @Override
     public void remove(UserTO user) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (user == null) {
+            throw new IllegalArgumentException("user is null");
+        }
+        if (user.getId() == null) {
+            throw new IllegalArgumentException("user.id is null");
+        }
+
+        UserEntity user2 = mapper.map(user, UserEntity.class);
+        dao.remove(user2);
     }
 
+    @Transactional
     @Override
     public void update(UserTO user) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (user == null) {
+            throw new IllegalArgumentException("user is null");
+        }
+        if (user.getId() == null) {
+            throw new IllegalArgumentException("user.id is null");
+        }
+        UserEntity user2 = mapper.map(user, UserEntity.class);
+        dao.update(user2);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserTO get(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (id == null) {
+            throw new IllegalArgumentException("null id");
+        }
+        UserEntity user = dao.get(id);
+        if (user == null) {
+            return null;
+        }
+        
+        return mapper.map(user, UserTO.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean availableUsername(String userName) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (userName == null) {
+            throw new IllegalArgumentException("userName is null");
+        }
+        if (userName.equals("") || userName.equals(" ")) {
+            throw new IllegalArgumentException("userName is empty");
+        }
+        
+        return dao.availableUsername(userName);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean isAdmin(UserTO user) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (user == null) {
+            throw new IllegalArgumentException("user is null");
+        }
+        if (user.getId() == null) {
+            throw new IllegalArgumentException("user.id is null");
+        }
+        UserEntity user2 = mapper.map(user, UserEntity.class);
+        
+        return dao.isAdmin(user2);
     }
 
+    @Transactional
     @Override
     public void makeAdmin(UserTO user) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (user == null) {
+            throw new IllegalArgumentException("user is null");
+        }
+        if (user.getId() == null) {
+            throw new IllegalArgumentException("user.id is null");
+        }
+        UserEntity user2 = mapper.map(user, UserEntity.class);
+        dao.makeAdmin(user2);
     }
 }

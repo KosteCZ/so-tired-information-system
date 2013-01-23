@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 /**
  * Implementation of UserDAO interface for UserEntity.
  * 
- * @author michalxo
+ * @author Michal Toth
  */
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -67,6 +67,10 @@ public class UserDAOImpl implements UserDAO {
     public boolean availableUsername(String userName) {
         if (userName == null) {
             throw new IllegalArgumentException("userName is null");
+        }
+        
+        if (userName.equals("") || userName.equals(" ")) {
+            throw new IllegalArgumentException("userName is empty");
         }
 
         Query query = em.createQuery("SELECT u FROM UserEntity u WHERE u.username like :userName");
