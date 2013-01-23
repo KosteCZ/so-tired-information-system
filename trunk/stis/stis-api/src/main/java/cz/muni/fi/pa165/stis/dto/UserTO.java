@@ -7,7 +7,7 @@ import java.util.Objects;
  * User entity transfer object class which "extends" Customer
  * and sets password and username for given customer.
  * 
- * @author michalxo
+ * @author Michal Toth
  */
 
 

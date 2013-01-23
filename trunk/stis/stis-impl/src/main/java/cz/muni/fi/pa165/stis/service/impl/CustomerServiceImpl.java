@@ -1,7 +1,6 @@
 package cz.muni.fi.pa165.stis.service.impl;
 
 import cz.muni.fi.pa165.stis.dao.CustomerDAO;
-import cz.muni.fi.pa165.stis.dao.UserDAO;
 import cz.muni.fi.pa165.stis.dto.CustomerTO;
 import cz.muni.fi.pa165.stis.entity.Customer;
 import cz.muni.fi.pa165.stis.service.CustomerService;
@@ -23,8 +22,6 @@ public class CustomerServiceImpl implements CustomerService {
     
     @Autowired
     private CustomerDAO dao;
-    @Autowired
-    private UserDAO udao;
     
     @Autowired
     private DozerBeanMapper mapper;
@@ -43,8 +40,6 @@ public class CustomerServiceImpl implements CustomerService {
         Customer c = mapper.map(customer, Customer.class);
         dao.create(c);
         customer.setId(c.getId());
-        //udao.create(new UserTO);
-        
     }
 
     @PostAuthorize("hasRole('ROLE_ADMIN') or "
