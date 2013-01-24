@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.stis.dao.impl;
 
 import cz.muni.fi.pa165.stis.dao.UserDAO;
 import cz.muni.fi.pa165.stis.entity.User;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -111,6 +112,14 @@ public class UserDAOImpl implements UserDAO {
         
         User user2 = (User) query.getSingleResult();
         user2.setRoleAdmin(true);        
+    }
+
+    @Override
+    public List<User> findAll() {
+                Query query = em.createQuery("SELECT u FROM UserEntity u");
+        List<User> results = query.getResultList();
+
+        return results;
     }
             
 }
