@@ -186,14 +186,44 @@ public class UserDAOImplTest {
     
     @Test
     public void testAvailableUsername(){
+        List<User> users = userDAO.findAll();
+        assertTrue("Users should be empty", users.isEmpty());
+        users = Arrays.asList(new User[] {
+            newUser("Bruce", "Willis", false),
+            newUser("Jan", "Hrach", false),
+            newUser("Peter", "Mravec", true)
+        });
+        for (User u : users) {
+            userDAO.create(u);
+        }
+        User u1 = newUser("Bruce", "pass", false);
+        User u2 = newUser("Bruce1", "pass", false);
+        assertFalse("Username exist", userDAO.availableUsername(u1.getUsername()));
+        assertTrue("Username is free", userDAO.availableUsername(u2.getUsername()));
     }
     
     @Test
     public void testIsAdmin(){
+        List<User> users = userDAO.findAll();
+        assertTrue("Users should be empty", users.isEmpty());
+        users = Arrays.asList(new User[] {
+            newUser("Bruce", "Willis", false),
+            newUser("Peter", "Mravec", true)
+        });
+        for (User u : users) {
+            userDAO.create(u);
+        }
+        assertFalse("Username is not admin", userDAO.isAdmin(users.get(0)));
+        assertTrue("Username is admin", userDAO.isAdmin(users.get(1)));
     }
     
     @Test
     public void testMakeAdmin(){
+        User u1 = newUser("Bruce", "pass", false);
+        userDAO.create(u1);
+        assertFalse("Username is not admin", userDAO.isAdmin(u1));
+        userDAO.makeAdmin(u1);
+        assertTrue("Username is admin", userDAO.isAdmin(u1));
     }
     
     private void removeAll() {
