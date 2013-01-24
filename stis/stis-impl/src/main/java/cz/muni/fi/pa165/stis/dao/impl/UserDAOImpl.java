@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Implementation of UserDAO interface for User.
- * 
+ *
  * @author Michal Toth
  */
 @Repository
@@ -69,14 +69,14 @@ public class UserDAOImpl implements UserDAO {
         if (username == null) {
             throw new IllegalArgumentException("username is null");
         }
-        
+
         if (username.equals("") || username.equals(" ")) {
             throw new IllegalArgumentException("username is empty");
         }
 
-        Query query = em.createQuery("SELECT u FROM UserEntity u WHERE u.username like :username");
+        Query query = em.createQuery("SELECT u FROM User u WHERE u.username like :username");
         query.setParameter("username", username);
-        
+
         return query.getResultList().isEmpty();
     }
 
@@ -85,41 +85,40 @@ public class UserDAOImpl implements UserDAO {
         if (user == null) {
             throw new IllegalArgumentException("user is null");
         }
-        
+
         if (user.getId() == null) {
             throw new IllegalArgumentException("user.id is null");
         }
 
-        Query query = em.createQuery("SELECT u FROM UserEntity u WHERE u.id = :id");
+        Query query = em.createQuery("SELECT u FROM User u WHERE u.id = :id");
         query.setParameter("id", user.getId());
-        
-        User user2 = (User) query.getSingleResult();        
+
+        User user2 = (User) query.getSingleResult();
         return user2.getRoleAdmin();
     }
 
     @Override
     public void makeAdmin(User user) {
-         if (user == null) {
+        if (user == null) {
             throw new IllegalArgumentException("user is null");
         }
-        
+
         if (user.getId() == null) {
             throw new IllegalArgumentException("user.id is null");
         }
 
-        Query query = em.createQuery("SELECT u FROM UserEntity u WHERE u.id = :id");
+        Query query = em.createQuery("SELECT u FROM User u WHERE u.id = :id");
         query.setParameter("id", user.getId());
-        
+
         User user2 = (User) query.getSingleResult();
-        user2.setRoleAdmin(true);        
+        user2.setRoleAdmin(true);
     }
 
     @Override
     public List<User> findAll() {
-                Query query = em.createQuery("SELECT u FROM UserEntity u");
+        Query query = em.createQuery("SELECT u FROM User u");
         List<User> results = query.getResultList();
 
         return results;
     }
-            
 }

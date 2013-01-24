@@ -1,33 +1,33 @@
-/*
-  
- public CustomerUserTO get(Long id) {
-        
-    }
-    
-    
- */
 package cz.muni.fi.pa165.stis.facade;
 
-import cz.muni.fi.pa165.stis.dao.CustomerDAO;
-import cz.muni.fi.pa165.stis.dao.UserDAO;
 import cz.muni.fi.pa165.stis.dto.CustomerTO;
 import cz.muni.fi.pa165.stis.dto.CustomerUserTO;
 import cz.muni.fi.pa165.stis.dto.UserTO;
-import cz.muni.fi.pa165.stis.entity.Customer;
-import cz.muni.fi.pa165.stis.entity.User;
 import cz.muni.fi.pa165.stis.service.CustomerService;
 import cz.muni.fi.pa165.stis.service.UserService;
+import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 /**
- *
- * @author michalxo
+ * Facade implementation for CustomerTO and UserTO entities
+ * using CustomerUserTO and their appropriate services.
+ * 
+ * @author Michal Toth
  */
+@Service
 public class CustomerUserFacadeImpl implements CustomerUserFacade {
 
-    private CustomerService cservice;    
+    @Autowired
+    private CustomerService cservice;   
+    @Autowired
     private UserService uservice;
     
+//    @PreAuthorize("isAuthenticated()")
+    @Transactional
     @Override
     public void create(CustomerTO customerTO, UserTO userTO) {
         if (customerTO == null) {
@@ -35,13 +35,19 @@ public class CustomerUserFacadeImpl implements CustomerUserFacade {
         }
         if (userTO == null) {
             throw new IllegalArgumentException("user is null");
+        }                
+        if (customerTO.getId() == null) {
+            throw new IllegalArgumentException("customerTO.id is null");
+        }
+        if (userTO.getId() == null) {
+            throw new IllegalArgumentException("userTO.id is null");
         }        
         
         cservice.create(customerTO);
         uservice.create(userTO);        
     }
-
     
+    @Transactional(readOnly=true)
     @Override
     public CustomerUserTO get(Long id) {
         if (id == null) {
@@ -53,19 +59,51 @@ public class CustomerUserFacadeImpl implements CustomerUserFacade {
         return new CustomerUserTO(cto, uto);
     }
 
+    @Transactional
     @Override
     public void remove(CustomerUserTO customerUserTO) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (customerUserTO == null) {
+            throw new IllegalArgumentException("customerUserTO is null");
+        }
+        
+        if (customerUserTO.getCustomer().getId() == null) {
+            throw new IllegalArgumentException("customer.id is null");
+        }
+        if (customerUserTO.getUser().getId() == null) {
+            throw new IllegalArgumentException("user.id is null");
+        }
+        
+        uservice.remove(customerUserTO.getUser());
+        cservice.remove(customerUserTO.getCustomer());        
     }
 
+    @Transactional
     @Override
     public void update(CustomerUserTO customerUserTO) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (customerUserTO == null) {
+            throw new IllegalArgumentException("customerUserTO is null");
+        }
+        
+        if (customerUserTO.getCustomer().getId() == null) {
+            throw new IllegalArgumentException("customer.id is null");
+        }
+        if (customerUserTO.getUser().getId() == null) {
+            throw new IllegalArgumentException("user.id is null");
+        }
+        
+        uservice.update(customerUserTO.getUser());
+        cservice.update(customerUserTO.getCustomer());
     }
 
+    @Transactional(readOnly=true)
     @Override
     public List<CustomerUserTO> findAll() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<CustomerTO> customerTOList = cservice.findAll();
+        List<CustomerUserTO> cuTOList = new ArrayList<>();
+        for (CustomerTO c : customerTOList) {
+            cuTOList.add(new CustomerUserTO(c, c.getUser()));
+        }
+        return cuTOList;
     }
     
     

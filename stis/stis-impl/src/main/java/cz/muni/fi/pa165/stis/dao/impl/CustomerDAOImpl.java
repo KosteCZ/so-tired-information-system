@@ -102,17 +102,11 @@ public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public User getUser(Customer customer) {
         Query query;
-        query = em.createQuery("SELECT u FROM UserEntity u WHERE u.id = :id ");
+        query = em.createQuery("SELECT u FROM Users u WHERE u.id = :id ");
         query.setParameter("id", customer.getUser().getId());
 
         User user = (User) query.getSingleResult();
         return user;
 
     }
-
-//    @Override
-//    public void getUser(Customer customer, User user) {
-//        Query query;
-//        query = em.createQuery("");
-//    }
 }
