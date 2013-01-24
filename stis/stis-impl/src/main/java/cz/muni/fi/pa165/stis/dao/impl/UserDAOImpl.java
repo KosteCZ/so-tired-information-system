@@ -24,10 +24,10 @@ public class UserDAOImpl implements UserDAO {
         if (user == null) {
             throw new IllegalArgumentException("user is null");
         }
-        if (user.getId() == null) {
+        if (user.getId() != null) {
             throw new IllegalArgumentException("user.id is null");
         }
-        em.merge(user);
+        em.persist(user);
     }
 
     @Override
