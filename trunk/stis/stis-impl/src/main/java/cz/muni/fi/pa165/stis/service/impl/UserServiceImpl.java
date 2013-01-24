@@ -33,8 +33,8 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new IllegalArgumentException("user is null");
         }
-        if (user.getId() == null) {
-            throw new IllegalArgumentException("user.id is null");
+        if (user.getId() != null) {
+            throw new IllegalArgumentException("user.id is not null");
         }
 
         User user2 = mapper.map(user, User.class);

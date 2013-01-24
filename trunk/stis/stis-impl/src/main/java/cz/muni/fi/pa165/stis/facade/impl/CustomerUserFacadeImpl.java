@@ -1,8 +1,9 @@
-package cz.muni.fi.pa165.stis.facade;
+package cz.muni.fi.pa165.stis.facade.impl;
 
 import cz.muni.fi.pa165.stis.dto.CustomerTO;
 import cz.muni.fi.pa165.stis.dto.CustomerUserTO;
 import cz.muni.fi.pa165.stis.dto.UserTO;
+import cz.muni.fi.pa165.stis.facade.CustomerUserFacade;
 import cz.muni.fi.pa165.stis.service.CustomerService;
 import cz.muni.fi.pa165.stis.service.UserService;
 import java.util.ArrayList;
