@@ -1,11 +1,13 @@
 package cz.muni.fi.pa165.stis.dao;
 
 import cz.muni.fi.pa165.stis.entity.User;
+import java.util.List;
 
 /**
+ * Data Object Access interface for User entity.
+ * Basic CRUD functionality methods for User database User operation.
  *
- *
- * @author michalxo
+ * @author Michal Toth, Peter Mravec
  */
 public interface UserDAO {
 
@@ -16,20 +18,68 @@ public interface UserDAO {
 //    public String getPassword(Long id);
 //    
 //    public void setPassword(Long id, String password);        
-            
-    public void create(User user);
 
-    public void remove(User user);
+    /**
+     * Method creates new user entity using parameter
+     * user of type User.
+     * 
+     * @param user 
+     */
+    void create(User user);
 
-    public void update(User user);
+    /**
+     * Removes given user from database.
+     * 
+     * @param user - User type parameter to be removed
+     */
+    void remove(User user);
 
-    public User get(Long id);
+    /**
+     * Method updates given user information in database.
+     * 
+     * @param user - User type parameter to be updated
+     */
+    void update(User user);
+
+    /**
+     * Method finds order in database using 
+     * user id.
+     * 
+     * @param id - unique identification Long number 
+     * @return user 
+     */
+    User get(Long id);
     
-    // username found in db yes/no
-    public boolean availableUsername(String username);
+    /**
+     * Method returns all users from database.
+     * 
+     * @return Collection of all users
+     */
+    List<User> findAll();
     
-    public boolean isAdmin(User user);
+    /**
+     * Method check username in database.
+     * If it is not in database return true else false.
+     * 
+     * @param username - User's login name
+     * @return 
+     */
+    boolean availableUsername(String username);
     
-    public void makeAdmin(User user);
+    /**
+     * Method check user.
+     * If he is admin return true else false.
+     * 
+     * @param user - Checked user.
+     * @return true or false if user is/is not admin
+     */
+    boolean isAdmin(User user);
+    
+    /**
+     * Method gives user admin right.
+     * 
+     * @param user - User which become admin
+     */
+    void makeAdmin(User user);
     
 }
