@@ -5,8 +5,10 @@ import cz.muni.fi.pa165.stis.entity.Order;
 import java.util.List;
 
 /**
- *
- * @author xmravec1
+ * Data Object Access interface for Order entity.
+ * Basic CRUD functionality methods for Order database Order operation.
+ * 
+ * @author Peter Mravec
  */
 public interface OrderDAO {
     

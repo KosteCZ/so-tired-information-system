@@ -93,7 +93,7 @@ public class CustomerDAOImplTest {
         assertEquals("Customer are not the same", cust2, cust);
         assertDeepEquals(cust2, cust);
         Customer cust3 = customerDAO.get(cust.getId() + 1); // shouldn't exist
-        assertNull("ExtraService is not null", cust3);
+        assertNull("Customer is not null", cust3);
         removeAll();
     }
 
