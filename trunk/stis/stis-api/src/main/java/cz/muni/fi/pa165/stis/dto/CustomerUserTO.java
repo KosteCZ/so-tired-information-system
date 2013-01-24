@@ -13,5 +13,22 @@ public class CustomerUserTO {
         this.customer = customer;
         this.user = user;
     }           
+
+    public CustomerTO getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerTO customer) {
+        this.customer = customer;
+    }
+
+    public UserTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserTO user) {
+        this.user = user;
+    }
+    
     
 }

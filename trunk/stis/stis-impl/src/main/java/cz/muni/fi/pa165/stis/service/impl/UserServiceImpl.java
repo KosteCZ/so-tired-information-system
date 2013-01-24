@@ -3,6 +3,7 @@ package cz.muni.fi.pa165.stis.service.impl;
 import cz.muni.fi.pa165.stis.dao.UserDAO;
 import cz.muni.fi.pa165.stis.dto.UserTO;
 import cz.muni.fi.pa165.stis.entity.User;
+import cz.muni.fi.pa165.stis.service.CustomerService;
 import cz.muni.fi.pa165.stis.service.UserService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDAO dao;
-    private CustomerServiceImpl csi;
+    private CustomerService csi;
     @Autowired
     private DozerBeanMapper mapper;
 
