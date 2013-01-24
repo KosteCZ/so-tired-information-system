@@ -43,146 +43,146 @@ public class UserDAOImplTest {
     /**
      * Test of create method, of class UserDAO.
      */
-//    @Test
-//    public void testCreate() {        
-//        user = null;
-//
-//        try {
-//            userDAO.create(user);
-//            fail("User is null and didn't throw exception.");
-//        } catch (DataAccessException e) {
-//            // ok
-//        } catch (Exception e) {
-//            fail("User is null and didn't throw appropriate exception.");
-//        }
-//
-//        user = newUser(null, null, true);
-//        user.setId(11L);
-//        try {
-//            userDAO.create(user);
-//            fail("ID not null and didn't throw exception");
-//        } catch (DataAccessException ex) {
-//            //ok
-//        } catch (Exception ex) {
-//            fail("ID not null and didn't throw appropriate exception");
-//        }
-//        user.setId(null);
-//        userDAO.create(user);
-//        assertNotNull("ID is null", user.getId());
-//    }
-//    
-//    @Test
-//    public void testGet() {
-//        User u = newUser(null, null, true);
-//        userDAO.create(u);
-//        Long id = null;
-//        try {
-//            userDAO.get(id);
-//            fail("Id null and didn't throw exception");
-//        } catch (DataAccessException ex) {
-//            //ok
-//        } catch (Exception ex) {
-//            fail("Id null and didn't throw appropriate exception");
-//        }
-//        User u2 = userDAO.get(u.getId());
-//        assertNotNull("User is null", u2);
-//        assertEquals("Users are not the same", u2, u);
-//        assertDeepEquals(u, u2);
-//        User u3 = userDAO.get(u.getId() + 1); // shouldn't exist
-//        assertNull("User is not null", u3);
-//        removeAll();
-//    }
-//    
-//    @Test
-//    public void testUpdate() {
-//        User u = newUser(null, null, false);
-//        userDAO.create(u);
-//        Long uId = u.getId();
-//        u.setId(null);
-//        //
-//        try {
-//            userDAO.update(null);
-//            fail("User is null and didn't throw exception");
-//        } catch (DataAccessException ex) {
-//            //ok
-//        } catch (Exception ex) {
-//            fail("User is null and didn't throw appropriate exception");
-//        }
-//        try {
-//            userDAO.update(u);
-//            fail("User is ID null and didn't throw exception");
-//        } catch (DataAccessException ex) {
-//            //ok
-//        } catch (Exception ex) {
-//            fail("User is ID null and didn't throw appropriate exception");
-//        }
-//        //
-//        u.setId(uId);
-//        userDAO.update(u);
-//        //
-//        User u2 = userDAO.get(u.getId());
-//        assertEquals("Customer are not the same", u2, u);
-//        assertDeepEquals(u2, u);
-//    }
-//    
-//    @Test
-//    public void testRemove() {
-//        User u = newUser(null, null, false);
-//        userDAO.create(u);
-//        //
-//        try {
-//            userDAO.remove(null);
-//            fail("User is null and didn't throw exception");
-//        } catch (DataAccessException ex) {
-//            //ok
-//        } catch (Exception ex) {
-//            fail("User is null and didn't throw appropriate exception");
-//        }
-//        try {
-//            userDAO.remove(new User());
-//            fail("User ID is null and didn't throw exception");
-//        } catch (DataAccessException ex) {
-//            // ok
-//        } catch (Exception ex) {
-//            fail("User ID is null and didn't throw appropriate exception");
-//        }
-//        try {
-//            User u2 = new User();
-//            u2.setId(-1L);
-//            userDAO.remove(u2);
-//            fail("Shouldn't remove non-existent entity");
-//        } catch (DataAccessException ex) {
-//            //ok
-//        } catch (Exception ex) {
-//            fail("Non existent user - should throw appropriate exception");
-//        }
-//        //
-//        userDAO.remove(u);
-//        User u3 = userDAO.get(u.getId());
-//        assertNull("Found user that shouldn't be there", u3);
-//        removeAll();
-//    }
-//    
-//    @Test
-//    public void testFindAll() {
-//        List<User> users = userDAO.findAll();
-//        assertTrue("Users should be empty", users.isEmpty());
-//        users = Arrays.asList(new User[] {
-//            newUser("Bruce", "Willis", false),
-//            newUser("Jan", "Hrach", false),
-//            newUser("Peter", "Mravec", true)
-//        });
-//        for (User u : users) {
-//            userDAO.create(u);
-//        }
-//        List<User> all = userDAO.findAll();
-//        assertTrue("Size is not the same", all.size() == users.size());
-//        Collections.sort(all, userComparator);
-//        Collections.sort(users, userComparator);
-//        for (int i = 0; i < all.size(); i++) {
-//            assertDeepEquals(all.get(i), users.get(i));
-//        }
-//    }
+    @Test
+    public void testCreate() {        
+        user = null;
+
+        try {
+            userDAO.create(user);
+            fail("User is null and didn't throw exception.");
+        } catch (DataAccessException e) {
+            // ok
+        } catch (Exception e) {
+            fail("User is null and didn't throw appropriate exception.");
+        }
+
+        user = newUser(null, null, true);
+        user.setId(11L);
+        try {
+            userDAO.create(user);
+            fail("ID not null and didn't throw exception");
+        } catch (DataAccessException ex) {
+            //ok
+        } catch (Exception ex) {
+            fail("ID not null and didn't throw appropriate exception");
+        }
+        user.setId(null);
+        userDAO.create(user);
+        assertNotNull("ID is null", user.getId());
+    }
+    
+    @Test
+    public void testGet() {
+        User u = newUser(null, null, true);
+        userDAO.create(u);
+        Long id = null;
+        try {
+            userDAO.get(id);
+            fail("Id null and didn't throw exception");
+        } catch (DataAccessException ex) {
+            //ok
+        } catch (Exception ex) {
+            fail("Id null and didn't throw appropriate exception");
+        }
+        User u2 = userDAO.get(u.getId());
+        assertNotNull("User is null", u2);
+        assertEquals("Users are not the same", u2, u);
+        assertDeepEquals(u, u2);
+        User u3 = userDAO.get(u.getId() + 1); // shouldn't exist
+        assertNull("User is not null", u3);
+        removeAll();
+    }
+    
+    @Test
+    public void testUpdate() {
+        User u = newUser(null, null, false);
+        userDAO.create(u);
+        Long uId = u.getId();
+        u.setId(null);
+        //
+        try {
+            userDAO.update(null);
+            fail("User is null and didn't throw exception");
+        } catch (DataAccessException ex) {
+            //ok
+        } catch (Exception ex) {
+            fail("User is null and didn't throw appropriate exception");
+        }
+        try {
+            userDAO.update(u);
+            fail("User is ID null and didn't throw exception");
+        } catch (DataAccessException ex) {
+            //ok
+        } catch (Exception ex) {
+            fail("User is ID null and didn't throw appropriate exception");
+        }
+        //
+        u.setId(uId);
+        userDAO.update(u);
+        //
+        User u2 = userDAO.get(u.getId());
+        assertEquals("Customer are not the same", u2, u);
+        assertDeepEquals(u2, u);
+    }
+    
+    @Test
+    public void testRemove() {
+        User u = newUser(null, null, false);
+        userDAO.create(u);
+        //
+        try {
+            userDAO.remove(null);
+            fail("User is null and didn't throw exception");
+        } catch (DataAccessException ex) {
+            //ok
+        } catch (Exception ex) {
+            fail("User is null and didn't throw appropriate exception");
+        }
+        try {
+            userDAO.remove(new User());
+            fail("User ID is null and didn't throw exception");
+        } catch (DataAccessException ex) {
+            // ok
+        } catch (Exception ex) {
+            fail("User ID is null and didn't throw appropriate exception");
+        }
+        try {
+            User u2 = new User();
+            u2.setId(-1L);
+            userDAO.remove(u2);
+            fail("Shouldn't remove non-existent entity");
+        } catch (DataAccessException ex) {
+            //ok
+        } catch (Exception ex) {
+            fail("Non existent user - should throw appropriate exception");
+        }
+        //
+        userDAO.remove(u);
+        User u3 = userDAO.get(u.getId());
+        assertNull("Found user that shouldn't be there", u3);
+        removeAll();
+    }
+    
+    @Test
+    public void testFindAll() {
+        List<User> users = userDAO.findAll();
+        assertTrue("Users should be empty", users.isEmpty());
+        users = Arrays.asList(new User[] {
+            newUser("Bruce", "Willis", false),
+            newUser("Jan", "Hrach", false),
+            newUser("Peter", "Mravec", true)
+        });
+        for (User u : users) {
+            userDAO.create(u);
+        }
+        List<User> all = userDAO.findAll();
+        assertTrue("Size is not the same", all.size() == users.size());
+        Collections.sort(all, userComparator);
+        Collections.sort(users, userComparator);
+        for (int i = 0; i < all.size(); i++) {
+            assertDeepEquals(all.get(i), users.get(i));
+        }
+    }
     
     @Test
     public void testAvailableUsername(){
