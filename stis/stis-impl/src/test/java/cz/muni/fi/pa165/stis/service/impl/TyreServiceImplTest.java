@@ -25,7 +25,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  *
- * @author michalxo 
+ * @author Michal Toth
  */
 
 @RunWith(MockitoJUnitRunner.class)
@@ -56,7 +56,7 @@ public class TyreServiceImplTest {
     public void testExceptions() {
         try {            
             service.create(null);
-            fail("exception should be thrown ASdas");
+            fail("exception should be thrown");
         } catch (IllegalArgumentException ex) {
             // ok
         }
