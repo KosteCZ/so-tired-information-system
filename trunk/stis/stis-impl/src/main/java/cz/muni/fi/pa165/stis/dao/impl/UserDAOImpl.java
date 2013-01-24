@@ -1,14 +1,14 @@
 package cz.muni.fi.pa165.stis.dao.impl;
 
 import cz.muni.fi.pa165.stis.dao.UserDAO;
-import cz.muni.fi.pa165.stis.entity.UserEntity;
+import cz.muni.fi.pa165.stis.entity.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 /**
- * Implementation of UserDAO interface for UserEntity.
+ * Implementation of UserDAO interface for User.
  * 
  * @author Michal Toth
  */
@@ -19,7 +19,7 @@ public class UserDAOImpl implements UserDAO {
     private EntityManager em;
 
     @Override
-    public void create(UserEntity user) {
+    public void create(User user) {
         if (user == null) {
             throw new IllegalArgumentException("user is null");
         }
@@ -30,19 +30,19 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void remove(UserEntity user) {
+    public void remove(User user) {
         if (user == null) {
             throw new IllegalArgumentException("user is null");
         }
         if (user.getId() == null) {
             throw new IllegalArgumentException("user.id is null");
         }
-        UserEntity user2 = em.find(UserEntity.class, user.getId());
+        User user2 = em.find(User.class, user.getId());
         em.remove(user2);
     }
 
     @Override
-    public void update(UserEntity user) {
+    public void update(User user) {
         if (user == null) {
             throw new IllegalArgumentException("user is null");
         }
@@ -54,33 +54,33 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public UserEntity get(Long id) {
+    public User get(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("id is null");
         }
 
-        UserEntity user = em.find(UserEntity.class, id);
+        User user = em.find(User.class, id);
         return user;
     }
 
     @Override
-    public boolean availableUsername(String userName) {
-        if (userName == null) {
-            throw new IllegalArgumentException("userName is null");
+    public boolean availableUsername(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("username is null");
         }
         
-        if (userName.equals("") || userName.equals(" ")) {
-            throw new IllegalArgumentException("userName is empty");
+        if (username.equals("") || username.equals(" ")) {
+            throw new IllegalArgumentException("username is empty");
         }
 
-        Query query = em.createQuery("SELECT u FROM UserEntity u WHERE u.username like :userName");
-        query.setParameter("userName", userName);
+        Query query = em.createQuery("SELECT u FROM UserEntity u WHERE u.username like :username");
+        query.setParameter("username", username);
         
         return query.getResultList().isEmpty();
     }
 
     @Override
-    public boolean isAdmin(UserEntity user) {
+    public boolean isAdmin(User user) {
         if (user == null) {
             throw new IllegalArgumentException("user is null");
         }
@@ -92,12 +92,12 @@ public class UserDAOImpl implements UserDAO {
         Query query = em.createQuery("SELECT u FROM UserEntity u WHERE u.id = :id");
         query.setParameter("id", user.getId());
         
-        UserEntity user2 = (UserEntity) query.getSingleResult();        
+        User user2 = (User) query.getSingleResult();        
         return user2.getRoleAdmin();
     }
 
     @Override
-    public void makeAdmin(UserEntity user) {
+    public void makeAdmin(User user) {
          if (user == null) {
             throw new IllegalArgumentException("user is null");
         }
@@ -109,7 +109,7 @@ public class UserDAOImpl implements UserDAO {
         Query query = em.createQuery("SELECT u FROM UserEntity u WHERE u.id = :id");
         query.setParameter("id", user.getId());
         
-        UserEntity user2 = (UserEntity) query.getSingleResult();
+        User user2 = (User) query.getSingleResult();
         user2.setRoleAdmin(true);        
     }
             

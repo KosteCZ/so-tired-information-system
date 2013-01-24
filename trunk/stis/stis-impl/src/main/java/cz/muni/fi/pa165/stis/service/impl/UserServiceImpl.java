@@ -2,7 +2,7 @@ package cz.muni.fi.pa165.stis.service.impl;
 
 import cz.muni.fi.pa165.stis.dao.UserDAO;
 import cz.muni.fi.pa165.stis.dto.UserTO;
-import cz.muni.fi.pa165.stis.entity.UserEntity;
+import cz.muni.fi.pa165.stis.entity.User;
 import cz.muni.fi.pa165.stis.service.UserService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service layer implementation for DAO methods using
- * transfer object - UserTO and mapping it to UserEntity
+ * transfer object - UserTO and mapping it to User
  * 
  * @author Michal Toth
  */
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("user.id is null");
         }
 
-        UserEntity user2 = mapper.map(user, UserEntity.class);
+        User user2 = mapper.map(user, User.class);
         dao.create(user2);
         user.setId(user2.getId());
     }
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("user.id is null");
         }
 
-        UserEntity user2 = mapper.map(user, UserEntity.class);
+        User user2 = mapper.map(user, User.class);
         dao.remove(user2);
     }
 
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
         if (user.getId() == null) {
             throw new IllegalArgumentException("user.id is null");
         }
-        UserEntity user2 = mapper.map(user, UserEntity.class);
+        User user2 = mapper.map(user, User.class);
         dao.update(user2);
     }
 
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
         if (id == null) {
             throw new IllegalArgumentException("null id");
         }
-        UserEntity user = dao.get(id);
+        User user = dao.get(id);
         if (user == null) {
             return null;
         }
@@ -84,15 +84,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public boolean availableUsername(String userName) {
-        if (userName == null) {
-            throw new IllegalArgumentException("userName is null");
+    public boolean availableUsername(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("username is null");
         }
-        if (userName.equals("") || userName.equals(" ")) {
-            throw new IllegalArgumentException("userName is empty");
+        if (username.equals("") || username.equals(" ")) {
+            throw new IllegalArgumentException("username is empty");
         }
         
-        return dao.availableUsername(userName);
+        return dao.availableUsername(username);
     }
 
     @Transactional(readOnly = true)
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
         if (user.getId() == null) {
             throw new IllegalArgumentException("user.id is null");
         }
-        UserEntity user2 = mapper.map(user, UserEntity.class);
+        User user2 = mapper.map(user, User.class);
         
         return dao.isAdmin(user2);
     }
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
         if (user.getId() == null) {
             throw new IllegalArgumentException("user.id is null");
         }
-        UserEntity user2 = mapper.map(user, UserEntity.class);
+        User user2 = mapper.map(user, User.class);
         dao.makeAdmin(user2);
     }
 }

@@ -25,7 +25,7 @@ public interface UserService {
     public UserTO get(Long id);
     
     // username found in db yes/no
-    public boolean availableUsername(String userName);
+    public boolean availableUsername(String username);
     
     public boolean isAdmin(UserTO user);
     
