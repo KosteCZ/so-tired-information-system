@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.stis.dao;
 
 import cz.muni.fi.pa165.stis.entity.Customer;
+import cz.muni.fi.pa165.stis.entity.User;
 import java.util.List;
 
 /**
@@ -64,5 +65,19 @@ public interface CustomerDAO {
      * @return List of customers with given first and last name.
      */
     List<Customer> findByName(String firstName, String lastName);
+    
+    /**
+     * Returns associated User ID with Customer
+     * 
+     * @return User associated with given customer
+     */
+    User getUser(Customer customer);
+    
+    /**
+     * Associates User with Customer via their id
+     * 
+     * @param user User to be associated with customer
+     */
+    //void setUser(User user);
     
 }

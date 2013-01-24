@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.stis.dao.impl;
 
 import cz.muni.fi.pa165.stis.dao.CustomerDAO;
 import cz.muni.fi.pa165.stis.entity.Customer;
+import cz.muni.fi.pa165.stis.entity.User;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,7 +28,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         if (customer.getId() != null) {
             throw new IllegalArgumentException("customer.id is not null");
         }
-        
+
         em.persist(customer);
     }
 
@@ -85,7 +86,7 @@ public class CustomerDAOImpl implements CustomerDAO {
             // firstName is null, query for lastName only
             query = em.createQuery("SELECT c FROM Customer c WHERE c.lastName like :lastName");
             query.setParameter("lastName", lastName);
-        } else if (lastNameNull) {            
+        } else if (lastNameNull) {
             query = em.createQuery("SELECT c FROM Customer c WHERE c.firstName like :firstName");
             query.setParameter("firstName", firstName);
         } else {
@@ -97,4 +98,21 @@ public class CustomerDAOImpl implements CustomerDAO {
         List<Customer> results = query.getResultList();
         return results;
     }
+
+    @Override
+    public User getUser(Customer customer) {
+        Query query;
+        query = em.createQuery("SELECT u FROM UserEntity u WHERE u.id = :id ");
+        query.setParameter("id", customer.getUser().getId());
+
+        User user = (User) query.getSingleResult();
+        return user;
+
+    }
+
+//    @Override
+//    public void getUser(Customer customer, User user) {
+//        Query query;
+//        query = em.createQuery("");
+//    }
 }

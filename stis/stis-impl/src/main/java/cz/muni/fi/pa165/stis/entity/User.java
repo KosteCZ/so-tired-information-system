@@ -2,26 +2,30 @@ package cz.muni.fi.pa165.stis.entity;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * User entity class which "extends" Customer
  * and sets password and username for given customer.
  * 
- * @author michalxo
+ * @author Michal Toth
  */
 
 @Entity
-public class UserEntity implements Serializable {
+@Table(name="Users")
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique=true, nullable=false)    
     private String username;
     private String password;
-    private boolean roleAdmin;
+    private boolean roleAdmin;    
     
     
     public Long getId() {
@@ -74,7 +78,7 @@ public class UserEntity implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final UserEntity other = (UserEntity) obj;
+        final User other = (User) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }

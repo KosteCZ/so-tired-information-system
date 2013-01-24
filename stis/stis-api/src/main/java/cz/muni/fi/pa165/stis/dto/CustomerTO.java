@@ -13,7 +13,9 @@ public class CustomerTO {
     private String lastName;
     private String address;
     private String phone;    
-
+    private UserTO user;
+    
+    
     public Long getId() {
         return id;
     }
@@ -53,7 +55,17 @@ public class CustomerTO {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+   
+    public UserTO getUser() {
+        return user;
+    }
 
+    public void setUser(UserTO user) {
+        this.user = user;
+    }
+    
+    
+    
     @Override
     public int hashCode() {
         int hash = 5;

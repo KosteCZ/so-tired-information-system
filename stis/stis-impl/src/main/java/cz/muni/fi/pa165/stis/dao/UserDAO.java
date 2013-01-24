@@ -1,6 +1,6 @@
 package cz.muni.fi.pa165.stis.dao;
 
-import cz.muni.fi.pa165.stis.entity.UserEntity;
+import cz.muni.fi.pa165.stis.entity.User;
 
 /**
  *
@@ -16,20 +16,20 @@ public interface UserDAO {
 //    public String getPassword(Long id);
 //    
 //    public void setPassword(Long id, String password);        
-    
-    public void create(UserEntity user);
+            
+    public void create(User user);
 
-    public void remove(UserEntity user);
+    public void remove(User user);
 
-    public void update(UserEntity user);
+    public void update(User user);
 
-    public UserEntity get(Long id);
+    public User get(Long id);
     
     // username found in db yes/no
-    public boolean availableUsername(String userName);
+    public boolean availableUsername(String username);
     
-    public boolean isAdmin(UserEntity user);
+    public boolean isAdmin(User user);
     
-    public void makeAdmin(UserEntity user);
+    public void makeAdmin(User user);
     
 }
