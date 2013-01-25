@@ -98,6 +98,11 @@ public class OrderActionBean extends BaseActionBean {
         return service.findAll();
     }
     
+    public List<OrderTO> getUserOrders() {
+        logger.debug("getting user orders");
+        return service.findByCustomer(getUser().getCustomer());
+    }
+    
     public Resolution newOrder() {
         logger.debug("newOrder()");
         //

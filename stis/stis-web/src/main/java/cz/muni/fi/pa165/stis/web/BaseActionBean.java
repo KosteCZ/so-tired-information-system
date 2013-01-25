@@ -1,6 +1,6 @@
 package cz.muni.fi.pa165.stis.web;
 
-import cz.muni.fi.pa165.stis.web.security.CustomUserDetails;
+import cz.muni.fi.pa165.stis.web.security.custom.CustomUserDetails;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Before;

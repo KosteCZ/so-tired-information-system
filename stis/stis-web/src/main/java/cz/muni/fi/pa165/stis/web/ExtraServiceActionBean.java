@@ -6,7 +6,7 @@ package cz.muni.fi.pa165.stis.web;
 
 import cz.muni.fi.pa165.stis.dto.ExtraServiceTO;
 import cz.muni.fi.pa165.stis.service.ExtraServiceService;
-import cz.muni.fi.pa165.stis.web.security.CustomUserDetails;
+import cz.muni.fi.pa165.stis.web.security.custom.CustomUserDetails;
 import java.util.List;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Before;
