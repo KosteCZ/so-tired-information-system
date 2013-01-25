@@ -59,7 +59,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or "
-            + "(hasRole('ROLE_USER') and principal.customer.id == #order.customer.id)")
+            + "(hasRole('ROLE_USER') and principal.customer.id == #order.customer.id "
+            + "and #order.orderServicedDate == null "
+            + "and #order.orderPaidDate == null)")
     @Transactional
     @Override
     public void update(OrderTO order) {
@@ -74,7 +76,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or "
-            + "(hasRole('ROLE_USER') and principal.customer.id == #order.customer.id)")
+            + "(hasRole('ROLE_USER') and principal.customer.id == #order.customer.id "
+            + "and #order.orderServicedDate == null "
+            + "and #order.orderPaidDate == null)")
     @Transactional
     @Override
     public void remove(OrderTO order) {
