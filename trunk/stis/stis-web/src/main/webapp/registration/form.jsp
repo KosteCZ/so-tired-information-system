@@ -46,6 +46,6 @@
 <div class="control-group">
     <s:label class="control-label" for="password2" name="user.form.password2"/>                               
     <div class="controls">             
-        <s:text id="password" name="password2"/>             
+        <s:text id="password2" name="password2"/>             
     </div>
 </div>
