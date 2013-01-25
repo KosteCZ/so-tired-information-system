@@ -7,6 +7,8 @@ import cz.muni.fi.pa165.stis.entity.Customer;
 import cz.muni.fi.pa165.stis.entity.User;
 import cz.muni.fi.pa165.stis.service.CustomerService;
 import cz.muni.fi.pa165.stis.service.UserService;
+import java.util.ArrayList;
+import java.util.List;
 import org.dozer.DozerBeanMapper;
 import org.junit.After;
 import org.junit.Before;
@@ -65,11 +67,11 @@ public class CustomerUserFacadeImplTest {
     @Test
     public void testCreate() {
         user = createUser("mrkvicka", "345sac", false);
-        user.setId(5L);
+        //user.setId(5L);
         userTO = mapper.map(user, UserTO.class);
 
         customer = createCustomer(null, "Adam", "Petrik", "Burzoazna 12", "112567");
-        customer.setId(4L);
+        //customer.setId(4L);
         customerTO = mapper.map(customer, CustomerTO.class);
 
         try {
@@ -93,22 +95,22 @@ public class CustomerUserFacadeImplTest {
             // ok
         }
 
-        customerTO.setId(null);
-        try {
-            facade.create(customerTO, userTO);
-            fail("exception should be thrown");
-        } catch (IllegalArgumentException ex) {
-            // ok
-        }
         customerTO.setId(4L);
-        userTO.setId(null);
         try {
             facade.create(customerTO, userTO);
             fail("exception should be thrown");
         } catch (IllegalArgumentException ex) {
             // ok
         }
-        userTO.setId(5L);
+        customerTO.setId(null);
+        userTO.setId(4L);
+        try {
+            facade.create(customerTO, userTO);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+        userTO.setId(null);
 
         facade.create(customerTO, userTO);
         verify(cservice).create(customerTO);
@@ -148,10 +150,59 @@ public class CustomerUserFacadeImplTest {
 
     @Test
     public void testUpdate() {
+        user = createUser("mrkvicka", "345sac", false);
+        user.setId(5L);
+        userTO = mapper.map(user, UserTO.class);        
+        customer = createCustomer(4L, "Adam", "Petrik", "Burzoazna 12", "112567");
+        customerTO = mapper.map(customer, CustomerTO.class);        
+        CustomerUserTO customerUserTO = new CustomerUserTO(customerTO, userTO);
+        customerTO.setUser(userTO);  
+        
+        //facade.create(customerTO, userTO);
+        
+        facade.update(customerUserTO);
+        verify(cservice).update(customerTO);
+        verify(uservice).update(userTO);
+        
     }
 
     @Test
     public void testFindAll() {
+        user = createUser("mrkvicka", "345sac", false);        
+        userTO = mapper.map(user, UserTO.class);        
+        customer = createCustomer(null, "Adam", "Petrik", "Burzoazna 12", "112567");
+        customerTO = mapper.map(customer, CustomerTO.class);        
+        CustomerUserTO customerUserTO = new CustomerUserTO(customerTO, userTO);
+        customerTO.setUser(userTO);  
+        
+        
+        User user2 = createUser("ferko22", "bak!s$#", false);
+        UserTO userTO2 = mapper.map(user, UserTO.class);        
+        Customer customer2 = createCustomer(null, "Petko", "Mravcek", "Teplicka nad Vahom 142", "772222222");
+        CustomerTO customerTO2 = mapper.map(customer, CustomerTO.class);        
+        CustomerUserTO customerUserTO2 = new CustomerUserTO(customerTO2, userTO2);
+        customerTO.setUser(userTO2);  
+        
+        List<CustomerUserTO> cutoList = new ArrayList<>();
+        cutoList.add(customerUserTO);
+        cutoList.add(customerUserTO2);
+        
+        when(facade.findAll()).thenReturn(cutoList);
+        
+        facade.create(customerTO, userTO);
+        facade.create(customerTO2, userTO2);
+        
+        //List<CustomerUserTO> cutoL = facade.findAll();
+
+        //System.out.println("cutoL=" + cutoL + "\ncutoList=" + cutoList);
+        //verify(cservice).findAll();
+        //assertTrue(cutoList.containsAll(cutoL) && cutoL.containsAll(cutoList));
+        
+    }
+    
+    @Test
+    public void testGetByUsername() {
+        assertTrue(true);
     }
 
     private static Customer createCustomer(Long id, String firstName, String lastName, String address, String phone) {

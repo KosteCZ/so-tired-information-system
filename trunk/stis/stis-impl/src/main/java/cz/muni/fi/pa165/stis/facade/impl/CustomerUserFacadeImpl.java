@@ -37,10 +37,10 @@ public class CustomerUserFacadeImpl implements CustomerUserFacade {
         if (userTO == null) {
             throw new IllegalArgumentException("user is null");
         }                
-        if (customerTO.getId() == null) {
+        if (customerTO.getId() != null) {
             throw new IllegalArgumentException("customerTO.id is null");
         }
-        if (userTO.getId() == null) {
+        if (userTO.getId() != null) {
             throw new IllegalArgumentException("userTO.id is null");
         }        
         
