@@ -10,6 +10,7 @@
                         <li><s:link beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="list"><f:message key="tyre.catalog"/></s:link></li>
                         <li><s:link beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" event="list"><f:message key="extraService.catalog"/></s:link></li>
                         <li><s:link beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="newOrder"><f:message key="order.create.title"/></s:link></li>
+                        <li><s:link beanclass="cz.muni.fi.pa165.stis.web.RegistrationActionBean" event="newRegistration"><f:message key="registration.create"/></s:link></li>
                         <sec:authorize access="hasRole('ROLE_ADMIN')">
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><f:message key="admin"/><b class="caret"></b></a>
