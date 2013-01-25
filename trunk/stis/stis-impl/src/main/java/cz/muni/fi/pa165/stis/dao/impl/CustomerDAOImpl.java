@@ -102,11 +102,20 @@ public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public User getUser(Customer customer) {
         Query query;
-        query = em.createQuery("SELECT u FROM Users u WHERE u.id = :id ");
+        query = em.createQuery("SELECT u FROM User u WHERE u.id = :id ");
         query.setParameter("id", customer.getUser().getId());
 
         User user = (User) query.getSingleResult();
         return user;
 
+    }
+
+    @Override
+    public Customer getByUsername(String username) {
+        Query query = em.createQuery("SELECT c FROM Customer c WHERE c.user.username = :username");
+        query.setParameter("username", username);
+
+        Customer customer = (Customer) query.getSingleResult();
+        return customer;
     }
 }

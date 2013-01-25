@@ -1,10 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.stis.facade.impl;
 
 import cz.muni.fi.pa165.stis.dto.CustomerTO;
+import cz.muni.fi.pa165.stis.dto.CustomerUserTO;
 import cz.muni.fi.pa165.stis.dto.UserTO;
 import cz.muni.fi.pa165.stis.entity.Customer;
 import cz.muni.fi.pa165.stis.entity.User;
@@ -38,8 +35,13 @@ public class CustomerUserFacadeImplTest {
     private CustomerService cservice;
     @Mock
     private UserService uservice;
+    @Mock
+    private CustomerUserTO cutoMock;
+    @Mock
+    private CustomerTO ctoMock;
     
-
+    
+    
     @Before
     public void setUp() {
         mapper = new DozerBeanMapper();
@@ -47,7 +49,7 @@ public class CustomerUserFacadeImplTest {
         //uservice = new UserServiceImpl();
         // preco tu je toto??
         facade = new CustomerUserFacadeImpl();
-        
+
         ReflectionTestUtils.setField(facade, "uservice", uservice);
         ReflectionTestUtils.setField(facade, "cservice", cservice);
         //ReflectionTestUtils.setField(facade, "mapper", mapper);
@@ -107,31 +109,51 @@ public class CustomerUserFacadeImplTest {
             // ok
         }
         userTO.setId(5L);
-        
+
         facade.create(customerTO, userTO);
         verify(cservice).create(customerTO);
     }
-    
+
     @Test
-    public void testGet() {
+    public void testGetByCustomerId() {
+        user = createUser("mrkvicka", "345sac", false);
+        user.setId(5L);
+        userTO = mapper.map(user, UserTO.class);        
+        customer = createCustomer(4L, "Adam", "Petrik", "Burzoazna 12", "112567");
+        customerTO = mapper.map(customer, CustomerTO.class);        
+        CustomerUserTO customerUserTO = new CustomerUserTO(customerTO, userTO);
+        customerTO.setUser(userTO);  
         
+        when(ctoMock.getUser()).thenReturn(userTO);        
+        when(cservice.get(4L)).thenReturn(customerTO);                      
+
+        CustomerUserTO cuto = facade.getByCustomerId(4L);
+        assertEquals(customerUserTO, cuto);
     }
-    
+
     @Test
     public void testRemove() {
+        user = createUser("mrkvicka", "345sac", false);
+        user.setId(5L);
+        userTO = mapper.map(user, UserTO.class);        
+        customer = createCustomer(4L, "Adam", "Petrik", "Burzoazna 12", "112567");
+        customerTO = mapper.map(customer, CustomerTO.class);        
+        CustomerUserTO customerUserTO = new CustomerUserTO(customerTO, userTO);
+        customerTO.setUser(userTO);  
         
+        facade.remove(customerUserTO);
+        verify(cservice).remove(customerTO);
+        verify(uservice).remove(userTO);
     }
-    
+
     @Test
     public void testUpdate() {
-        
     }
-    
+
     @Test
     public void testFindAll() {
-        
     }
-    
+
     private static Customer createCustomer(Long id, String firstName, String lastName, String address, String phone) {
         Customer c = new Customer();
         c.setId(id);
@@ -149,4 +171,5 @@ public class CustomerUserFacadeImplTest {
         user.setRoleAdmin(roleAdmin);
         return user;
     }
+        
 }

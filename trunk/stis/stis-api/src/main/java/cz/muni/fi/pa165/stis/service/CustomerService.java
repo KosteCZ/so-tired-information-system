@@ -27,6 +27,14 @@ public interface CustomerService {
     CustomerTO get(Long id);
 
     /**
+     * Method returns customer by User username.
+     *
+     * @param username of customer
+     * @return customer with given username
+     */
+    CustomerTO getByUsername(String username);
+
+    /**
      * Updates given customer.
      *
      * @param customer - CustomerTO type parameter to be updated
@@ -59,5 +67,4 @@ public interface CustomerService {
      * @return List of customers with given first and last name.
      */
     List<CustomerTO> findByName(String firstName, String lastName);
-    
 }

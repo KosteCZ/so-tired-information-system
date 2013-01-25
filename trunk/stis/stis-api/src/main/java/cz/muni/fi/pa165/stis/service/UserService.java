@@ -3,23 +3,26 @@ package cz.muni.fi.pa165.stis.service;
 import cz.muni.fi.pa165.stis.dto.UserTO;
 
 /**
- *
- * @author michalxo
+ * User service layer for CRUD and other methods 
+ * manipulating User entity using User transfer objects
+ * 
+ * @author Michal Toth
  */
 public interface UserService {
-           
-    public void create(UserTO user);
 
-    public void remove(UserTO user);
+    void create(UserTO user);
 
-    public void update(UserTO user);
+    void remove(UserTO user);
 
-    public UserTO get(Long id);
-    
-    // username found in db yes/no
-    public boolean availableUsername(String username);
-    
-    public boolean isAdmin(UserTO user);
-    
-    public void makeAdmin(UserTO user);
+    void update(UserTO user);
+
+    UserTO get(Long id);
+
+    UserTO getByUsername(String username);
+
+    boolean availableUsername(String username);
+
+    boolean isAdmin(UserTO user);
+
+    void makeAdmin(UserTO user);
 }
