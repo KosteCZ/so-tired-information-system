@@ -83,7 +83,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 
         Query query;
         if (firstNameNull) {
-            // firstName is null, query for lastName only
             query = em.createQuery("SELECT c FROM Customer c WHERE c.lastName like :lastName");
             query.setParameter("lastName", lastName);
         } else if (lastNameNull) {

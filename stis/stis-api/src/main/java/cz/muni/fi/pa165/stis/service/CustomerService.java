@@ -4,7 +4,9 @@ import cz.muni.fi.pa165.stis.dto.CustomerTO;
 import java.util.List;
 
 /**
- *
+ * Service class for customer. Provides basic functionality of CRUD 
+ * and some find methods. It uses transfer objects.
+ * 
  * @author Dusan Svancara
  */
 public interface CustomerService {

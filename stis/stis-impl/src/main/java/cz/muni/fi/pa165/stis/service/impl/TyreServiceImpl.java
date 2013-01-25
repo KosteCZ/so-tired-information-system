@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Author: Michal Toth Date: 10/31/12 Time: 1:31 PM
+ * 
+ * @author Michal Toth
  */
 @Service
 public class TyreServiceImpl implements TyreService {

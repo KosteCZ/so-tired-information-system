@@ -17,8 +17,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 /**
- *
- * @author xmravec1
+ * Order entity is used for order information like
+ * customer, tyres and extra services bought, and various dates
+ * about customer created order.
+ * 
+ * @author Peter Mravec
  */
 @Entity
 @Table(name = "CUSTOMER_ORDER")
