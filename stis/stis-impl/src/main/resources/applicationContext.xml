@@ -56,6 +56,11 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
     
+    <bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+        <constructor-arg value="256"/>
+    </bean>   
+    
+    
     <tx:annotation-driven transaction-manager="transactionManager" />
     
     <context:component-scan base-package="cz.muni.fi.pa165.stis"/>
@@ -69,7 +74,7 @@
     
     <beans profile="production">
         <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-                  destroy-method="close" p:driverClassName="${jdbc.driverClassName}"
-                  p:url="${jdbc.databaseurl}" p:username="${jdbc.username}" p:password="${jdbc.password}" />
+              destroy-method="close" p:driverClassName="${jdbc.driverClassName}"
+              p:url="${jdbc.databaseurl}" p:username="${jdbc.username}" p:password="${jdbc.password}" />
     </beans>
 </beans>

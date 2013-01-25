@@ -6,7 +6,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.springframework.dao.DataAccessException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserDAOImpl implements UserDAO {
 
+    @Autowired
+    private ShaPasswordEncoder passwordEncoder;
+    
     @PersistenceContext
     private EntityManager em;
 
@@ -28,6 +32,8 @@ public class UserDAOImpl implements UserDAO {
         if (user.getId() != null) {
             throw new IllegalArgumentException("user.id is null");
         }
+        String encPassword = passwordEncoder.encodePassword(user.getPassword(), user.getUsername());
+        user.setPassword(encPassword);
         em.persist(user);
     }
 
