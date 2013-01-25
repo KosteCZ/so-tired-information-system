@@ -36,8 +36,8 @@
     </bean>
 
     <bean id="credentials" class="org.apache.commons.httpclient.UsernamePasswordCredentials">
-        <constructor-arg value="john"/>
-        <constructor-arg value="johnson"/>
+        <constructor-arg value="${rest.username}"/>
+        <constructor-arg value="${rest.password}"/>
     </bean>
 
     <bean id="httpClientFactory" class="org.springframework.http.client.CommonsClientHttpRequestFactory">
