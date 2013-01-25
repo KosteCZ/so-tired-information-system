@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly=true)    
     @Override
     public UserTO getByUsername(String username) {
-        if (username.equals("") || username == null) {
+        if (username == null) {
             throw new IllegalArgumentException("username is null or empty");
         }
         User user = dao.getByUsername(username);

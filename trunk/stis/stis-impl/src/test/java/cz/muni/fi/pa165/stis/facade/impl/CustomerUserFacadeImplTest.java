@@ -177,32 +177,43 @@ public class CustomerUserFacadeImplTest {
         
         
         User user2 = createUser("ferko22", "bak!s$#", false);
-        UserTO userTO2 = mapper.map(user, UserTO.class);        
+        UserTO userTO2 = mapper.map(user2, UserTO.class);        
         Customer customer2 = createCustomer(null, "Petko", "Mravcek", "Teplicka nad Vahom 142", "772222222");
-        CustomerTO customerTO2 = mapper.map(customer, CustomerTO.class);        
+        CustomerTO customerTO2 = mapper.map(customer2, CustomerTO.class);        
         CustomerUserTO customerUserTO2 = new CustomerUserTO(customerTO2, userTO2);
-        customerTO.setUser(userTO2);  
+        customerTO2.setUser(userTO2);  
         
-        List<CustomerUserTO> cutoList = new ArrayList<>();
+        List<CustomerTO> customerList = new ArrayList<>();
+        customerList.add(customerTO);
+        customerList.add(customerTO2);
+        
+        List<CustomerUserTO> cutoList = new ArrayList<>();        
         cutoList.add(customerUserTO);
         cutoList.add(customerUserTO2);
+                
+        when(cservice.findAll()).thenReturn(customerList);
         
-        when(facade.findAll()).thenReturn(cutoList);
-        
-        facade.create(customerTO, userTO);
-        facade.create(customerTO2, userTO2);
-        
-        //List<CustomerUserTO> cutoL = facade.findAll();
-
-        //System.out.println("cutoL=" + cutoL + "\ncutoList=" + cutoList);
-        //verify(cservice).findAll();
-        //assertTrue(cutoList.containsAll(cutoL) && cutoL.containsAll(cutoList));
-        
+        List<CustomerUserTO> cutoL = facade.findAll();        
+        verify(cservice).findAll();
+        assertTrue(cutoList.containsAll(cutoL) && cutoL.containsAll(cutoList));        
     }
     
     @Test
     public void testGetByUsername() {
-        assertTrue(true);
+        user = createUser("mrkvicka", "345sac", false);        
+        userTO = mapper.map(user, UserTO.class);        
+        customer = createCustomer(null, "Adam", "Petrik", "Burzoazna 12", "112567");
+        customerTO = mapper.map(customer, CustomerTO.class);        
+        CustomerUserTO customerUserTO = new CustomerUserTO(customerTO, userTO);
+        customerTO.setUser(userTO);  
+        
+        when(uservice.getByUsername("mrkvicka")).thenReturn(userTO);
+        when(cservice.getByUsername("mrkvicka")).thenReturn(customerTO);
+        CustomerUserTO cuto = facade.getByUsername("mrkvicka");
+               
+        verify(uservice).getByUsername("mrkvicka");
+        verify(cservice).getByUsername("mrkvicka");
+        assertTrue(cuto.equals(customerUserTO));
     }
 
     private static Customer createCustomer(Long id, String firstName, String lastName, String address, String phone) {
