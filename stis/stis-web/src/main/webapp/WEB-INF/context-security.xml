@@ -33,7 +33,7 @@
         <intercept-url pattern="/registration/**" access="permitAll" />
         <intercept-url pattern="/registration/form.jsp" access="permitAll" />
         <intercept-url pattern="/order/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
-        <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
 
         <!--<form-login login-page="/security/login/" />-->
         <logout logout-url="/security/logout/" />
