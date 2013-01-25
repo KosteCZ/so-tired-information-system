@@ -46,15 +46,11 @@ public class CustomerUserFacadeImplTest {
     
     @Before
     public void setUp() {
-        mapper = new DozerBeanMapper();
-        //cservice = new CustomerServiceImpl();
-        //uservice = new UserServiceImpl();
-        // preco tu je toto??
+        mapper = new DozerBeanMapper();       
         facade = new CustomerUserFacadeImpl();
 
         ReflectionTestUtils.setField(facade, "uservice", uservice);
         ReflectionTestUtils.setField(facade, "cservice", cservice);
-        //ReflectionTestUtils.setField(facade, "mapper", mapper);
     }
 
     @After
@@ -67,11 +63,8 @@ public class CustomerUserFacadeImplTest {
     @Test
     public void testCreate() {
         user = createUser("mrkvicka", "345sac", false);
-        //user.setId(5L);
         userTO = mapper.map(user, UserTO.class);
-
         customer = createCustomer(null, "Adam", "Petrik", "Burzoazna 12", "112567");
-        //customer.setId(4L);
         customerTO = mapper.map(customer, CustomerTO.class);
 
         try {
@@ -79,7 +72,7 @@ public class CustomerUserFacadeImplTest {
             fail("exception should be thrown");
         } catch (IllegalArgumentException ex) {
             // ok
-        }
+        } 
 
         try {
             facade.create(customerTO, null);
@@ -156,14 +149,11 @@ public class CustomerUserFacadeImplTest {
         customer = createCustomer(4L, "Adam", "Petrik", "Burzoazna 12", "112567");
         customerTO = mapper.map(customer, CustomerTO.class);        
         CustomerUserTO customerUserTO = new CustomerUserTO(customerTO, userTO);
-        customerTO.setUser(userTO);  
-        
-        //facade.create(customerTO, userTO);
+        customerTO.setUser(userTO);                 
         
         facade.update(customerUserTO);
         verify(cservice).update(customerTO);
-        verify(uservice).update(userTO);
-        
+        verify(uservice).update(userTO);        
     }
 
     @Test
@@ -174,8 +164,7 @@ public class CustomerUserFacadeImplTest {
         customerTO = mapper.map(customer, CustomerTO.class);        
         CustomerUserTO customerUserTO = new CustomerUserTO(customerTO, userTO);
         customerTO.setUser(userTO);  
-        
-        
+                
         User user2 = createUser("ferko22", "bak!s$#", false);
         UserTO userTO2 = mapper.map(user2, UserTO.class);        
         Customer customer2 = createCustomer(null, "Petko", "Mravcek", "Teplicka nad Vahom 142", "772222222");

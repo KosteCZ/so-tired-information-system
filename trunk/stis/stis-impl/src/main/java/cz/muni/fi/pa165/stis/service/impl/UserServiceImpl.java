@@ -7,7 +7,6 @@ import cz.muni.fi.pa165.stis.service.CustomerService;
 import cz.muni.fi.pa165.stis.service.UserService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +25,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private DozerBeanMapper mapper;
 
-    //@PreAuthorize("isAuthenticated()")
     @Transactional
     @Override
     public void create(UserTO user) {

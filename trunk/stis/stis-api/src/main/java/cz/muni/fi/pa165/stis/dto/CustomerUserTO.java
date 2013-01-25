@@ -2,7 +2,7 @@ package cz.muni.fi.pa165.stis.dto;
 
 /**
  *
- * @author michalxo
+ * @author Michal Toth
  */
 public class CustomerUserTO {
             

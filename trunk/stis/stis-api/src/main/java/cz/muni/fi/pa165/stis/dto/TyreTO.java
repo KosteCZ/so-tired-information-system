@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 /**
  *
- * @author michalxo
+ * @author Michal Toth
  */
 public class TyreTO implements Serializable {
     private Long id;

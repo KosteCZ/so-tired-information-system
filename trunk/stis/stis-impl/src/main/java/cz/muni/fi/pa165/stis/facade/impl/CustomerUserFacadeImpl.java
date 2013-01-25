@@ -27,7 +27,6 @@ public class CustomerUserFacadeImpl implements CustomerUserFacade {
     @Autowired
     private UserService uservice;
     
-//    @PreAuthorize("isAuthenticated()")
     @Transactional
     @Override
     public void create(CustomerTO customerTO, UserTO userTO) {

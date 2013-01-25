@@ -203,7 +203,7 @@ public class UserDAOImplTest {
         User user4 = userDAO.getByUsername("Peter");
         assertEquals(user4, user3);
         try {
-            user4 = userDAO.getByUsername("Lukas");
+            userDAO.getByUsername("Lukas");
         } catch (DataAccessException e) {
             //ok
         } catch (Exception e) {
