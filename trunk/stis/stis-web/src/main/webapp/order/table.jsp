@@ -54,10 +54,18 @@
                     <td><f:formatNumber maxFractionDigits="2" minFractionDigits="2" value="${item.totalPrice}" /></td>
                     <td>
                         <div class="btn-group btn-group-vertical">
-                            <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="edit"><s:param name="order.id" value="${item.id}"/><i class="icon-pencil"></i> <f:message key="button.edit"/></s:link>
-                            <a href="#confirmDelete" role="button" onclick="setLink(this);" class="btn btn-small" data-toggle="modal" data-id="${item.id}"><i class="icon-trash"></i> <f:message key="button.remove"/></a>
-                            <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="done"><s:param name="order.id" value="${item.id}"/><i class="icon-wrench"></i> <f:message key="button.done"/></s:link>
-                            <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="paid"><s:param name="order.id" value="${item.id}"/><i class="icon-thumbs-up"></i> <f:message key="button.paid"/></s:link>
+                            <sec:authorize access="hasRole('ROLE_USER')">
+                                <c:if test="${item.orderServicedDate eq null and item.orderPaidDate eq null}">
+                                    <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="edit"><s:param name="order.id" value="${item.id}"/><i class="icon-pencil"></i> <f:message key="button.edit"/></s:link>
+                                    <a href="#confirmDelete" role="button" onclick="setLink(this);" class="btn btn-small" data-toggle="modal" data-id="${item.id}"><i class="icon-trash"></i> <f:message key="button.remove"/></a>
+                                </c:if>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="edit"><s:param name="order.id" value="${item.id}"/><i class="icon-pencil"></i> <f:message key="button.edit"/></s:link>
+                                <a href="#confirmDelete" role="button" onclick="setLink(this);" class="btn btn-small" data-toggle="modal" data-id="${item.id}"><i class="icon-trash"></i> <f:message key="button.remove"/></a>
+                                <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="done"><s:param name="order.id" value="${item.id}"/><i class="icon-wrench"></i> <f:message key="button.done"/></s:link>
+                                <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="paid"><s:param name="order.id" value="${item.id}"/><i class="icon-thumbs-up"></i> <f:message key="button.paid"/></s:link>
+                            </sec:authorize>
                         </div>
                     </td>
                 </tr>

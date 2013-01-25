@@ -1,4 +1,4 @@
-package cz.muni.fi.pa165.stis.web.security;
+package cz.muni.fi.pa165.stis.web.security.custom;
 
 import cz.muni.fi.pa165.stis.dto.CustomerTO;
 import java.util.Collection;

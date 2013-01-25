@@ -1,4 +1,4 @@
-package cz.muni.fi.pa165.stis.web.security;
+package cz.muni.fi.pa165.stis.web.security.custom;
 
 import org.springframework.security.core.GrantedAuthority;
 

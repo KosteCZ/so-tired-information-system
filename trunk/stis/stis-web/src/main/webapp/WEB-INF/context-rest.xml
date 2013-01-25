@@ -12,8 +12,6 @@
           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
 ">
-    <!--<import resource="classpath:applicationContext.xml"/>-->
-    
     <mvc:annotation-driven/> 
     
     <context:annotation-config/>
@@ -31,7 +29,5 @@
           Converts JSON to POJO and vice versa  
     -->  
     <bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
-    
-    <sec:http pattern="/rest/**" security="none"/>
     
 </beans>
