@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.stis.dao.impl;
 
 import cz.muni.fi.pa165.stis.dao.UserDAO;
 import cz.muni.fi.pa165.stis.entity.User;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,14 +28,15 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("test")
 @Transactional
 public class UserDAOImplTest {
+
     private User user;
     @Autowired
     private UserDAO userDAO;
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
         removeAll();
@@ -44,7 +46,7 @@ public class UserDAOImplTest {
      * Test of create method, of class UserDAO.
      */
     @Test
-    public void testCreate() {        
+    public void testCreate() {
         user = null;
 
         try {
@@ -70,7 +72,7 @@ public class UserDAOImplTest {
         userDAO.create(user);
         assertNotNull("ID is null", user.getId());
     }
-    
+
     @Test
     public void testGet() {
         User u = newUser(null, null, true);
@@ -92,7 +94,7 @@ public class UserDAOImplTest {
         assertNull("User is not null", u3);
         removeAll();
     }
-    
+
     @Test
     public void testUpdate() {
         User u = newUser(null, null, false);
@@ -124,7 +126,7 @@ public class UserDAOImplTest {
         assertEquals("Customer are not the same", u2, u);
         assertDeepEquals(u2, u);
     }
-    
+
     @Test
     public void testRemove() {
         User u = newUser(null, null, false);
@@ -162,16 +164,16 @@ public class UserDAOImplTest {
         assertNull("Found user that shouldn't be there", u3);
         removeAll();
     }
-    
+
     @Test
     public void testFindAll() {
         List<User> users = userDAO.findAll();
         assertTrue("Users should be empty", users.isEmpty());
-        users = Arrays.asList(new User[] {
-            newUser("Bruce", "Willis", false),
-            newUser("Jan", "Hrach", false),
-            newUser("Peter", "Mravec", true)
-        });
+        users = Arrays.asList(new User[]{
+                    newUser("Bruce", "Willis", false),
+                    newUser("Jan", "Hrach", false),
+                    newUser("Peter", "Mravec", true)
+                });
         for (User u : users) {
             userDAO.create(u);
         }
@@ -183,16 +185,42 @@ public class UserDAOImplTest {
             assertDeepEquals(all.get(i), users.get(i));
         }
     }
-    
+
     @Test
-    public void testAvailableUsername(){
+    public void testGetByUsername() {
+        User user1 = newUser("Jan", "Hrach", false);
+        User user2 = newUser("Bruce", "Willis", false);
+        User user3 = newUser("Peter", "Mravec", true);
+        List<User> users = new ArrayList<>();
+        users.add(user1);
+        users.add(user2);
+        users.add(user3);                    
+                
+        for (User u : users) {
+            userDAO.create(u);
+        }
+        
+        User user4 = userDAO.getByUsername("Peter");
+        assertEquals(user4, user3);
+        try {
+            user4 = userDAO.getByUsername("Lukas");
+        } catch (DataAccessException e) {
+            //ok
+        } catch (Exception e) {
+            fail("Should throw DataAccessException");
+        }
+        
+    }
+
+    @Test
+    public void testAvailableUsername() {
         List<User> users = userDAO.findAll();
         assertTrue("Users should be empty", users.isEmpty());
-        users = Arrays.asList(new User[] {
-            newUser("Bruce", "Willis", false),
-            newUser("Jan", "Hrach", false),
-            newUser("Peter", "Mravec", true)
-        });
+        users = Arrays.asList(new User[]{
+                    newUser("Bruce", "Willis", false),
+                    newUser("Jan", "Hrach", false),
+                    newUser("Peter", "Mravec", true)
+                });
         for (User u : users) {
             userDAO.create(u);
         }
@@ -201,47 +229,47 @@ public class UserDAOImplTest {
         assertFalse("Username exist", userDAO.availableUsername(u1.getUsername()));
         assertTrue("Username is free", userDAO.availableUsername(u2.getUsername()));
     }
-    
+
     @Test
-    public void testIsAdmin(){
+    public void testIsAdmin() {
         List<User> users = userDAO.findAll();
         assertTrue("Users should be empty", users.isEmpty());
-        users = Arrays.asList(new User[] {
-            newUser("Bruce", "Willis", false),
-            newUser("Peter", "Mravec", true)
-        });
+        users = Arrays.asList(new User[]{
+                    newUser("Bruce", "Willis", false),
+                    newUser("Peter", "Mravec", true)
+                });
         for (User u : users) {
             userDAO.create(u);
         }
         assertFalse("Username is not admin", userDAO.isAdmin(users.get(0)));
         assertTrue("Username is admin", userDAO.isAdmin(users.get(1)));
     }
-    
+
     @Test
-    public void testMakeAdmin(){
+    public void testMakeAdmin() {
         User u1 = newUser("Bruce", "pass", false);
         userDAO.create(u1);
         assertFalse("Username is not admin", userDAO.isAdmin(u1));
         userDAO.makeAdmin(u1);
         assertTrue("Username is admin", userDAO.isAdmin(u1));
     }
-    
+
     private void removeAll() {
         List<User> ts = userDAO.findAll();
         for (User t : ts) {
             userDAO.remove(t);
         }
     }
-    
+
     private static User newUser(String userName, String password, boolean isAdmin) {
         User user = new User();
         user.setUsername(userName);
         user.setPassword(password);
         user.setRoleAdmin(isAdmin);
-        
+
         return user;
     }
-    
+
     private void assertDeepEquals(User u1, User u2) {
         assertEquals(u1 == null, u2 == null);
         if (u1 != null) {
@@ -251,7 +279,6 @@ public class UserDAOImplTest {
             assertEquals(u1.getRoleAdmin(), u2.getRoleAdmin());
         }
     }
-    
     private static Comparator<User> userComparator = new Comparator<User>() {
         @Override
         public int compare(User t, User t1) {

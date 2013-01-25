@@ -16,6 +16,7 @@ import static org.mockito.Matchers.argThat;
 import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
@@ -64,6 +65,14 @@ public class UserServiceImplTest {
         } catch (IllegalArgumentException ex) {
             // ok
         }
+        
+        try {
+            service.getByUsername(null);
+            fail("exception should be thrown");
+        } catch (IllegalArgumentException e) {
+            //ok
+        }
+        
         try {
             service.remove(null);
             fail("exception should be thrown");
@@ -156,6 +165,21 @@ public class UserServiceImplTest {
     }
 
     @Test
+    public void getByUsername() {
+        User user3 = createUser("mrkvicka", "345sac", false);
+        User user2 = createUser("Bruce", "Willis", false);
+        User user1 = createUser("Peter", "Mravec", true);
+        UserTO uto1 = mapper.map(user1, UserTO.class);
+        UserTO uto2 = mapper.map(user2, UserTO.class);
+        UserTO uto3 = mapper.map(user3, UserTO.class);
+        
+        when(dao.getByUsername("mrkvicka")).thenReturn(user3);               
+        UserTO uto = service.getByUsername("mrkvicka");
+        verify(dao).getByUsername("mrkvicka");
+        assertEquals(uto, uto3);        
+    }
+
+    @Test
     public void testUpdate() {
         User user = createUser("mrkvicka", "345sac", false);
         user.setId(4L);
@@ -193,11 +217,11 @@ public class UserServiceImplTest {
         User user = createUser("mrkvicka", "345sac", false);
         user.setId(4L);
         UserTO uto = mapper.map(user, UserTO.class);
-        
+
         when(dao.isAdmin(user)).thenReturn(Boolean.FALSE);
-        assertFalse("user should not have roleAdmin", service.isAdmin(uto));        
+        assertFalse("user should not have roleAdmin", service.isAdmin(uto));
         when(dao.isAdmin(user)).thenReturn(Boolean.TRUE);
-        assertTrue("user should have roleAdmin", service.isAdmin(uto));                        
+        assertTrue("user should have roleAdmin", service.isAdmin(uto));
     }
 
     @Test
@@ -205,15 +229,15 @@ public class UserServiceImplTest {
         User user = createUser("mrkvicka", "345sac", false);
         user.setId(4L);
         UserTO uto = mapper.map(user, UserTO.class);
-        
+
         when(dao.isAdmin(user)).thenReturn(Boolean.FALSE);
-        assertFalse("User should not be admin", service.isAdmin(uto));        
+        assertFalse("User should not be admin", service.isAdmin(uto));
         service.makeAdmin(uto);
         verify(dao, times(1)).makeAdmin(user);
         when(dao.isAdmin(user)).thenReturn(Boolean.TRUE);
-        assertTrue("User should be admin", service.isAdmin(uto));        
+        assertTrue("User should be admin", service.isAdmin(uto));
     }
-    
+
     // newly created user is missing ID
     private static User createUser(String username, String password, boolean roleAdmin) {
         User user = new User();
