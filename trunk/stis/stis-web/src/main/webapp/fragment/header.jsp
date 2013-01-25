@@ -10,7 +10,6 @@
                         <li><s:link beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="list"><f:message key="tyre.catalog"/></s:link></li>
                         <li><s:link beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" event="list"><f:message key="extraService.catalog"/></s:link></li>
                         <li><s:link beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="newOrder"><f:message key="order.create.title"/></s:link></li>
-                        <li><s:link beanclass="cz.muni.fi.pa165.stis.web.RegistrationActionBean" event="newRegistration"><f:message key="registration.create"/></s:link></li>
                     </ul>
                     
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -28,6 +27,7 @@
                             </li>
                         </ul>
                     </sec:authorize>
+                    
                     <sec:authorize access="hasRole('ROLE_USER')">
                         <ul class="nav pull-right">
                             <li class="dropdown">
@@ -39,7 +39,13 @@
                                 </ul>
                             </li>
                         </ul>
-
+                    </sec:authorize>
+                    
+                    <sec:authorize access="not isAuthenticated()">
+                        <ul class="nav pull-right">
+                            <li><s:link beanclass="cz.muni.fi.pa165.stis.web.SecurityActionBean" event="login">Login</s:link></li>
+                            <li><s:link beanclass="cz.muni.fi.pa165.stis.web.RegistrationActionBean" event="newRegistration"><f:message key="registration.create"/></s:link></li>
+                        </ul>
                     </sec:authorize>
                 </div>
             </div>

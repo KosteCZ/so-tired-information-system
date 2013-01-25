@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.stis.web;
 
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
+import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
@@ -14,13 +15,20 @@ import net.sourceforge.stripes.action.UrlBinding;
 public class SecurityActionBean implements ActionBean {
     
     private ActionBeanContext ctx;
+    private String error;
     
     public Resolution login() {
-        return new RedirectResolution(TyreActionBean.class);
+        error = getContext().getRequest().getParameter("error");
+        //
+        return new ForwardResolution("/security/login.jsp");
     }
     
     public Resolution logout() {
         return new RedirectResolution(TyreActionBean.class);
+    }
+
+    public String getError() {
+        return error;
     }
 
     @Override
