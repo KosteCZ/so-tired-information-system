@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private DozerBeanMapper mapper;
 
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     @Transactional
     @Override
     public void create(UserTO user) {

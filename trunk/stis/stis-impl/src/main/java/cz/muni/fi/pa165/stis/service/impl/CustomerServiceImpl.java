@@ -25,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private DozerBeanMapper mapper;
 
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     @Transactional
     @Override
     public void create(CustomerTO customer) {
