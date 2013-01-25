@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -61,6 +62,18 @@ public class UserDAOImpl implements UserDAO {
         }
 
         User user = em.find(User.class, id);
+        return user;
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        if (username == null || username.equals("")) {
+            throw new IllegalArgumentException("username is null or empty");
+        }
+        Query query = em.createQuery("SELECT u FROM User u WHERE u.username like :username");
+        query.setParameter("username", username);
+        User user = (User) query.getSingleResult();
+
         return user;
     }
 

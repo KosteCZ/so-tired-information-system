@@ -19,10 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class CustomerServiceImpl implements CustomerService {
-    
+
     @Autowired
     private CustomerDAO dao;
-    
     @Autowired
     private DozerBeanMapper mapper;
 
@@ -36,14 +35,14 @@ public class CustomerServiceImpl implements CustomerService {
         if (customer.getId() != null) {
             throw new IllegalArgumentException("customer.id is not null");
         }
-        
+
         Customer c = mapper.map(customer, Customer.class);
         dao.create(c);
         customer.setId(c.getId());
     }
 
     @PostAuthorize("hasRole('ROLE_ADMIN') or "
-            + "(hasRole('ROLE_USER') and returnObject != null and principal.customer.id == returnObject.id)")
+    + "(hasRole('ROLE_USER') and returnObject != null and principal.customer.id == returnObject.id)")
     @Transactional(readOnly = true)
     @Override
     public CustomerTO get(Long id) {
@@ -55,10 +54,10 @@ public class CustomerServiceImpl implements CustomerService {
             return null;
         }
         return mapper.map(customer, CustomerTO.class);
-    }
+    }    
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or "
-            + "(hasRole('ROLE_USER') and principal.customer.id == #customer.id)")
+    + "(hasRole('ROLE_USER') and principal.customer.id == #customer.id)")
     @Transactional
     @Override
     public void update(CustomerTO customer) {
@@ -74,7 +73,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or "
-            + "(hasRole('ROLE_USER') and principal.customer.id == #customer.id)")
+    + "(hasRole('ROLE_USER') and principal.customer.id == #customer.id)")
     @Transactional
     @Override
     public void remove(CustomerTO customer) {
@@ -96,7 +95,7 @@ public class CustomerServiceImpl implements CustomerService {
         for (Customer c : res) {
             retVal.add(mapper.map(c, CustomerTO.class));
         }
-        
+
         return retVal;
     }
 
@@ -114,8 +113,18 @@ public class CustomerServiceImpl implements CustomerService {
         for (Customer c : res) {
             retVal.add(mapper.map(c, CustomerTO.class));
         }
-        
+
         return retVal;
     }
     
+    @Transactional
+    @Override
+    public CustomerTO getByUsername(String username) {
+        if (username == null || username.equals("")) {
+            throw new IllegalArgumentException("null or empty username");
+        }
+        Customer customer = dao.getByUsername(username);
+        CustomerTO customerTO = mapper.map(customer, CustomerTO.class);
+        return customerTO;
+    }
 }

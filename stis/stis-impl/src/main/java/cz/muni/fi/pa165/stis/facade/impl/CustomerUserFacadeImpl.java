@@ -50,7 +50,7 @@ public class CustomerUserFacadeImpl implements CustomerUserFacade {
     
     @Transactional(readOnly=true)
     @Override
-    public CustomerUserTO get(Long id) {
+    public CustomerUserTO getByCustomerId(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("id is null");
         }
@@ -106,6 +106,14 @@ public class CustomerUserFacadeImpl implements CustomerUserFacade {
         }
         return cuTOList;
     }
-    
+
+    @Override
+    public CustomerUserTO getByUsername(String username) {
+        UserTO userTO = uservice.getByUsername(username);        
+        CustomerTO customerTO = cservice.getByUsername(username);
+        
+        return new CustomerUserTO(customerTO, userTO);
+    }
+   
     
 }

@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service layer implementation for DAO methods using
- * transfer object - UserTO and mapping it to User
- * 
+ * Service layer implementation for DAO methods using transfer object - UserTO
+ * and mapping it to User
+ *
  * @author Michal Toth
  */
 @Service
@@ -79,7 +79,18 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return null;
         }
-        
+
+        return mapper.map(user, UserTO.class);
+    }
+
+    @Transactional(readOnly=true)    
+    @Override
+    public UserTO getByUsername(String username) {
+        if (username.equals("") || username == null) {
+            throw new IllegalArgumentException("username is null or empty");
+        }
+        User user = dao.getByUsername(username);
+
         return mapper.map(user, UserTO.class);
     }
 
@@ -92,7 +103,7 @@ public class UserServiceImpl implements UserService {
         if (username.equals("") || username.equals(" ")) {
             throw new IllegalArgumentException("username is empty");
         }
-        
+
         return dao.availableUsername(username);
     }
 
@@ -106,7 +117,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("user.id is null");
         }
         User user2 = mapper.map(user, User.class);
-        
+
         return dao.isAdmin(user2);
     }
 
