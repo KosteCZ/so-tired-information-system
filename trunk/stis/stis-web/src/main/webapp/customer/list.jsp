@@ -7,7 +7,7 @@
 
         <div class="row-fluid" style="margin-bottom: 5px;">
             <div style="float: left;">
-                <s:link beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="create" class="btn"><i class="icon-plus"></i> <f:message key="button.create"/></s:link>
+                <s:link beanclass="cz.muni.fi.pa165.stis.web.RegistrationActionBean" event="newRegistration" class="btn"><i class="icon-plus"></i> <f:message key="button.create"/></s:link>
                 
             </div>
             <div style="float: right;">                

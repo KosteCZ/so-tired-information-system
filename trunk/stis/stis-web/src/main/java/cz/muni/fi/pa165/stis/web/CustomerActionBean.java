@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.stis.web;
 
 import cz.muni.fi.pa165.stis.dto.CustomerTO;
+import cz.muni.fi.pa165.stis.facade.CustomerUserFacade;
 import cz.muni.fi.pa165.stis.service.CustomerService;
 import java.util.List;
 import net.sourceforge.stripes.action.Before;
@@ -36,6 +37,8 @@ public class CustomerActionBean extends BaseActionBean {
 
     @SpringBean
     protected CustomerService customerService;
+    @SpringBean
+    protected CustomerUserFacade cuFacade;
 
     @DefaultHandler
     public Resolution all() {
@@ -71,7 +74,7 @@ public class CustomerActionBean extends BaseActionBean {
         Long id = Long.parseLong(getContext().getRequest().getParameter("cto.id"));
         cto = customerService.get(id);
         log.debug("deleteCustomer() cto={}", cto);
-        customerService.remove(cto);
+        cuFacade.remove(cuFacade.getByCustomerId(id));
         return new RedirectResolution(this.getClass(), "all");
     }
 
