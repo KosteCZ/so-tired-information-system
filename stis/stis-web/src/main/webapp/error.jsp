@@ -3,7 +3,7 @@
 
 <s:layout-render name="/layout.jsp" title="${msg}">
     <s:layout-component name="content">
-        <s:useActionBean beanclass="cz.muni.fi.pa165.stis.rest.client.ErrorHandlerActionBean" var="actionBean"/>
+        <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.ErrorHandlerActionBean" var="actionBean"/>
         <br>
         <f:message key="error.message"/>
         

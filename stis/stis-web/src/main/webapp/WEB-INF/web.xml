@@ -62,6 +62,10 @@
             <param-name>Interceptor.Classes</param-name>
             <param-value>net.sourceforge.stripes.integration.spring.SpringInterceptor</param-value>
         </init-param>
+        <init-param>
+            <param-name>ExceptionHandler.Class</param-name>
+            <param-value>cz.muni.fi.pa165.stis.web.ExceptionHandler</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
         <filter-name>StripesFilter</filter-name>
