@@ -5,6 +5,7 @@ import cz.muni.fi.pa165.stis.facade.CustomerUserFacade;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,12 +20,18 @@ public class CustomUserDetailsService implements UserDetailsService {
     private String adminUsername;
     @Value("${admin.password}")
     private String adminPassword;
+    @Value("${rest.username}")
+    private String restUsername;
+    @Value("${rest.password}")
+    private String restPassword;
     
     @Autowired
     private CustomerUserFacade cuFacade;
 
     @Override
     public UserDetails loadUserByUsername(String string) throws UsernameNotFoundException {
+        ShaPasswordEncoder spe = new ShaPasswordEncoder();
+        System.out.println(spe.encodePassword("rest", "rest"));
         //
         CustomUserDetails d = new CustomUserDetails();
         if (string.equals(adminUsername)) {
@@ -32,6 +39,14 @@ public class CustomUserDetailsService implements UserDetailsService {
             d.setAuthorities(Arrays.asList(createRole("ROLE_ADMIN")));
             d.setUsername(adminUsername);
             d.setPassword(adminPassword);
+            
+            return d;
+        }
+        if (string.equals(restUsername)) {
+            d.setIsAdmin(Boolean.TRUE);
+            d.setAuthorities(Arrays.asList(createRole("ROLE_ADMIN")));
+            d.setUsername(restUsername);
+            d.setPassword(restPassword);
             
             return d;
         }
