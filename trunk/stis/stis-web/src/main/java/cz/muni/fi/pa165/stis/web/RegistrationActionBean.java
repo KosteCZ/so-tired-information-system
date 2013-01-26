@@ -107,8 +107,7 @@ public class RegistrationActionBean implements ActionBean {
         logger.debug("save() cto={} \nuto={}", cto, uto);
         if (uto.getPassword().equals(password2)) {
             logger.debug("save() cto={} \nid={}", cto, cto.getUser());
-            cService.update(cto);
-            uService.update(uto);
+            cuFacade.update(new CustomerUserTO(cto, uto));            
             return new RedirectResolution("/tyre/list");
         }
         passwordError = "true";
