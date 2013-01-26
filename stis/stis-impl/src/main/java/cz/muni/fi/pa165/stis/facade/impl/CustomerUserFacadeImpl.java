@@ -98,10 +98,17 @@ public class CustomerUserFacadeImpl implements CustomerUserFacade {
         }
         
         UserTO userTO = customerUserTO.getUser();        
-        CustomerTO customerTO = customerUserTO.getCustomer();
-        customerTO.setUser(userTO);
+        CustomerTO customerTO = customerUserTO.getCustomer();        
         
+        customerTO.setUser(userTO);
+        Long id = customerTO.getUser().getId();
+        System.out.println("*********set***********");        
+        System.out.println("customerTO=" + customerTO);
+        System.out.println("Long id=" + id);
+        System.out.println("userTO=" + userTO);
+        System.out.println("***********************");
         uservice.update(userTO);
+        customerTO.setUser(userTO);
         cservice.update(customerTO);
     }
 

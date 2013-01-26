@@ -106,6 +106,7 @@ public class RegistrationActionBean implements ActionBean {
         logger.debug("save() cto={} \nuto={}", this.getCto(), this.getUto());
         logger.debug("save() cto={} \nuto={}", cto, uto);
         if (uto.getPassword().equals(password2)) {
+            logger.debug("save() cto={} \nid={}", cto, cto.getUser());
             cService.update(cto);
             uService.update(uto);
             return new RedirectResolution("/tyre/list");

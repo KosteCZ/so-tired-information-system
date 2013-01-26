@@ -49,7 +49,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         if (customer.getId() == null) {
             throw new IllegalArgumentException("customer.id is null");
         }
-
+        
         em.merge(customer);
     }
 
