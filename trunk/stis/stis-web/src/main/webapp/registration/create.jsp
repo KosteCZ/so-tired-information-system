@@ -8,8 +8,7 @@
         <div id="createCustomer">
             <s:form class="form-horizontal" beanclass="cz.muni.fi.pa165.stis.web.RegistrationActionBean">
                 <fieldset>
-                    <legend>&nbsp;
-                        <!--                        <f:message key="registration.create"/> -->
+                    <legend><f:message key="registration.create"/>
                     </legend>
                     <%@include file="/registration/form.jsp"%>    
                     <div class="form-actions">

@@ -5,7 +5,6 @@ import cz.muni.fi.pa165.stis.facade.CustomerUserFacade;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,9 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String string) throws UsernameNotFoundException {
-        //
-        ShaPasswordEncoder spe = new ShaPasswordEncoder();
-        System.out.println(spe.encodePassword(adminPassword, adminUsername));
         //
         CustomUserDetails d = new CustomUserDetails();
         if (string.equals(adminUsername)) {
