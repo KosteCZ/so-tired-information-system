@@ -5,7 +5,7 @@
         <div class="navbar navbar-fixed-top navbar-inverse">
             <div class="navbar-inner">
                 <div class="container">
-                    <s:link class="brand" href="/">STIS</s:link>
+                    <s:link class="brand" href="/"><f:message key="brand" /></s:link>
                     <ul class="nav">
                         <li><s:link beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="list"><f:message key="tyre.catalog"/></s:link></li>
                         <li><s:link beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" event="list"><f:message key="extraService.catalog"/></s:link></li>
@@ -22,7 +22,7 @@
                                     <li><s:link beanclass="cz.muni.fi.pa165.stis.web.TyreActionBean" event="list"><f:message key="tyre.catalog"/></s:link></li>
                                     <li><s:link beanclass="cz.muni.fi.pa165.stis.web.ExtraServiceActionBean" event="list"><f:message key="extraService.catalog"/></s:link></li>
                                     <li class="divider"></li>
-                                    <li><s:link beanclass="cz.muni.fi.pa165.stis.web.SecurityActionBean" event="logout"><i class="icon-off"></i> LOGOUT</s:link></li>
+                                    <li><s:link beanclass="cz.muni.fi.pa165.stis.web.SecurityActionBean" event="logout"><i class="icon-off"></i> <f:message key="header.logout"/></s:link></li>
                                 </ul>
                             </li>
                         </ul>
@@ -33,9 +33,9 @@
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><sec:authentication property="principal.customer.firstName"/> <sec:authentication property="principal.customer.lastName"/> <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><s:link beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="list"><i class="icon"></i> My orders</s:link></li>
+                                    <li><s:link beanclass="cz.muni.fi.pa165.stis.web.OrderActionBean" event="list"><i class="icon"></i> <f:message key="header.userOrders"/></s:link></li>
                                     <li class="divider"></li>
-                                    <li><s:link beanclass="cz.muni.fi.pa165.stis.web.SecurityActionBean" event="logout"><i class="icon-off"></i> LOGOUT</s:link></li>
+                                    <li><s:link beanclass="cz.muni.fi.pa165.stis.web.SecurityActionBean" event="logout"><i class="icon-off"></i> <f:message key="header.logout"/></s:link></li>
                                 </ul>
                             </li>
                         </ul>
@@ -43,7 +43,7 @@
                     
                     <sec:authorize access="not isAuthenticated()">
                         <ul class="nav pull-right">
-                            <li><s:link beanclass="cz.muni.fi.pa165.stis.web.SecurityActionBean" event="login">Login</s:link></li>
+                            <li><s:link beanclass="cz.muni.fi.pa165.stis.web.SecurityActionBean" event="login"><f:message key="login.title"/></s:link></li>
                             <li><s:link beanclass="cz.muni.fi.pa165.stis.web.RegistrationActionBean" event="newRegistration"><f:message key="registration.create"/></s:link></li>
                         </ul>
                     </sec:authorize>

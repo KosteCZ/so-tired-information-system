@@ -32,3 +32,10 @@ input.error { background-color: #ffcccc; }
 .nostyle td:nth-child(2) {
     padding-left: 5px;
 }
+
+.errorblock {
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid red;
+    background-color: #ffeeee;
+}
