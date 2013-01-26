@@ -27,6 +27,7 @@
         <intercept-url pattern="/j_spring_security*" access="permitAll" />
         <intercept-url pattern="/security/login/" access="permitAll" />
         <intercept-url pattern="/index.jsp" access="permitAll" />
+        <intercept-url pattern="/error.jsp" access="permitAll" />
         <intercept-url pattern="/extraservice/list/" access="permitAll" />
         <intercept-url pattern="/extraservice/" access="permitAll" />
         <intercept-url pattern="/tyre/list/" access="permitAll" />
