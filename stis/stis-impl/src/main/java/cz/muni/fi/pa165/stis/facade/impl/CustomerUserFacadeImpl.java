@@ -9,6 +9,7 @@ import cz.muni.fi.pa165.stis.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,8 +44,9 @@ public class CustomerUserFacadeImpl implements CustomerUserFacade {
             throw new IllegalArgumentException("userTO.id is null");
         }        
         
+        uservice.create(userTO);
+        customerTO.setUser(userTO);
         cservice.create(customerTO);
-        uservice.create(userTO);        
     }
     
     @Transactional(readOnly=true)
@@ -59,6 +61,8 @@ public class CustomerUserFacadeImpl implements CustomerUserFacade {
         return new CustomerUserTO(cto, uto);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or "
+    + "(hasRole('ROLE_USER') and principal.username == #customerUserTO.user.username)")
     @Transactional
     @Override
     public void remove(CustomerUserTO customerUserTO) {
@@ -77,6 +81,8 @@ public class CustomerUserFacadeImpl implements CustomerUserFacade {
         cservice.remove(customerUserTO.getCustomer());        
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or "
+    + "(hasRole('ROLE_USER') and principal.username == #customerUserTO.user.username)")
     @Transactional
     @Override
     public void update(CustomerUserTO customerUserTO) {
