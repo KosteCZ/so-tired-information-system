@@ -7,6 +7,7 @@ import cz.muni.fi.pa165.stis.service.CustomerService;
 import cz.muni.fi.pa165.stis.service.UserService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +41,8 @@ public class UserServiceImpl implements UserService {
         user.setId(user2.getId());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or "
+    + "(hasRole('ROLE_USER') and principal.username == #user.username)")
     @Transactional
     @Override
     public void remove(UserTO user) {
@@ -54,6 +57,8 @@ public class UserServiceImpl implements UserService {
         dao.remove(user2);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or "
+    + "(hasRole('ROLE_USER') and principal.username == #user.username)")
     @Transactional
     @Override
     public void update(UserTO user) {
@@ -119,6 +124,7 @@ public class UserServiceImpl implements UserService {
         return dao.isAdmin(user2);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     @Override
     public void makeAdmin(UserTO user) {

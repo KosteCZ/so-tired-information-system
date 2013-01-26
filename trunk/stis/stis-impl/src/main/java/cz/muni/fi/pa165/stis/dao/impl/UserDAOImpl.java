@@ -58,6 +58,8 @@ public class UserDAOImpl implements UserDAO {
             throw new IllegalArgumentException("user.id is null");
         }
 
+        String encPassword = passwordEncoder.encodePassword(user.getPassword(), user.getUsername());
+        user.setPassword(encPassword);
         em.merge(user);
     }
 
