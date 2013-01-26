@@ -13,7 +13,7 @@
 	</c:if>
         
         <c:if test="${not empty registrationActionBean.regSucc}">
-		<div class="errorblock">
+		<div class="successblock">
                     <font color="green">
                     <f:message key="registration.successful" />
                     </font>
