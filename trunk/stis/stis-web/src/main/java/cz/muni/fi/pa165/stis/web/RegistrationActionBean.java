@@ -33,17 +33,17 @@ public class RegistrationActionBean implements ActionBean {
     private String passwordError;
     private String usernameError;
     @ValidateNestedProperties(value = {
-        @Validate(on = {"add","edit","save"}, field = "firstName", required = true),
-        @Validate(on = {"add","edit","save"}, field = "lastName", required = true),
-        @Validate(on = {"add","edit","save"}, field = "address", required = true)
+        @Validate(on = {"create","edit","save"}, field = "firstName", required = true),
+        @Validate(on = {"create","edit","save"}, field = "lastName", required = true),
+        @Validate(on = {"create","edit","save"}, field = "address", required = true)
     })
     private CustomerTO cto;
     @ValidateNestedProperties(value = {
-        @Validate(on = {"add","edit","save"}, field = "username", required = true),
-        @Validate(on = {"add","edit","save"}, field = "password", required = true, minlength = 4)
+        @Validate(on = {"create","edit","save"}, field = "username", required = true),
+        @Validate(on = {"create","edit","save"}, field = "password", required = true, minlength = 4)
     })
     private UserTO uto;
-    @Validate(on = {"add","edit","save"}, field = "password2", required = true, minlength = 4)
+    @Validate(on = {"create","edit","save"}, field = "password2", required = true, minlength = 4)
     private String password2;
     
     @SpringBean
