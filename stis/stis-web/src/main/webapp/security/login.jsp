@@ -4,6 +4,7 @@
 <s:layout-render name="/layout.jsp" title="${msg}">
     <s:layout-component name="content">
         <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.SecurityActionBean" var="actionBean"/>
+        <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.RegistrationActionBean" var="registrationActionBean"/>
 
         <c:if test="${not empty actionBean.error}">
 		<div class="errorblock">
@@ -11,6 +12,14 @@
 		</div>
 	</c:if>
         
+        <c:if test="${not empty registrationActionBean.regSucc}">
+		<div class="errorblock">
+                    <font color="green">
+                    <f:message key="registration.successful" />
+                    </font>
+		</div>
+	</c:if>
+                
         <c:url value="/j_spring_security_check" var="checkUrl"/>
         <form class="form-horizontal" action="${checkUrl}" method="POST">
             <div class="control-group">

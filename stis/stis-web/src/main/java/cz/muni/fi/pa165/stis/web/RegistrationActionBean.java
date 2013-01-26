@@ -12,6 +12,8 @@ import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
+import net.sourceforge.stripes.action.ValidationErrorReportResolution;
+import net.sourceforge.stripes.controller.FlashScope;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
@@ -26,6 +28,9 @@ import org.slf4j.LoggerFactory;
 public class RegistrationActionBean implements ActionBean{
     private static final Logger logger = LoggerFactory.getLogger(BaseActionBean.class);
     private ActionBeanContext context;
+    private String regSucc;
+    private String passwordError;
+    private String usernameError;
     
     @ValidateNestedProperties(value = {
         @Validate(on = {"add"}, field = "firstName", required = true),
@@ -76,6 +81,31 @@ public class RegistrationActionBean implements ActionBean{
     public void setPassword2(String password) {
         this.password2 = password;
     }
+
+    public String getRegSucc() {
+        return regSucc;
+    }
+
+    public void setRegSucc(String regSucc) {
+        this.regSucc = regSucc;
+    }
+
+    public String getPasswordError() {
+        return passwordError;
+    }
+
+    public void setPasswordError(String passwordError) {
+        this.passwordError = passwordError;
+    }
+
+    public String getUsernameError() {
+        return usernameError;
+    }
+
+    public void setUsernameError(String usernameError) {
+        this.usernameError = usernameError;
+    }
+    
     
     public Resolution add() {
         logger.debug("newcustomer() cto={}", cto);
@@ -84,9 +114,16 @@ public class RegistrationActionBean implements ActionBean{
             if(uService.availableUsername(uto.getUsername())){
                 uto.setRoleAdmin(false);
                 cuFacade.create(cto, uto);
+                regSucc = "true";
+                return new RedirectResolution("/security/login/").addParameter("regSucc", "true");
             }
+            //username
+            usernameError="true";
+            return new RedirectResolution("/registration/newRegistration/").addParameter("usernameError", "true").flash(this);
         }
-        return new RedirectResolution("/"); 
+        //pass
+        passwordError = "true";
+        return new RedirectResolution("/registration/newRegistration/").addParameter("passwordError", "true").flash(this); 
     }
     
     @Override
