@@ -1,6 +1,6 @@
 <%@include file="/fragment/taglibs.jsp" %>
 
-<f:message key="registration.edit" var="msg"/>
+<f:message key="registration.update" var="msg"/>
 <s:layout-render name="/layout.jsp" title="${msg}">
     <s:layout-component name="content">
         <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.RegistrationActionBean" var="actionBean"/>
@@ -9,7 +9,7 @@
             <s:form class="form-horizontal" beanclass="cz.muni.fi.pa165.stis.web.RegistrationActionBean">
                 <fieldset>
                     <legend>
-                        <f:message key="registration.edit"/>
+                        <f:message key="registration.update"/>
                     </legend>
                     <font color="red">
                     <c:if test="${not empty actionBean.passwordError}">
