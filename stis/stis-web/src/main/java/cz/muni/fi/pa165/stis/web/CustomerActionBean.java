@@ -34,7 +34,7 @@ public class CustomerActionBean extends BaseActionBean {
         @Validate(on = {"add", "save"}, field = "address", required = true)
     })
     private CustomerTO cto;
-
+    
     @SpringBean
     protected CustomerService customerService;
     @SpringBean
@@ -49,7 +49,7 @@ public class CustomerActionBean extends BaseActionBean {
     public List<CustomerTO> getCustomers() {
         return customerService.findAll();
     }
-
+    
     public CustomerTO getCto() {
         return cto;
     }

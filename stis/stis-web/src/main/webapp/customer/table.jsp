@@ -7,9 +7,10 @@
                 <th><f:message key="customer.lastName"/></th>
                 <th><f:message key="customer.address"/></th>
                 <th><f:message key="customer.phone"/></th>                                
+                <th><f:message key="uto.username"/></th>
                 <th style="width: 32px;"><f:message key="customer.table.action"/></th>
             </tr>
-        </head>
+        </thead>
 
         <tbody>  
             <c:forEach items="${items}" var="cto">
@@ -18,6 +19,7 @@
                     <td><c:out value="${cto.lastName}"/></td>
                     <td><c:out value="${cto.address}"/></td>
                     <td style="width: 32px;"><c:out value="${cto.phone}"/></td>
+                    <td><c:out value="${cto.user.username}"/></td>
                     <td>
                         <div class="btn-group">
                         <s:link class="btn btn-small" beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean" event="edit">
