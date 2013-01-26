@@ -1,6 +1,6 @@
 <%@include file="/fragment/taglibs.jsp" %>
 
-<f:message key="registration.create" var="msg"/>
+<f:message key="registration.edit" var="msg"/>
 <s:layout-render name="/layout.jsp" title="${msg}">
     <s:layout-component name="content">
         <s:useActionBean beanclass="cz.muni.fi.pa165.stis.web.RegistrationActionBean" var="actionBean"/>
@@ -9,23 +9,18 @@
             <s:form class="form-horizontal" beanclass="cz.muni.fi.pa165.stis.web.RegistrationActionBean">
                 <fieldset>
                     <legend>
-                        <f:message key="registration.create"/>
+                        <f:message key="registration.edit"/>
                     </legend>
                     <font color="red">
                     <c:if test="${not empty actionBean.passwordError}">
                         <div class="errorblock">
                             <f:message key="password.error" />
                         </div>
-                    </c:if>
-                    <c:if test="${not empty actionBean.usernameError}">
-                        <div class="errorblock">
-                            <f:message key="username.error" />
-                        </div>
-                    </c:if>
+                    </c:if>                    
                     </font>
-                    <%@include file="/registration/form.jsp"%>    
+                    <%@include file="/registration/form-update.jsp"%>    
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary" name="create"><i class="icon-plus"></i> <f:message key="button.create"/></button>
+                        <button type="submit" class="btn btn-primary" name="save"><i class="icon-plus"></i> <f:message key="button.edit"/></button>
                         <s:link beanclass="cz.muni.fi.pa165.stis.web.RegistrationActionBean" class="btn" event="list"><i class="icon-ban-circle"></i> <f:message key="button.cancel"/></s:link>
                     </div>
                 </fieldset>            

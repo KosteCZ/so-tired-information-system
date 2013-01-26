@@ -1,12 +1,13 @@
 package cz.muni.fi.pa165.stis.dto;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author Dusan Svancara
  */
-public class CustomerTO {
+public class CustomerTO implements Serializable {
 
     private Long id;
     private String firstName;

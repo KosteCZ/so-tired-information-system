@@ -1,10 +1,12 @@
 package cz.muni.fi.pa165.stis.dto;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Michal Toth
  */
-public class CustomerUserTO {
+public class CustomerUserTO implements Serializable {
             
     private CustomerTO customer;
     private UserTO user;
