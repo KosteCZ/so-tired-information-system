@@ -4,6 +4,7 @@ import cz.muni.fi.pa165.stis.dto.CustomerTO;
 import cz.muni.fi.pa165.stis.dto.CustomerUserTO;
 import cz.muni.fi.pa165.stis.dto.UserTO;
 import cz.muni.fi.pa165.stis.facade.CustomerUserFacade;
+import cz.muni.fi.pa165.stis.service.CustomerService;
 import cz.muni.fi.pa165.stis.service.UserService;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
@@ -33,23 +34,24 @@ public class RegistrationActionBean implements ActionBean {
     private String passwordError;
     private String usernameError;
     @ValidateNestedProperties(value = {
-        @Validate(on = {"create","edit","save"}, field = "firstName", required = true),
-        @Validate(on = {"create","edit","save"}, field = "lastName", required = true),
-        @Validate(on = {"create","edit","save"}, field = "address", required = true)
+        @Validate(on = {"create", "save"}, field = "firstName", required = true),
+        @Validate(on = {"create", "save"}, field = "lastName", required = true),
+        @Validate(on = {"create", "save"}, field = "address", required = true)
     })
     private CustomerTO cto;
     @ValidateNestedProperties(value = {
-        @Validate(on = {"create","edit","save"}, field = "username", required = true),
-        @Validate(on = {"create","edit","save"}, field = "password", required = true, minlength = 4)
+        @Validate(on = {"create"}, field = "username", required = true),
+        @Validate(on = {"create", "save"}, field = "password", required = true, minlength = 4)
     })
     private UserTO uto;
-    @Validate(on = {"create","edit","save"}, field = "password2", required = true, minlength = 4)
+    @Validate(on = {"create", "save"}, field = "password2", required = true, minlength = 4)
     private String password2;
-    
     @SpringBean
     protected CustomerUserFacade cuFacade;
     @SpringBean
     protected UserService uService;
+    @SpringBean
+    protected CustomerService cService;
 
     @DefaultHandler
     public Resolution add() {
@@ -65,26 +67,23 @@ public class RegistrationActionBean implements ActionBean {
                 uto.setRoleAdmin(false);
                 cuFacade.create(cto, uto);
                 regSucc = "true";
-                return new RedirectResolution("/security/login/").addParameter("regSucc", "true");
+                return new RedirectResolution("/security/login/").addParameter("regSucc", regSucc);
             }
-            //username is not available
             usernameError = "true";
-            //return new RedirectResolution("/registration/create.jsp").addParameter("usernameError", "true").flash(this);
-            return new RedirectResolution(this.getClass()).addParameter("usernameError", "true").flash(this);
+            return new RedirectResolution(this.getClass()).addParameter("usernameError", usernameError).flash(this);
         }
         //password is not same as password2
         passwordError = "true";
-        //return new RedirectResolution("/registration/create.jsp").addParameter("passwordError", "true").flash(this);
-        return new RedirectResolution(this.getClass()).addParameter("passwordError", "true").flash(this);
+        return new RedirectResolution(this.getClass()).addParameter("passwordError", passwordError).flash(this);
     }
 
     public Resolution list() {
         logger.debug("list()");
         return new RedirectResolution("/tyre/list");
     }
-    
+
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
-    public void load() {                                        
+    public void load() {
         if (getContext().getRequest().getParameter("id") == null) {
             return;
         }
@@ -92,25 +91,30 @@ public class RegistrationActionBean implements ActionBean {
         CustomerUserTO cuto = cuFacade.getByCustomerId(id);
         cto = cuto.getCustomer();
         uto = cuto.getUser();
-        logger.debug("load() cuto={} \ncto={} \nuto={}", cuto, cto, uto);                
+
+        this.setCto(cto);
+        this.setUto(uto);
+        logger.debug("load() \ncuto={} \ncto={} \nuto={}", cuto, cto, uto);
     }
-    
+
     public Resolution edit() {
-        logger.debug("edit() cto={} \nuto={}", cto, uto);
         logger.debug("edit() getCto={} \ngetUto={}", this.getCto(), this.getUto());
         return new ForwardResolution("/registration/edit.jsp");
     }
 
     public Resolution save() {
+        logger.debug("save() cto={} \nuto={}", this.getCto(), this.getUto());
         logger.debug("save() cto={} \nuto={}", cto, uto);
-        if(uto.getPassword().equals(password2)){
-            cuFacade.update(cuFacade.getByCustomerId(cto.getId()));
-            return new RedirectResolution(this.getClass(), "all");
+        if (uto.getPassword().equals(password2)) {
+            cService.update(cto);
+            uService.update(uto);
+            return new RedirectResolution("/tyre/list");
         }
-        return new RedirectResolution("/registration/edit.jsp").addParameter("passwordError", "true").flash(this);                
+        passwordError = "true";
+        return new RedirectResolution("/registration/edit.jsp").addParameter("passwordError", passwordError).flash(this);
     }
 
-      public CustomerTO getCto() {
+    public CustomerTO getCto() {
         return cto;
     }
 
@@ -157,8 +161,7 @@ public class RegistrationActionBean implements ActionBean {
     public void setUsernameError(String usernameError) {
         this.usernameError = usernameError;
     }
-    
-    
+
     @Override
     public void setContext(ActionBeanContext abc) {
         this.context = abc;
