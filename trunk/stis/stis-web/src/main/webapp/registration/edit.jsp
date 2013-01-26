@@ -7,6 +7,9 @@
 
         <div id="createCustomer">
             <s:form class="form-horizontal" beanclass="cz.muni.fi.pa165.stis.web.RegistrationActionBean">
+                <s:hidden name="cto.id"/>
+                <s:hidden name="uto.id"/>
+                <s:hidden name="uto.username"/>
                 <fieldset>
                     <legend>
                         <f:message key="registration.update"/>

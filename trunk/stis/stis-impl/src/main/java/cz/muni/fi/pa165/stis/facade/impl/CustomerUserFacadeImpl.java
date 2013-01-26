@@ -97,8 +97,12 @@ public class CustomerUserFacadeImpl implements CustomerUserFacade {
             throw new IllegalArgumentException("user.id is null");
         }
         
-        uservice.update(customerUserTO.getUser());
-        cservice.update(customerUserTO.getCustomer());
+        UserTO userTO = customerUserTO.getUser();        
+        CustomerTO customerTO = customerUserTO.getCustomer();
+        customerTO.setUser(userTO);
+        
+        uservice.update(userTO);
+        cservice.update(customerTO);
     }
 
     @Transactional(readOnly=true)
