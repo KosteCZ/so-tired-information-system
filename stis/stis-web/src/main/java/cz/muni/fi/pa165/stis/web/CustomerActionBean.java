@@ -105,7 +105,7 @@ public class CustomerActionBean extends BaseActionBean {
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
     public void loadCustomerFromDatabase() {
         log.debug("load() \ncto={} \nuto={}", cto, uto);
-        if (getContext().getRequest().getParameter("id") == null) {
+        if (getContext().getRequest().getParameter("cto.id") == null) {
             return;
         }
         Long id = Long.parseLong(getContext().getRequest().getParameter("cto.id"));
@@ -113,32 +113,22 @@ public class CustomerActionBean extends BaseActionBean {
         cto = cuto.getCustomer();
         uto = cuto.getUser();
 
-        log.debug("load() \ncuto={} \ncto={} \nuto={}", cuto, cto, uto);
-        //cto = customerService.get(Long.parseLong(ids));
-        //uto = cto.getUser();
+        log.debug("load() \ncuto={} \ncto={} \nuto={}", cuto, cto, uto);        
     }
 
     public Resolution edit() {
-        log.debug("edit() getCto={} \ngetUto={}", this.getCto(), this.getUto());
+        log.debug("edit() getCto={} \ngetUto={}", this.getCto(), this.getUto());        
         return new ForwardResolution("/customer/edit.jsp");
     }
 
     public Resolution save() {
-        log.debug("save() cto={} \nuto={}", this.getCto(), this.getUto());
-        log.debug("save() cto={} \nuto={}", cto, uto);
+        log.debug("save() cto={} \nuto={}", this.getCto(), this.getUto());        
         if (uto.getPassword().equals(password2)) {
             log.debug("save() cto={} \nid={}", cto, cto.getUser());
             cuFacade.update(new CustomerUserTO(cto, uto));            
-            return new RedirectResolution("/tyre/list");
+            return new RedirectResolution("/customer/list.jsp");
         }
         
-//        log.debug("save() cto={} \nuto={}", cto, cto.getUser());
-//        if (uto.getPassword().equals(password2)) {
-//            log.debug("save() cto={} \nid={}", cto, cto.getUser());
-//            cuFacade.update(new CustomerUserTO(cto, uto));            
-//            return new RedirectResolution("/tyre/list");
-//        }
-//        //customerService.update(cto);
         return new RedirectResolution(this.getClass(), "all");
     }
 
