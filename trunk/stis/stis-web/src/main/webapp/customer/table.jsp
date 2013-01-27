@@ -18,7 +18,7 @@
                     <td><c:out value="${cto.firstName}"/></td>
                     <td><c:out value="${cto.lastName}"/></td>
                     <td><c:out value="${cto.address}"/></td>
-                    <td style="width: 32px;"><c:out value="${cto.phone}"/></td>
+                    <td><c:out value="${cto.phone}"/></td>
                     <td><c:out value="${cto.user.username}"/></td>
                     <td>
                         <div class="btn-group">
