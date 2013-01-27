@@ -41,10 +41,10 @@ public class RegistrationActionBean implements ActionBean {
     private CustomerTO cto;
     @ValidateNestedProperties(value = {
         @Validate(on = {"create"}, field = "username", required = true),
-        @Validate(on = {"create", "save"}, field = "password", required = true, minlength = 4)
+        @Validate(on = {"create", "save"}, field = "password", required = true, minlength = 5)
     })
     private UserTO uto;
-    @Validate(on = {"create", "save"}, field = "password2", required = true, minlength = 4)
+    @Validate(on = {"create", "save"}, field = "password2", required = true, minlength = 5)
     private String password2;
     @SpringBean
     protected CustomerUserFacade cuFacade;
@@ -72,7 +72,7 @@ public class RegistrationActionBean implements ActionBean {
             usernameError = "true";
             return new RedirectResolution(this.getClass()).addParameter("usernameError", usernameError).flash(this);
         }
-        //password is not same as password2
+        //password != password2
         passwordError = "true";
         return new RedirectResolution(this.getClass()).addParameter("passwordError", passwordError).flash(this);
     }

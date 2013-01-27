@@ -37,10 +37,10 @@ public class CustomerActionBean extends BaseActionBean {
     })
     private CustomerTO cto;
     @ValidateNestedProperties(value = {
-        @Validate(on = {"save"}, field = "password", required = true, minlength = 4)
+        @Validate(on = {"save"}, field = "password", required = true, minlength = 5)
     })
     private UserTO uto;
-    @Validate(on = {"save"}, field = "password2", required = true, minlength = 4)
+    @Validate(on = {"save"}, field = "password2", required = true, minlength = 5)
     private String password2;
     
     @SpringBean
@@ -80,18 +80,6 @@ public class CustomerActionBean extends BaseActionBean {
 
     public void setPassword2(String password) {
         this.password2 = password;
-    }
-
-    public Resolution add() {
-        log.debug("newcustomer() cto={}", cto);
-        customerService.create(cto);
-        return new RedirectResolution(this.getClass(), "all");
-        
-    }
-    
-    public Resolution create() {
-        log.debug("create()");
-        return new ForwardResolution("/customer/create.jsp");
     }
 
     public Resolution delete() {
