@@ -28,3 +28,17 @@
         <s:text id="inputPhone" name="cto.phone"/>             
     </div>
 </div>
+    
+<div class="control-group">
+    <s:label class="control-label" for="password" name="user.form.password"/>                               
+    <div class="controls">             
+        <s:password id="password" name="uto.password"/>             
+    </div>
+</div>
+    
+<div class="control-group">
+    <s:label class="control-label" for="password2" name="user.form.password2"/>                               
+    <div class="controls">             
+        <s:password id="password2" name="password2"/>             
+    </div>
+</div>
