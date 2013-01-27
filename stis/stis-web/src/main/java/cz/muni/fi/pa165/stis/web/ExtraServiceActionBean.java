@@ -1,14 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pa165.stis.web;
 
 import cz.muni.fi.pa165.stis.dto.ExtraServiceTO;
 import cz.muni.fi.pa165.stis.service.ExtraServiceService;
 import cz.muni.fi.pa165.stis.web.security.custom.CustomUserDetails;
 import java.util.List;
-import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;

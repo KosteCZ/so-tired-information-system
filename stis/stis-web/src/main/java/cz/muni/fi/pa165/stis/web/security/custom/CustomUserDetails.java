@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
- * @author dusan
+ * @author Dusan Svancara
  */
 public class CustomUserDetails implements UserDetails {
     

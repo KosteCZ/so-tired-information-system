@@ -4,7 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 /**
  *
- * @author dusan
+ * @author Dusan Svancara
  */
 public class CustomGrantedAuthority implements GrantedAuthority {
     
