@@ -1,6 +1,8 @@
 package cz.muni.fi.pa165.stis.web;
 
 import cz.muni.fi.pa165.stis.dto.CustomerTO;
+import cz.muni.fi.pa165.stis.dto.CustomerUserTO;
+import cz.muni.fi.pa165.stis.dto.UserTO;
 import cz.muni.fi.pa165.stis.facade.CustomerUserFacade;
 import cz.muni.fi.pa165.stis.service.CustomerService;
 import java.util.List;
@@ -34,6 +36,12 @@ public class CustomerActionBean extends BaseActionBean {
         @Validate(on = {"add", "save"}, field = "address", required = true)
     })
     private CustomerTO cto;
+    @ValidateNestedProperties(value = {
+        @Validate(on = {"save"}, field = "password", required = true, minlength = 4)
+    })
+    private UserTO uto;
+    @Validate(on = {"save"}, field = "password2", required = true, minlength = 4)
+    private String password2;
     
     @SpringBean
     protected CustomerService customerService;
@@ -58,6 +66,22 @@ public class CustomerActionBean extends BaseActionBean {
         this.cto = cto;
     }
 
+    public UserTO getUto() {
+        return uto;
+    }
+
+    public void setUto(UserTO uto) {
+        this.uto = uto;
+    }
+    
+    public String getPassword2() {
+        return password2;
+    }
+
+    public void setPassword2(String password) {
+        this.password2 = password;
+    }
+
     public Resolution add() {
         log.debug("newcustomer() cto={}", cto);
         customerService.create(cto);
@@ -80,21 +104,41 @@ public class CustomerActionBean extends BaseActionBean {
 
     @Before(stages = LifecycleStage.BindingAndValidation, on = {"edit", "save"})
     public void loadCustomerFromDatabase() {
-        String ids = getContext().getRequest().getParameter("cto.id");
-        if (ids == null) {
+        log.debug("load() \ncto={} \nuto={}", cto, uto);
+        if (getContext().getRequest().getParameter("id") == null) {
             return;
         }
-        cto = customerService.get(Long.parseLong(ids));
+        Long id = Long.parseLong(getContext().getRequest().getParameter("cto.id"));
+        CustomerUserTO cuto = cuFacade.getByCustomerId(id);
+        cto = cuto.getCustomer();
+        uto = cuto.getUser();
+
+        log.debug("load() \ncuto={} \ncto={} \nuto={}", cuto, cto, uto);
+        //cto = customerService.get(Long.parseLong(ids));
+        //uto = cto.getUser();
     }
 
     public Resolution edit() {
-        log.debug("edit() cto={}", cto);
+        log.debug("edit() getCto={} \ngetUto={}", this.getCto(), this.getUto());
         return new ForwardResolution("/customer/edit.jsp");
     }
 
     public Resolution save() {
-        log.debug("save() cto={}", cto);
-        customerService.update(cto);
+        log.debug("save() cto={} \nuto={}", this.getCto(), this.getUto());
+        log.debug("save() cto={} \nuto={}", cto, uto);
+        if (uto.getPassword().equals(password2)) {
+            log.debug("save() cto={} \nid={}", cto, cto.getUser());
+            cuFacade.update(new CustomerUserTO(cto, uto));            
+            return new RedirectResolution("/tyre/list");
+        }
+        
+//        log.debug("save() cto={} \nuto={}", cto, cto.getUser());
+//        if (uto.getPassword().equals(password2)) {
+//            log.debug("save() cto={} \nid={}", cto, cto.getUser());
+//            cuFacade.update(new CustomerUserTO(cto, uto));            
+//            return new RedirectResolution("/tyre/list");
+//        }
+//        //customerService.update(cto);
         return new RedirectResolution(this.getClass(), "all");
     }
 

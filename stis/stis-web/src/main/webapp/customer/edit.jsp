@@ -5,6 +5,8 @@
  
        <s:form class="form-horizontal" beanclass="cz.muni.fi.pa165.stis.web.CustomerActionBean">
            <s:hidden name="cto.id"/>
+           <s:hidden name="uto.id"/>
+           <s:hidden name="uto.username"/>
             <fieldset><legend><f:message key="customer.title.edit"/></legend>
                 <%@include file="form.jsp"%>
                 <div class="form-actions">
